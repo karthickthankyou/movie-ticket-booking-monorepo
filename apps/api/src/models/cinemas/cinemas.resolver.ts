@@ -15,16 +15,30 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Address } from '../addresses/entities/address.entity'
 import { Manager } from '../managers/entities/manager.entity'
 import { Screen } from '../screens/entities/screen.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@booking-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
+import { AuthService } from 'src/common/auth/auth.service'
 
 @Resolver(() => Cinema)
 export class CinemasResolver {
   constructor(
     private readonly cinemasService: CinemasService,
     private readonly prisma: PrismaService,
+    private readonly auth: AuthService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Cinema)
-  createCinema(@Args('createCinemaInput') args: CreateCinemaInput) {
+  createCinema(
+    @Args('createCinemaInput') args: CreateCinemaInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.manager.uid)
+    if (!user.roles.includes('manager')) this.auth.setRole(user, 'manager')
     return this.cinemasService.create(args)
   }
 
@@ -38,13 +52,37 @@ export class CinemasResolver {
     return this.cinemasService.findOne(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Cinema)
-  updateCinema(@Args('updateCinemaInput') args: UpdateCinemaInput) {
+  async updateCinema(
+    @Args('updateCinemaInput') args: UpdateCinemaInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const cinema = await this.prisma.cinema.findUnique({
+      where: { id: args.id },
+      include: { managers: true },
+    })
+    checkRowLevelPermission(
+      user,
+      cinema.managers.map((m) => m.uid),
+    )
+
     return this.cinemasService.update(args)
   }
 
   @Mutation(() => Cinema)
-  removeCinema(@Args() args: FindUniqueCinemaArgs) {
+  async removeCinema(
+    @Args() args: FindUniqueCinemaArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const cinema = await this.prisma.cinema.findUnique({
+      where: args.where,
+      include: { managers: true },
+    })
+    checkRowLevelPermission(
+      user,
+      cinema.managers.map((m) => m.uid),
+    )
     return this.cinemasService.remove(args)
   }
 

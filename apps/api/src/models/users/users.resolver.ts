@@ -13,6 +13,12 @@ import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Booking } from '../bookings/entities/booking.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@booking-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -21,28 +27,42 @@ export class UsersResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => User)
-  createUser(@Args('createUserInput') args: CreateUserInput) {
+  createUser(
+    @Args('createUserInput') args: CreateUserInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.uid)
     return this.usersService.create(args)
   }
 
+  @AllowAuthenticated('admin')
   @Query(() => [User], { name: 'users' })
   findAll(@Args() args: FindManyUserArgs) {
     return this.usersService.findAll(args)
   }
 
+  @AllowAuthenticated('admin')
   @Query(() => User, { name: 'user' })
   findOne(@Args() args: FindUniqueUserArgs) {
     return this.usersService.findOne(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') args: UpdateUserInput) {
+  updateUser(
+    @Args('updateUserInput') args: UpdateUserInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.uid)
     return this.usersService.update(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => User)
-  removeUser(@Args() args: FindUniqueUserArgs) {
+  removeUser(@Args() args: FindUniqueUserArgs, @GetUser() user: GetUserType) {
+    checkRowLevelPermission(user, args.where.uid)
     return this.usersService.remove(args)
   }
 

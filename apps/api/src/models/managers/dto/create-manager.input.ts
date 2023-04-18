@@ -7,3 +7,9 @@ export class CreateManagerInput extends PickType(
   ['name', 'uid', 'cinemaId'],
   InputType,
 ) {}
+@InputType()
+export class CreateManagerInputWithoutCinemaId extends PickType(
+  CreateManagerInput,
+  ['name', 'uid'],
+  InputType,
+) {}

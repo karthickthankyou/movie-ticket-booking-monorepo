@@ -14,6 +14,8 @@ import { SeatsModule } from './models/seats/seats.module'
 import { MoviesModule } from './models/movies/movies.module'
 import { ShowtimesModule } from './models/showtimes/showtimes.module'
 import { BookingsModule } from './models/bookings/bookings.module'
+import { AuthModule } from './common/auth/auth.module'
+import { FirebaseModule } from './common/firebase/firebase.module'
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { BookingsModule } from './models/bookings/bookings.module'
     }),
 
     PrismaModule,
+    AuthModule,
+    FirebaseModule,
 
     UsersModule,
     ManagersModule,

@@ -15,6 +15,12 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Movie } from '../movies/entities/movie.entity'
 import { Booking } from '../bookings/entities/booking.entity'
 import { Screen } from '../screens/entities/screen.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@booking-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => Showtime)
 export class ShowtimesResolver {
@@ -23,8 +29,20 @@ export class ShowtimesResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated('admin', 'manager')
   @Mutation(() => Showtime)
-  createShowtime(@Args('createShowtimeInput') args: CreateShowtimeInput) {
+  async createShowtime(
+    @Args('createShowtimeInput') args: CreateShowtimeInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const screen = await this.prisma.screen.findUnique({
+      where: { id: args.screenId },
+      include: { cinema: { include: { managers: true } } },
+    })
+    checkRowLevelPermission(
+      user,
+      screen.cinema.managers.map((m) => m.uid),
+    )
     return this.showtimesService.create(args)
   }
 
@@ -38,13 +56,39 @@ export class ShowtimesResolver {
     return this.showtimesService.findOne(args)
   }
 
+  @AllowAuthenticated('admin', 'manager')
   @Mutation(() => Showtime)
-  updateShowtime(@Args('updateShowtimeInput') args: UpdateShowtimeInput) {
+  async updateShowtime(
+    @Args('updateShowtimeInput') args: UpdateShowtimeInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const screen = await this.prisma.screen.findUnique({
+      where: { id: args.screenId },
+      include: { cinema: { include: { managers: true } } },
+    })
+    checkRowLevelPermission(
+      user,
+      screen.cinema.managers.map((m) => m.uid),
+    )
     return this.showtimesService.update(args)
   }
 
+  @AllowAuthenticated('admin', 'manager')
   @Mutation(() => Showtime)
-  removeShowtime(@Args() args: FindUniqueShowtimeArgs) {
+  async removeShowtime(
+    @Args() args: FindUniqueShowtimeArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const showtime = await this.prisma.showtime.findUnique({
+      where: { id: args.where.id },
+      include: {
+        screen: { include: { cinema: { include: { managers: true } } } },
+      },
+    })
+    checkRowLevelPermission(
+      user,
+      showtime.screen.cinema.managers.map((m) => m.uid),
+    )
     return this.showtimesService.remove(args)
   }
 

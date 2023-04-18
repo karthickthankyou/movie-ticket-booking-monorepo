@@ -11,22 +11,36 @@ import { Manager } from './entities/manager.entity'
 import { FindManyManagerArgs, FindUniqueManagerArgs } from './dto/find.args'
 import { CreateManagerInput } from './dto/create-manager.input'
 import { UpdateManagerInput } from './dto/update-manager.input'
-import { Address } from '@prisma/client'
 import { Cinema } from '../cinemas/entities/cinema.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@booking-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
+import { AuthService } from 'src/common/auth/auth.service'
 
 @Resolver(() => Manager)
 export class ManagersResolver {
   constructor(
     private readonly managersService: ManagersService,
     private readonly prisma: PrismaService,
+    private readonly auth: AuthService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Manager)
-  createManager(@Args('createManagerInput') args: CreateManagerInput) {
+  createManager(
+    @Args('createManagerInput') args: CreateManagerInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.uid)
+    if (!user.roles.includes('manager')) this.auth.setRole(user, 'manager')
     return this.managersService.create(args)
   }
 
+  @AllowAuthenticated('admin')
   @Query(() => [Manager], { name: 'managers' })
   findAll(@Args() args: FindManyManagerArgs) {
     return this.managersService.findAll(args)
@@ -37,13 +51,23 @@ export class ManagersResolver {
     return this.managersService.findOne(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Manager)
-  updateManager(@Args('updateManagerInput') args: UpdateManagerInput) {
+  updateManager(
+    @Args('updateManagerInput') args: UpdateManagerInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.uid)
     return this.managersService.update(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Manager)
-  removeManager(@Args() args: FindUniqueManagerArgs) {
+  removeManager(
+    @Args() args: FindUniqueManagerArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.where.uid)
     return this.managersService.remove(args)
   }
 

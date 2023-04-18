@@ -15,6 +15,12 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { User } from '../users/entities/user.entity'
 import { Showtime } from '../showtimes/entities/showtime.entity'
 import { Seat } from '../seats/entities/seat.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@booking-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -23,28 +29,55 @@ export class BookingsResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Booking)
-  createBooking(@Args('createBookingInput') args: CreateBookingInput) {
+  createBooking(
+    @Args('createBookingInput') args: CreateBookingInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.userId)
     return this.bookingsService.create(args)
   }
 
+  @AllowAuthenticated('admin')
   @Query(() => [Booking], { name: 'bookings' })
   findAll(@Args() args: FindManyBookingArgs) {
     return this.bookingsService.findAll(args)
   }
 
+  @AllowAuthenticated()
   @Query(() => Booking, { name: 'booking' })
-  findOne(@Args() args: FindUniqueBookingArgs) {
-    return this.bookingsService.findOne(args)
+  async findOne(
+    @Args() args: FindUniqueBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const booking = await this.bookingsService.findOne(args)
+    checkRowLevelPermission(user, booking.userId)
+    return booking
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Booking)
-  updateBooking(@Args('updateBookingInput') args: UpdateBookingInput) {
+  async updateBooking(
+    @Args('updateBookingInput') args: UpdateBookingInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const booking = await this.bookingsService.findOne({
+      where: args,
+    })
+    checkRowLevelPermission(user, booking.userId)
+
     return this.bookingsService.update(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Booking)
-  removeBooking(@Args() args: FindUniqueBookingArgs) {
+  async removeBooking(
+    @Args() args: FindUniqueBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const booking = await this.bookingsService.findOne(args)
+    checkRowLevelPermission(user, booking.userId)
     return this.bookingsService.remove(args)
   }
 

@@ -7,9 +7,9 @@ import { UpdateCinemaInput } from './dto/update-cinema.input'
 @Injectable()
 export class CinemasService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createCinemaInput: CreateCinemaInput) {
+  create({ manager, ...createCinemaInput }: CreateCinemaInput) {
     return this.prisma.cinema.create({
-      data: createCinemaInput,
+      data: { ...createCinemaInput, managers: { create: manager } },
     })
   }
 

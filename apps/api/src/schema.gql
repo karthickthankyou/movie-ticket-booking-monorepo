@@ -104,6 +104,36 @@ type Movie {
   showtimes: [Showtime!]!
 }
 
+type LoginOutput {
+  kind: String!
+  localId: String!
+  email: String!
+  displayName: String!
+  idToken: String!
+  refreshToken: String!
+  expiresIn: String!
+}
+
+type RegisterOutput {
+  kind: String!
+  localId: String!
+  email: String!
+  displayName: String!
+  idToken: String!
+  refreshToken: String!
+  expiresIn: String!
+}
+
+type RefreshTokenOutput {
+  access_token: String!
+  expires_in: String!
+  token_type: String!
+  refresh_token: String!
+  id_token: String!
+  user_id: String!
+  project_id: String!
+}
+
 type Query {
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   user(where: UserWhereUniqueInput): User!
@@ -591,6 +621,11 @@ enum BookingScalarFieldEnum {
 }
 
 type Mutation {
+  login(credentials: LoginInput!): LoginOutput!
+  register(credentials: RegisterInput!): RegisterOutput!
+  refreshToken(refreshTokenInput: RefreshTokenInput!): RefreshTokenOutput!
+  setRole(setRoleInput: SetRoleInput!): Boolean!
+  setAdmin(uid: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
@@ -617,6 +652,32 @@ type Mutation {
   removeBooking(where: BookingWhereUniqueInput): Booking!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  displayName: String
+}
+
+input RefreshTokenInput {
+  refresh_token: String!
+}
+
+input SetRoleInput {
+  uid: String!
+  role: RoleEnum!
+}
+
+"""Enum for roles"""
+enum RoleEnum {
+  admin
+  moderator
+}
+
 input CreateUserInput {
   uid: String!
   name: String!
@@ -641,10 +702,17 @@ input UpdateManagerInput {
 
 input CreateCinemaInput {
   name: String!
+  manager: CreateManagerInputWithoutCinemaId!
+}
+
+input CreateManagerInputWithoutCinemaId {
+  uid: String!
+  name: String!
 }
 
 input UpdateCinemaInput {
   name: String
+  manager: CreateManagerInputWithoutCinemaId
   id: Int!
 }
 

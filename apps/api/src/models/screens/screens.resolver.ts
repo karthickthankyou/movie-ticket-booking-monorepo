@@ -15,6 +15,12 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Cinema } from '../cinemas/entities/cinema.entity'
 import { Seat } from '../seats/entities/seat.entity'
 import { Showtime } from '../showtimes/entities/showtime.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { checkRowLevelPermission } from 'src/common/guards'
+import { GetUserType } from '@booking-org/types'
 
 @Resolver(() => Screen)
 export class ScreensResolver {
@@ -23,8 +29,20 @@ export class ScreensResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated('admin', 'manager')
   @Mutation(() => Screen)
-  createScreen(@Args('createScreenInput') args: CreateScreenInput) {
+  async createScreen(
+    @Args('createScreenInput') args: CreateScreenInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const cinema = await this.prisma.cinema.findUnique({
+      where: { id: args.cinemaId },
+      include: { managers: true },
+    })
+    checkRowLevelPermission(
+      user,
+      cinema.managers.map((m) => m.uid),
+    )
     return this.screensService.create(args)
   }
 
@@ -39,12 +57,34 @@ export class ScreensResolver {
   }
 
   @Mutation(() => Screen)
-  updateScreen(@Args('updateScreenInput') args: UpdateScreenInput) {
+  async updateScreen(
+    @Args('updateScreenInput') args: UpdateScreenInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const cinema = await this.prisma.cinema.findUnique({
+      where: { id: args.cinemaId },
+      include: { managers: true },
+    })
+    checkRowLevelPermission(
+      user,
+      cinema.managers.map((m) => m.uid),
+    )
     return this.screensService.update(args)
   }
 
   @Mutation(() => Screen)
-  removeScreen(@Args() args: FindUniqueScreenArgs) {
+  async removeScreen(
+    @Args() args: FindUniqueScreenArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const screen = await this.prisma.screen.findUnique({
+      where: args.where,
+      include: { cinema: { include: { managers: true } } },
+    })
+    checkRowLevelPermission(
+      user,
+      screen.cinema.managers.map((m) => m.uid),
+    )
     return this.screensService.remove(args)
   }
 
