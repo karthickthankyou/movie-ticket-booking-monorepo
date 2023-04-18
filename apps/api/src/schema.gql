@@ -1,0 +1,720 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  bookings: [Booking!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Booking {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: String!
+  showtimeId: Int!
+  seatId: Int!
+  user: User!
+  showtime: Showtime!
+  seat: Seat!
+}
+
+type Manager {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  cinemaId: Int!
+  cinema: Cinema!
+}
+
+type Cinema {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  address: Address!
+  managers: [Manager!]!
+  screens: [Screen!]!
+}
+
+type Address {
+  lat: Float
+  lng: Float
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  cinemaId: Int!
+  address: String!
+}
+
+type Screen {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  number: Int!
+  cinemaId: Int!
+  cinema: Cinema!
+  seats: [Seat!]!
+  showtimes: [Showtime!]!
+}
+
+type Seat {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  id: Int!
+  row: Int!
+  column: Int!
+  screenId: Int!
+  screen: Screen!
+  bookings: [Booking!]!
+}
+
+type Showtime {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  startTime: DateTime!
+  endTime: DateTime!
+  movieId: Int!
+  screenId: Int!
+  screen: Screen!
+  movie: Movie!
+  Booking: [Booking!]!
+}
+
+type Movie {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  director: String!
+  genre: String!
+  duration: Int!
+  releaseDate: DateTime!
+  posterUrl: String!
+  showtimes: [Showtime!]!
+}
+
+type Query {
+  users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+  user(where: UserWhereUniqueInput): User!
+  managers(where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int, distinct: [ManagerScalarFieldEnum!]): [Manager!]!
+  manager(where: ManagerWhereUniqueInput): Manager!
+  cinemas(where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int, distinct: [CinemaScalarFieldEnum!]): [Cinema!]!
+  cinema(where: CinemaWhereUniqueInput): Cinema!
+  screens(where: ScreenWhereInput, orderBy: [ScreenOrderByWithRelationInput!], cursor: ScreenWhereUniqueInput, take: Int, skip: Int, distinct: [ScreenScalarFieldEnum!]): [Screen!]!
+  screen(where: ScreenWhereUniqueInput): Screen!
+  seats(where: SeatWhereInput, orderBy: [SeatOrderByWithRelationInput!], cursor: SeatWhereUniqueInput, take: Int, skip: Int, distinct: [SeatScalarFieldEnum!]): [Seat!]!
+  seat(where: SeatWhereUniqueInput): Seat!
+  movies(where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int, distinct: [MovieScalarFieldEnum!]): [Movie!]!
+  movie(where: MovieWhereUniqueInput): Movie!
+  showtimes(where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int, distinct: [ShowtimeScalarFieldEnum!]): [Showtime!]!
+  showtime(where: ShowtimeWhereUniqueInput): Showtime!
+  bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  booking(where: BookingWhereUniqueInput): Booking!
+}
+
+input UserWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  name: StringFilter
+  bookings: BookingListRelationFilter
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+  mode: QueryMode
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input DateTimeFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+}
+
+input BookingListRelationFilter {
+  every: BookingWhereInput
+  some: BookingWhereInput
+  none: BookingWhereInput
+}
+
+input BookingWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+  showtimeId: IntFilter
+  seatId: IntFilter
+  user: UserRelationFilter
+  showtime: ShowtimeRelationFilter
+  seat: SeatRelationFilter
+  AND: [BookingWhereInput!]
+  OR: [BookingWhereInput!]
+  NOT: [BookingWhereInput!]
+}
+
+input IntFilter {
+  equals: Int
+  in: Int
+  notIn: Int
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input ShowtimeRelationFilter {
+  is: ShowtimeWhereInput
+  isNot: ShowtimeWhereInput
+}
+
+input ShowtimeWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  startTime: DateTimeFilter
+  endTime: DateTimeFilter
+  movieId: IntFilter
+  screenId: IntFilter
+  movie: MovieRelationFilter
+  screen: ScreenRelationFilter
+  bookings: BookingListRelationFilter
+  AND: [ShowtimeWhereInput!]
+  OR: [ShowtimeWhereInput!]
+  NOT: [ShowtimeWhereInput!]
+}
+
+input MovieRelationFilter {
+  is: MovieWhereInput
+  isNot: MovieWhereInput
+}
+
+input MovieWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  title: StringFilter
+  director: StringFilter
+  genre: StringFilter
+  duration: IntFilter
+  releaseDate: DateTimeFilter
+  posterUrl: StringFilter
+  showtimes: ShowtimeListRelationFilter
+  AND: [MovieWhereInput!]
+  OR: [MovieWhereInput!]
+  NOT: [MovieWhereInput!]
+}
+
+input ShowtimeListRelationFilter {
+  every: ShowtimeWhereInput
+  some: ShowtimeWhereInput
+  none: ShowtimeWhereInput
+}
+
+input ScreenRelationFilter {
+  is: ScreenWhereInput
+  isNot: ScreenWhereInput
+}
+
+input ScreenWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  number: IntFilter
+  cinemaId: IntFilter
+  cinema: CinemaRelationFilter
+  showtimes: ShowtimeListRelationFilter
+  seats: SeatListRelationFilter
+  AND: [ScreenWhereInput!]
+  OR: [ScreenWhereInput!]
+  NOT: [ScreenWhereInput!]
+}
+
+input CinemaRelationFilter {
+  is: CinemaWhereInput
+  isNot: CinemaWhereInput
+}
+
+input CinemaWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  name: StringFilter
+  screens: ScreenListRelationFilter
+  managers: ManagerListRelationFilter
+  Address: AddressRelationFilter
+  AND: [CinemaWhereInput!]
+  OR: [CinemaWhereInput!]
+  NOT: [CinemaWhereInput!]
+}
+
+input ScreenListRelationFilter {
+  every: ScreenWhereInput
+  some: ScreenWhereInput
+  none: ScreenWhereInput
+}
+
+input ManagerListRelationFilter {
+  every: ManagerWhereInput
+  some: ManagerWhereInput
+  none: ManagerWhereInput
+}
+
+input ManagerWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  name: StringFilter
+  cinemaId: IntFilter
+  cinema: CinemaRelationFilter
+  AND: [ManagerWhereInput!]
+  OR: [ManagerWhereInput!]
+  NOT: [ManagerWhereInput!]
+}
+
+input AddressRelationFilter {
+  is: AddressWhereInput
+  isNot: AddressWhereInput
+}
+
+input AddressWhereInput {
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  cinemaId: IntFilter
+  address: StringFilter
+  lat: FloatFilter
+  lng: FloatFilter
+  cinema: CinemaRelationFilter
+  AND: [AddressWhereInput!]
+  OR: [AddressWhereInput!]
+  NOT: [AddressWhereInput!]
+}
+
+input FloatFilter {
+  equals: Float
+  in: Float
+  notIn: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float
+}
+
+input SeatListRelationFilter {
+  every: SeatWhereInput
+  some: SeatWhereInput
+  none: SeatWhereInput
+}
+
+input SeatWhereInput {
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  id: IntFilter
+  row: IntFilter
+  column: IntFilter
+  screenId: IntFilter
+  screen: ScreenRelationFilter
+  bookings: BookingListRelationFilter
+  AND: [SeatWhereInput!]
+  OR: [SeatWhereInput!]
+  NOT: [SeatWhereInput!]
+}
+
+input SeatRelationFilter {
+  is: SeatWhereInput
+  isNot: SeatWhereInput
+}
+
+input UserOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  name: SortOrder
+  bookings: BookingOrderByRelationAggregateInput
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input BookingOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input UserWhereUniqueInput {
+  uid: String
+}
+
+enum UserScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+  name
+}
+
+input ManagerOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  name: SortOrder
+  cinemaId: SortOrder
+  cinema: CinemaOrderByWithRelationInput
+}
+
+input CinemaOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  name: SortOrder
+  screens: ScreenOrderByRelationAggregateInput
+  managers: ManagerOrderByRelationAggregateInput
+  Address: AddressOrderByWithRelationInput
+}
+
+input ScreenOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ManagerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AddressOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  cinemaId: SortOrder
+  address: SortOrder
+  lat: SortOrder
+  lng: SortOrder
+  cinema: CinemaOrderByWithRelationInput
+}
+
+input ManagerWhereUniqueInput {
+  uid: String
+}
+
+enum ManagerScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+  name
+  cinemaId
+}
+
+input CinemaWhereUniqueInput {
+  id: Int
+}
+
+enum CinemaScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  name
+}
+
+input ScreenOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  number: SortOrder
+  cinemaId: SortOrder
+  cinema: CinemaOrderByWithRelationInput
+  showtimes: ShowtimeOrderByRelationAggregateInput
+  seats: SeatOrderByRelationAggregateInput
+}
+
+input ShowtimeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SeatOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ScreenWhereUniqueInput {
+  id: Int
+}
+
+enum ScreenScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  number
+  cinemaId
+}
+
+input SeatOrderByWithRelationInput {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  id: SortOrder
+  row: SortOrder
+  column: SortOrder
+  screenId: SortOrder
+  screen: ScreenOrderByWithRelationInput
+  bookings: BookingOrderByRelationAggregateInput
+}
+
+input SeatWhereUniqueInput {
+  id: Int
+}
+
+enum SeatScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  row
+  column
+  screenId
+}
+
+input MovieOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  title: SortOrder
+  director: SortOrder
+  genre: SortOrder
+  duration: SortOrder
+  releaseDate: SortOrder
+  posterUrl: SortOrder
+  showtimes: ShowtimeOrderByRelationAggregateInput
+}
+
+input MovieWhereUniqueInput {
+  id: Int
+}
+
+enum MovieScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  title
+  director
+  genre
+  duration
+  releaseDate
+  posterUrl
+}
+
+input ShowtimeOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  startTime: SortOrder
+  endTime: SortOrder
+  movieId: SortOrder
+  screenId: SortOrder
+  movie: MovieOrderByWithRelationInput
+  screen: ScreenOrderByWithRelationInput
+  bookings: BookingOrderByRelationAggregateInput
+}
+
+input ShowtimeWhereUniqueInput {
+  id: Int
+}
+
+enum ShowtimeScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  startTime
+  endTime
+  movieId
+  screenId
+}
+
+input BookingOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+  showtimeId: SortOrder
+  seatId: SortOrder
+  user: UserOrderByWithRelationInput
+  showtime: ShowtimeOrderByWithRelationInput
+  seat: SeatOrderByWithRelationInput
+}
+
+input BookingWhereUniqueInput {
+  id: Int
+}
+
+enum BookingScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  userId
+  showtimeId
+  seatId
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(where: UserWhereUniqueInput): User!
+  createManager(createManagerInput: CreateManagerInput!): Manager!
+  updateManager(updateManagerInput: UpdateManagerInput!): Manager!
+  removeManager(where: ManagerWhereUniqueInput): Manager!
+  createCinema(createCinemaInput: CreateCinemaInput!): Cinema!
+  updateCinema(updateCinemaInput: UpdateCinemaInput!): Cinema!
+  removeCinema(where: CinemaWhereUniqueInput): Cinema!
+  createScreen(createScreenInput: CreateScreenInput!): Screen!
+  updateScreen(updateScreenInput: UpdateScreenInput!): Screen!
+  removeScreen(where: ScreenWhereUniqueInput): Screen!
+  createSeat(createSeatInput: CreateSeatInput!): Seat!
+  updateSeat(updateSeatInput: UpdateSeatInput!): Seat!
+  removeSeat(where: SeatWhereUniqueInput): Seat!
+  createMovie(createMovieInput: CreateMovieInput!): Movie!
+  updateMovie(updateMovieInput: UpdateMovieInput!): Movie!
+  removeMovie(where: MovieWhereUniqueInput): Movie!
+  createShowtime(createShowtimeInput: CreateShowtimeInput!): Showtime!
+  updateShowtime(updateShowtimeInput: UpdateShowtimeInput!): Showtime!
+  removeShowtime(where: ShowtimeWhereUniqueInput): Showtime!
+  createBooking(createBookingInput: CreateBookingInput!): Booking!
+  updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
+  removeBooking(where: BookingWhereUniqueInput): Booking!
+}
+
+input CreateUserInput {
+  uid: String!
+  name: String!
+}
+
+input UpdateUserInput {
+  uid: String!
+  name: String
+}
+
+input CreateManagerInput {
+  uid: String!
+  name: String!
+  cinemaId: Int!
+}
+
+input UpdateManagerInput {
+  uid: String!
+  name: String
+  cinemaId: Int
+}
+
+input CreateCinemaInput {
+  name: String!
+}
+
+input UpdateCinemaInput {
+  name: String
+  id: Int!
+}
+
+input CreateScreenInput {
+  number: Int!
+  cinemaId: Int!
+}
+
+input UpdateScreenInput {
+  number: Int
+  cinemaId: Int
+  id: Int!
+}
+
+input CreateSeatInput {
+  row: Int!
+  column: Int!
+  screenId: Int!
+}
+
+input UpdateSeatInput {
+  row: Int
+  column: Int
+  screenId: Int
+  id: Int!
+}
+
+input CreateMovieInput {
+  title: String!
+  director: String!
+  genre: String!
+  duration: Int!
+  releaseDate: DateTime!
+  posterUrl: String!
+}
+
+input UpdateMovieInput {
+  title: String
+  director: String
+  genre: String
+  duration: Int
+  releaseDate: DateTime
+  posterUrl: String
+  id: Int!
+}
+
+input CreateShowtimeInput {
+  startTime: DateTime!
+  endTime: DateTime!
+  movieId: Int!
+  screenId: Int!
+}
+
+input UpdateShowtimeInput {
+  startTime: DateTime
+  endTime: DateTime
+  movieId: Int
+  screenId: Int
+  id: Int!
+}
+
+input CreateBookingInput {
+  userId: String!
+  showtimeId: Int!
+  seatId: Int!
+}
+
+input UpdateBookingInput {
+  userId: String
+  showtimeId: Int
+  seatId: Int
+  id: Int!
+}

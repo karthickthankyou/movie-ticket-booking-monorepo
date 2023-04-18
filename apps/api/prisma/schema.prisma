@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    uid       String    @id
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    name      String
+    bookings  Booking[]
+}
+
+model Manager {
+    uid       String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    cinemaId  Int?
+    cinema    Cinema?  @relation(fields: [cinemaId], references: [id])
+}
+
+model Cinema {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    name      String
+    screens   Screen[]
+    managers  Manager[]
+    Address   Address?
+}
+
+model Address {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    cinemaId  Int?     @unique
+    cinema    Cinema?  @relation(fields: [cinemaId], references: [id])
+    address   String
+    lat       Float
+    lng       Float
+}
+
+model Screen {
+    id        Int        @id @default(autoincrement())
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    number    Int
+    cinemaId  Int
+    cinema    Cinema     @relation(fields: [cinemaId], references: [id])
+    showtimes Showtime[]
+    seats     Seat[]
+}
+
+model Seat {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    row       Int
+    column    Int
+    screenId  Int
+    screen    Screen    @relation(fields: [screenId], references: [id])
+    bookings  Booking[]
+}
+
+model Movie {
+    id          Int        @id @default(autoincrement())
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    title       String
+    director    String
+    genre       String
+    duration    Int // Duration in minutes
+    releaseDate DateTime
+    posterUrl   String?
+    showtimes   Showtime[]
+}
+
+model Showtime {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    startTime DateTime
+    endTime   DateTime
+    movieId   Int
+    movie     Movie     @relation(fields: [movieId], references: [id])
+    screenId  Int
+    screen    Screen    @relation(fields: [screenId], references: [id])
+    bookings  Booking[]
+}
+
+model Booking {
+    id         Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    userId     String
+    user       User     @relation(fields: [userId], references: [uid])
+    showtimeId Int
+    showtime   Showtime @relation(fields: [showtimeId], references: [id])
+    seat       Seat?    @relation(fields: [seatId], references: [id])
+    seatId     Int?
+}
+
+enum UserRole {
+    ADMIN
+    CUSTOMER
+}
