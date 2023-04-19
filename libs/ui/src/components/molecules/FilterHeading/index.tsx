@@ -1,0 +1,1 @@
+export { FilterHeading } from './FilterHeading'

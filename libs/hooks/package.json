@@ -1,0 +1,14 @@
+{
+  "name": "@booking-org/hooks",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@booking-org/network": "*",
+    "@booking-org/store": "*",
+    "@booking-org/hooks": "*"
+  },
+  "scripts": {
+    "tsc": "tsc"
+  }
+}

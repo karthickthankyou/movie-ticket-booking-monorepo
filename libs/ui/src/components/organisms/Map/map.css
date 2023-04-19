@@ -1,0 +1,3 @@
+.mapboxgl-popup-content {
+  @apply shadow-lg p-0 rounded-xl overflow-hidden bg-white/20 backdrop-blur-sm border-x border-t border-white !important;
+}
