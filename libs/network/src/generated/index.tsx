@@ -220,7 +220,7 @@ export type CreateManagerInputWithoutCinemaId = {
 export type CreateMovieInput = {
   director: Scalars['String']
   duration: Scalars['Int']
-  genre: Scalars['String']
+  genre: Genre
   posterUrl: Scalars['String']
   releaseDate: Scalars['DateTime']
   title: Scalars['String']
@@ -271,6 +271,13 @@ export type DateTimeFilter = {
   notIn?: InputMaybe<Array<Scalars['String']>>
 }
 
+export type EnumGenreFilter = {
+  equals?: InputMaybe<Genre>
+  in?: InputMaybe<Array<Genre>>
+  not?: InputMaybe<Genre>
+  notIn?: InputMaybe<Array<Genre>>
+}
+
 export type EnumProjectionTypeFilter = {
   equals?: InputMaybe<ProjectionType>
   in?: InputMaybe<Array<ProjectionType>>
@@ -294,6 +301,31 @@ export type FloatFilter = {
   lte?: InputMaybe<Scalars['Float']>
   not?: InputMaybe<Scalars['Float']>
   notIn?: InputMaybe<Scalars['Float']>
+}
+
+/** Enum for roles */
+export enum Genre {
+  Action = 'ACTION',
+  Adventure = 'ADVENTURE',
+  Animation = 'ANIMATION',
+  Comedy = 'COMEDY',
+  Crime = 'CRIME',
+  Documentary = 'DOCUMENTARY',
+  Drama = 'DRAMA',
+  Family = 'FAMILY',
+  Fantasy = 'FANTASY',
+  FilmNoir = 'FILM_NOIR',
+  History = 'HISTORY',
+  Horror = 'HORROR',
+  Music = 'MUSIC',
+  Mystery = 'MYSTERY',
+  Romance = 'ROMANCE',
+  SciFi = 'SCI_FI',
+  Short = 'SHORT',
+  Sport = 'SPORT',
+  Thriller = 'THRILLER',
+  War = 'WAR',
+  Western = 'WESTERN',
 }
 
 export type IntFilter = {
@@ -388,7 +420,7 @@ export type Movie = {
   createdAt: Scalars['DateTime']
   director: Scalars['String']
   duration: Scalars['Int']
-  genre: Scalars['String']
+  genre: Genre
   id: Scalars['Int']
   posterUrl: Scalars['String']
   releaseDate: Scalars['DateTime']
@@ -434,7 +466,7 @@ export type MovieWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>
   director?: InputMaybe<StringFilter>
   duration?: InputMaybe<IntFilter>
-  genre?: InputMaybe<StringFilter>
+  genre?: InputMaybe<EnumGenreFilter>
   id?: InputMaybe<IntFilter>
   posterUrl?: InputMaybe<StringFilter>
   releaseDate?: InputMaybe<DateTimeFilter>
@@ -1064,7 +1096,7 @@ export type UpdateManagerInput = {
 export type UpdateMovieInput = {
   director?: InputMaybe<Scalars['String']>
   duration?: InputMaybe<Scalars['Int']>
-  genre?: InputMaybe<Scalars['String']>
+  genre?: InputMaybe<Genre>
   id: Scalars['Int']
   posterUrl?: InputMaybe<Scalars['String']>
   releaseDate?: InputMaybe<Scalars['DateTime']>
@@ -1147,6 +1179,15 @@ export type CreateCinemaMutation = {
   createCinema: { __typename?: 'Cinema'; id: number }
 }
 
+export type CreateMovieMutationVariables = Exact<{
+  createMovieInput: CreateMovieInput
+}>
+
+export type CreateMovieMutation = {
+  __typename?: 'Mutation'
+  createMovie: { __typename?: 'Movie'; id: number }
+}
+
 export type FindCinemaQueryVariables = Exact<{
   uid: Scalars['String']
 }>
@@ -1225,13 +1266,42 @@ export type LoginMutation = {
   }
 }
 
+export type MoviesQueryVariables = Exact<{
+  where?: InputMaybe<MovieWhereInput>
+  orderBy?: InputMaybe<
+    Array<MovieOrderByWithRelationInput> | MovieOrderByWithRelationInput
+  >
+  cursor?: InputMaybe<MovieWhereUniqueInput>
+  take?: InputMaybe<Scalars['Int']>
+  skip?: InputMaybe<Scalars['Int']>
+  distinct?: InputMaybe<Array<MovieScalarFieldEnum> | MovieScalarFieldEnum>
+}>
+
+export type MoviesQuery = {
+  __typename?: 'Query'
+  movies: Array<{
+    __typename?: 'Movie'
+    id: number
+    genre: Genre
+    director: string
+    duration: number
+    createdAt: any
+    posterUrl: string
+    releaseDate: any
+    title: string
+    updatedAt: any
+  }>
+}
+
 export const namedOperations = {
   Query: {
     findCinema: 'findCinema',
     SearchCinemas: 'SearchCinemas',
+    movies: 'movies',
   },
   Mutation: {
     createCinema: 'createCinema',
+    createMovie: 'createMovie',
     createScreen: 'createScreen',
     Login: 'Login',
   },
@@ -1286,6 +1356,56 @@ export type CreateCinemaMutationResult =
 export type CreateCinemaMutationOptions = Apollo.BaseMutationOptions<
   CreateCinemaMutation,
   CreateCinemaMutationVariables
+>
+export const CreateMovieDocument = /*#__PURE__*/ gql`
+  mutation createMovie($createMovieInput: CreateMovieInput!) {
+    createMovie(createMovieInput: $createMovieInput) {
+      id
+    }
+  }
+`
+export type CreateMovieMutationFn = Apollo.MutationFunction<
+  CreateMovieMutation,
+  CreateMovieMutationVariables
+>
+
+/**
+ * __useCreateMovieMutation__
+ *
+ * To run a mutation, you first call `useCreateMovieMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMovieMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMovieMutation, { data, loading, error }] = useCreateMovieMutation({
+ *   variables: {
+ *      createMovieInput: // value for 'createMovieInput'
+ *   },
+ * });
+ */
+export function useCreateMovieMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateMovieMutation,
+    CreateMovieMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateMovieMutation, CreateMovieMutationVariables>(
+    CreateMovieDocument,
+    options,
+  )
+}
+export type CreateMovieMutationHookResult = ReturnType<
+  typeof useCreateMovieMutation
+>
+export type CreateMovieMutationResult =
+  Apollo.MutationResult<CreateMovieMutation>
+export type CreateMovieMutationOptions = Apollo.BaseMutationOptions<
+  CreateMovieMutation,
+  CreateMovieMutationVariables
 >
 export const FindCinemaDocument = /*#__PURE__*/ gql`
   query findCinema($uid: String!) {
@@ -1541,4 +1661,79 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
 export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
+>
+export const MoviesDocument = /*#__PURE__*/ gql`
+  query movies(
+    $where: MovieWhereInput
+    $orderBy: [MovieOrderByWithRelationInput!]
+    $cursor: MovieWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [MovieScalarFieldEnum!]
+  ) {
+    movies(
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      id
+      genre
+      director
+      duration
+      createdAt
+      posterUrl
+      releaseDate
+      title
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useMoviesQuery__
+ *
+ * To run a query within a React component, call `useMoviesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMoviesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMoviesQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      cursor: // value for 'cursor'
+ *      take: // value for 'take'
+ *      skip: // value for 'skip'
+ *      distinct: // value for 'distinct'
+ *   },
+ * });
+ */
+export function useMoviesQuery(
+  baseOptions?: Apollo.QueryHookOptions<MoviesQuery, MoviesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MoviesQuery, MoviesQueryVariables>(
+    MoviesDocument,
+    options,
+  )
+}
+export function useMoviesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MoviesQuery, MoviesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MoviesQuery, MoviesQueryVariables>(
+    MoviesDocument,
+    options,
+  )
+}
+export type MoviesQueryHookResult = ReturnType<typeof useMoviesQuery>
+export type MoviesLazyQueryHookResult = ReturnType<typeof useMoviesLazyQuery>
+export type MoviesQueryResult = Apollo.QueryResult<
+  MoviesQuery,
+  MoviesQueryVariables
 >

@@ -81,7 +81,7 @@ model Movie {
     updatedAt   DateTime   @updatedAt
     title       String
     director    String
-    genre       String
+    genre       Genre
     duration    Int // Duration in minutes
     releaseDate DateTime
     posterUrl   String?
@@ -142,4 +142,28 @@ enum SoundSystemType {
     SONY_SDDS
     AURO_3D
     IMAX_ENHANCED
+}
+
+enum Genre {
+    ACTION
+    ADVENTURE
+    ANIMATION
+    COMEDY
+    CRIME
+    DOCUMENTARY
+    DRAMA
+    FAMILY
+    FANTASY
+    FILM_NOIR
+    HISTORY
+    HORROR
+    MUSIC
+    MYSTERY
+    ROMANCE
+    SCI_FI
+    SHORT
+    SPORT
+    THRILLER
+    WAR
+    WESTERN
 }

@@ -8,6 +8,14 @@ export const createCinema = gql`
   }
 `
 
+export const createMovie = gql`
+  mutation createMovie($createMovieInput: CreateMovieInput!) {
+    createMovie(createMovieInput: $createMovieInput) {
+      id
+    }
+  }
+`
+
 export const findCinema = gql`
   query findCinema($uid: String!) {
     cinema: cinemaByManager(uid: $uid) {
@@ -74,6 +82,36 @@ export const login = gql`
       kind
       localId
       refreshToken
+    }
+  }
+`
+
+export const movies = gql`
+  query movies(
+    $where: MovieWhereInput
+    $orderBy: [MovieOrderByWithRelationInput!]
+    $cursor: MovieWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [MovieScalarFieldEnum!]
+  ) {
+    movies(
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      id
+      genre
+      director
+      duration
+      createdAt
+      posterUrl
+      releaseDate
+      title
+      updatedAt
     }
   }
 `

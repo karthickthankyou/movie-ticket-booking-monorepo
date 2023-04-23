@@ -1,5 +1,5 @@
-import { ObjectType } from '@nestjs/graphql'
-import { Movie as MovieType } from '@prisma/client'
+import { Field, ObjectType } from '@nestjs/graphql'
+import { Genre, Movie as MovieType } from '@prisma/client'
 
 @ObjectType()
 export class Movie implements MovieType {
@@ -8,7 +8,8 @@ export class Movie implements MovieType {
   updatedAt: Date
   title: string
   director: string
-  genre: string
+  @Field(() => Genre)
+  genre: Genre
   duration: number
   releaseDate: Date
   posterUrl: string

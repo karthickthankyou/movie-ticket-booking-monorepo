@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { FindManySeatArgs, FindUniqueSeatArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateSeatInput } from './dto/create-seat.input'
-import { UpdateSeatInput } from './dto/update-seat.input'
 
 @Injectable()
 export class SeatsService {

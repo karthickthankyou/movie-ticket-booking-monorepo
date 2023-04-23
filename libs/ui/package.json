@@ -24,7 +24,6 @@
     "@headlessui/react": "^1.7.13",
     "@mui/lab": "^5.0.0-alpha.125",
     "@mui/material": "^5.11.16",
-    "@reach/skip-nav": "^0.18.0",
     "@stripe/stripe-js": "^1.52.1",
     "@tabler/icons-react": "^2.14.0",
     "date-fns": "^2.29.3",

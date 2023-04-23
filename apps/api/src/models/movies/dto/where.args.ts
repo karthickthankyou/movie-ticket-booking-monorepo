@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql'
-import { Prisma } from '@prisma/client'
+import { Field, InputType, registerEnumType } from '@nestjs/graphql'
+import { Genre, Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
   IntFilter,
@@ -15,6 +15,20 @@ export class MovieWhereUniqueInput
   id: number
 }
 
+registerEnumType(Genre, { name: 'Genre', description: 'Enum for roles' })
+
+@InputType()
+export class EnumGenreFilter {
+  @Field(() => Genre, { nullable: true })
+  equals?: Genre;
+  @Field(() => [Genre], { nullable: true })
+  in?: Genre[]
+  @Field(() => [Genre], { nullable: true })
+  notIn?: Genre[]
+  @Field(() => Genre, { nullable: true })
+  not?: Genre
+}
+
 @InputType()
 export class MovieWhereInput implements Required<Prisma.MovieWhereInput> {
   @Field(() => IntFilter, { nullable: true })
@@ -27,8 +41,8 @@ export class MovieWhereInput implements Required<Prisma.MovieWhereInput> {
   title: StringFilter
   @Field(() => StringFilter, { nullable: true })
   director: StringFilter
-  @Field(() => StringFilter, { nullable: true })
-  genre: StringFilter
+  @Field(() => EnumGenreFilter, { nullable: true })
+  genre: EnumGenreFilter
   @Field(() => IntFilter, { nullable: true })
   duration: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })
@@ -48,18 +62,18 @@ export class MovieWhereInput implements Required<Prisma.MovieWhereInput> {
 
 @InputType()
 export class MovieListRelationFilter {
-  @Field(() => MovieWhereInput)
+  @Field(() => MovieWhereInput, { nullable: true })
   every?: MovieWhereInput
-  @Field(() => MovieWhereInput)
+  @Field(() => MovieWhereInput, { nullable: true })
   some?: MovieWhereInput
-  @Field(() => MovieWhereInput)
+  @Field(() => MovieWhereInput, { nullable: true })
   none?: MovieWhereInput
 }
 
 @InputType()
 export class MovieRelationFilter {
-  @Field(() => MovieWhereInput)
+  @Field(() => MovieWhereInput, { nullable: true })
   is?: MovieWhereInput
-  @Field(() => MovieWhereInput)
+  @Field(() => MovieWhereInput, { nullable: true })
   isNot?: MovieWhereInput
 }

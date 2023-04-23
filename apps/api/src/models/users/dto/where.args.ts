@@ -44,8 +44,8 @@ export class UserListRelationFilter {
 
 @InputType()
 export class UserRelationFilter {
-  @Field(() => UserWhereInput)
+  @Field(() => UserWhereInput, { nullable: true })
   is?: UserWhereInput
-  @Field(() => UserWhereInput)
+  @Field(() => UserWhereInput, { nullable: true })
   isNot?: UserWhereInput
 }

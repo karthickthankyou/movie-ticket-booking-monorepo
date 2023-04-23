@@ -12,7 +12,6 @@ import { FindManyMovieArgs, FindUniqueMovieArgs } from './dto/find.args'
 import { CreateMovieInput } from './dto/create-movie.input'
 import { UpdateMovieInput } from './dto/update-movie.input'
 import { Showtime } from '../showtimes/entities/showtime.entity'
-import { Address } from '@prisma/client'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { AllowAuthenticated } from 'src/common/decorators/auth/auth.decorator'
 

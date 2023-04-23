@@ -35,8 +35,6 @@ export class ShowtimeWhereInput implements Required<Prisma.ShowtimeWhereInput> {
   screen: ScreenRelationFilter
   @Field(() => BookingListRelationFilter, { nullable: true })
   bookings: BookingListRelationFilter
-  // @Field(() => StringFilter, { nullable: true })
-  // uid: StringFilter
 
   @Field(() => [ShowtimeWhereInput], { nullable: true })
   AND: ShowtimeWhereInput[]

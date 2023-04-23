@@ -219,7 +219,7 @@ export type CreateManagerInputWithoutCinemaId = {
 export type CreateMovieInput = {
   director: Scalars['String']
   duration: Scalars['Int']
-  genre: Scalars['String']
+  genre: Genre
   posterUrl: Scalars['String']
   releaseDate: Scalars['DateTime']
   title: Scalars['String']
@@ -270,6 +270,13 @@ export type DateTimeFilter = {
   notIn?: InputMaybe<Array<Scalars['String']>>
 }
 
+export type EnumGenreFilter = {
+  equals?: InputMaybe<Genre>
+  in?: InputMaybe<Array<Genre>>
+  not?: InputMaybe<Genre>
+  notIn?: InputMaybe<Array<Genre>>
+}
+
 export type EnumProjectionTypeFilter = {
   equals?: InputMaybe<ProjectionType>
   in?: InputMaybe<Array<ProjectionType>>
@@ -293,6 +300,31 @@ export type FloatFilter = {
   lte?: InputMaybe<Scalars['Float']>
   not?: InputMaybe<Scalars['Float']>
   notIn?: InputMaybe<Scalars['Float']>
+}
+
+/** Enum for roles */
+export enum Genre {
+  Action = 'ACTION',
+  Adventure = 'ADVENTURE',
+  Animation = 'ANIMATION',
+  Comedy = 'COMEDY',
+  Crime = 'CRIME',
+  Documentary = 'DOCUMENTARY',
+  Drama = 'DRAMA',
+  Family = 'FAMILY',
+  Fantasy = 'FANTASY',
+  FilmNoir = 'FILM_NOIR',
+  History = 'HISTORY',
+  Horror = 'HORROR',
+  Music = 'MUSIC',
+  Mystery = 'MYSTERY',
+  Romance = 'ROMANCE',
+  SciFi = 'SCI_FI',
+  Short = 'SHORT',
+  Sport = 'SPORT',
+  Thriller = 'THRILLER',
+  War = 'WAR',
+  Western = 'WESTERN',
 }
 
 export type IntFilter = {
@@ -387,7 +419,7 @@ export type Movie = {
   createdAt: Scalars['DateTime']
   director: Scalars['String']
   duration: Scalars['Int']
-  genre: Scalars['String']
+  genre: Genre
   id: Scalars['Int']
   posterUrl: Scalars['String']
   releaseDate: Scalars['DateTime']
@@ -433,7 +465,7 @@ export type MovieWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>
   director?: InputMaybe<StringFilter>
   duration?: InputMaybe<IntFilter>
-  genre?: InputMaybe<StringFilter>
+  genre?: InputMaybe<EnumGenreFilter>
   id?: InputMaybe<IntFilter>
   posterUrl?: InputMaybe<StringFilter>
   releaseDate?: InputMaybe<DateTimeFilter>
@@ -1063,7 +1095,7 @@ export type UpdateManagerInput = {
 export type UpdateMovieInput = {
   director?: InputMaybe<Scalars['String']>
   duration?: InputMaybe<Scalars['Int']>
-  genre?: InputMaybe<Scalars['String']>
+  genre?: InputMaybe<Genre>
   id: Scalars['Int']
   posterUrl?: InputMaybe<Scalars['String']>
   releaseDate?: InputMaybe<Scalars['DateTime']>

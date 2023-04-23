@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from '@showtime-org/store'
 import { selectUser } from '@showtime-org/store/user'
-import { LoginForm } from '../LoginForm'
-import { Container } from '../../atoms/Container'
+import { LoginForm } from '@showtime-org/ui/src/components/templates/LoginForm'
+import { Container } from '@showtime-org/ui/src/components/atoms/Container'
+import { ListMovies } from '../ListMovies'
+import { CreateMovie } from '../CreateMovie'
 
 export interface IAdminProps {}
 
@@ -17,5 +19,10 @@ export const Admin = ({}: IAdminProps) => {
   if (!roles?.includes('admin')) {
     return <Container>Hey, you dont have admin privileges. Come on!</Container>
   }
-  return <Container>Hello, This is Admin component!</Container>
+  return (
+    <Container>
+      <ListMovies />
+      <CreateMovie />
+    </Container>
+  )
 }

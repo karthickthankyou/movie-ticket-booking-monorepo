@@ -3485,18 +3485,6 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@reach/polymorphic@0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@reach/polymorphic/-/polymorphic-0.18.0.tgz#2fe42007a774e06cdbc8e13e0d46f2dc30f2f1ed"
-  integrity sha512-N9iAjdMbE//6rryZZxAPLRorzDcGBnluf7YQij6XDLiMtfCj1noa7KyLpEc/5XCIB/EwhX3zCluFAwloBKdblA==
-
-"@reach/skip-nav@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@reach/skip-nav/-/skip-nav-0.18.0.tgz#9f72ba7ffcd8231c5d3aa10829ef68806e5bf759"
-  integrity sha512-7XKHX0NNTz9VJw1d+ZRuu3KhKSOZTIHSbHUuv7qKKPwSNApDa+dVGqR/I7dKwyB/CDFMXO4iEz4XLtOmvi0FEg==
-  dependencies:
-    "@reach/polymorphic" "0.18.0"
-
 "@redux-devtools/extension@^3.2.5":
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/@redux-devtools/extension/-/extension-3.2.5.tgz#a3daaf7b9edc82988366133f0c741b5266c4dcef"

@@ -120,16 +120,41 @@ type Showtime {
 }
 
 type Movie {
+  genre: Genre!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   director: String!
-  genre: String!
   duration: Int!
   releaseDate: DateTime!
   posterUrl: String!
   showtimes: [Showtime!]!
+}
+
+"""Enum for roles"""
+enum Genre {
+  ACTION
+  ADVENTURE
+  ANIMATION
+  COMEDY
+  CRIME
+  DOCUMENTARY
+  DRAMA
+  FAMILY
+  FANTASY
+  FILM_NOIR
+  HISTORY
+  HORROR
+  MUSIC
+  MYSTERY
+  ROMANCE
+  SCI_FI
+  SHORT
+  SPORT
+  THRILLER
+  WAR
+  WESTERN
 }
 
 type LoginOutput {
@@ -295,7 +320,7 @@ input MovieWhereInput {
   updatedAt: DateTimeFilter
   title: StringFilter
   director: StringFilter
-  genre: StringFilter
+  genre: EnumGenreFilter
   duration: IntFilter
   releaseDate: DateTimeFilter
   posterUrl: StringFilter
@@ -303,6 +328,13 @@ input MovieWhereInput {
   AND: [MovieWhereInput!]
   OR: [MovieWhereInput!]
   NOT: [MovieWhereInput!]
+}
+
+input EnumGenreFilter {
+  equals: Genre
+  in: [Genre!]
+  notIn: [Genre!]
+  not: Genre
 }
 
 input ShowtimeListRelationFilter {
@@ -828,18 +860,18 @@ input CreateSeatInput {
 }
 
 input CreateMovieInput {
+  genre: Genre!
   title: String!
   director: String!
-  genre: String!
   duration: Int!
   releaseDate: DateTime!
   posterUrl: String!
 }
 
 input UpdateMovieInput {
+  genre: Genre
   title: String
   director: String
-  genre: String
   duration: Int
   releaseDate: DateTime
   posterUrl: String
