@@ -63,6 +63,11 @@ export type AddressWhereInput = {
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
+export type AggregateCountOutput = {
+  __typename?: 'AggregateCountOutput'
+  count: Scalars['Int']
+}
+
 export type Booking = {
   __typename?: 'Booking'
   column: Scalars['Int']
@@ -643,6 +648,7 @@ export type Query = {
   managers: Array<Manager>
   movie: Movie
   movies: Array<Movie>
+  moviesCount: AggregateCountOutput
   screen: Screen
   screens: Array<Screen>
   searchCinemas: Array<Cinema>
@@ -707,6 +713,10 @@ export type QueryMoviesArgs = {
   orderBy?: InputMaybe<Array<MovieOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<MovieWhereInput>
+}
+
+export type QueryMoviesCountArgs = {
   where?: InputMaybe<MovieWhereInput>
 }
 

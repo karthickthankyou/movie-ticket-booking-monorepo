@@ -113,5 +113,8 @@ export const movies = gql`
       title
       updatedAt
     }
+    moviesCount(where: $where) {
+      count
+    }
   }
 `

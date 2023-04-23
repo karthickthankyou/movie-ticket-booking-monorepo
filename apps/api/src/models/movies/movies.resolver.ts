@@ -14,6 +14,8 @@ import { UpdateMovieInput } from './dto/update-movie.input'
 import { Showtime } from '../showtimes/entities/showtime.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { AllowAuthenticated } from 'src/common/decorators/auth/auth.decorator'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { MovieWhereInput } from './dto/where.args'
 
 @Resolver(() => Movie)
 export class MoviesResolver {
@@ -31,6 +33,20 @@ export class MoviesResolver {
   @Query(() => [Movie], { name: 'movies' })
   findAll(@Args() args: FindManyMovieArgs) {
     return this.moviesService.findAll(args)
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'moviesCount',
+  })
+  async moviesCount(
+    @Args('where', { nullable: true })
+    where: MovieWhereInput,
+  ) {
+    const movies = await this.prisma.movie.aggregate({
+      _count: { _all: true },
+      where,
+    })
+    return { count: movies._count._all }
   }
 
   @Query(() => Movie, { name: 'movie' })
