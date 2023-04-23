@@ -16,12 +16,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Booking {
+  row: Int!
+  column: Int!
+  screenId: Int!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   userId: String!
   showtimeId: Int!
-  seatId: Int!
   user: User!
   showtime: Showtime!
   seat: Seat!
@@ -57,6 +59,9 @@ type Address {
 }
 
 type Screen {
+  projectionType: ProjectionType!
+  soundSystemType: SoundSystemType!
+  price: Int!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -64,13 +69,36 @@ type Screen {
   cinemaId: Int!
   cinema: Cinema!
   seats: [Seat!]!
+  seatsCount: Int!
   showtimes: [Showtime!]!
+}
+
+"""Enum for screen projection types"""
+enum ProjectionType {
+  STANDARD
+  IMAX
+  DOLBY_CINEMA
+  RPX
+  SCREENX
+  PLF
+}
+
+"""Enum for sound system types"""
+enum SoundSystemType {
+  MONO
+  STEREO
+  DOLBY_DIGITAL
+  DOLBY_ATMOS
+  DTS
+  DTS_X
+  SONY_SDDS
+  AURO_3D
+  IMAX_ENHANCED
 }
 
 type Seat {
   createdAt: DateTime!
   updatedAt: DateTime!
-  id: Int!
   row: Int!
   column: Int!
   screenId: Int!
@@ -141,6 +169,8 @@ type Query {
   manager(where: ManagerWhereUniqueInput): Manager!
   cinemas(where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int, distinct: [CinemaScalarFieldEnum!]): [Cinema!]!
   cinema(where: CinemaWhereUniqueInput): Cinema!
+  cinemaByManager(uid: String!): Cinema!
+  searchCinemas(locationFilter: LocationFilterInput!, where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int, distinct: [CinemaScalarFieldEnum!]): [Cinema!]!
   screens(where: ScreenWhereInput, orderBy: [ScreenOrderByWithRelationInput!], cursor: ScreenWhereUniqueInput, take: Int, skip: Int, distinct: [ScreenScalarFieldEnum!]): [Screen!]!
   screen(where: ScreenWhereUniqueInput): Screen!
   seats(where: SeatWhereInput, orderBy: [SeatOrderByWithRelationInput!], cursor: SeatWhereUniqueInput, take: Int, skip: Int, distinct: [SeatScalarFieldEnum!]): [Seat!]!
@@ -201,12 +231,14 @@ input BookingListRelationFilter {
 }
 
 input BookingWhereInput {
+  row: IntFilter
+  column: IntFilter
+  screenId: IntFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   userId: StringFilter
   showtimeId: IntFilter
-  seatId: IntFilter
   user: UserRelationFilter
   showtime: ShowtimeRelationFilter
   seat: SeatRelationFilter
@@ -285,6 +317,9 @@ input ScreenRelationFilter {
 }
 
 input ScreenWhereInput {
+  projectionType: EnumProjectionTypeFilter
+  soundSystemType: EnumSoundSystemTypeFilter
+  price: FloatFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -296,6 +331,31 @@ input ScreenWhereInput {
   AND: [ScreenWhereInput!]
   OR: [ScreenWhereInput!]
   NOT: [ScreenWhereInput!]
+}
+
+input EnumProjectionTypeFilter {
+  equals: ProjectionType
+  in: [ProjectionType!]
+  notIn: [ProjectionType!]
+  not: ProjectionType
+}
+
+input EnumSoundSystemTypeFilter {
+  equals: SoundSystemType
+  in: [SoundSystemType!]
+  notIn: [SoundSystemType!]
+  not: SoundSystemType
+}
+
+input FloatFilter {
+  equals: Float
+  in: Float
+  notIn: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float
 }
 
 input CinemaRelationFilter {
@@ -310,7 +370,7 @@ input CinemaWhereInput {
   name: StringFilter
   screens: ScreenListRelationFilter
   managers: ManagerListRelationFilter
-  Address: AddressRelationFilter
+  address: AddressRelationFilter
   AND: [CinemaWhereInput!]
   OR: [CinemaWhereInput!]
   NOT: [CinemaWhereInput!]
@@ -357,17 +417,6 @@ input AddressWhereInput {
   AND: [AddressWhereInput!]
   OR: [AddressWhereInput!]
   NOT: [AddressWhereInput!]
-}
-
-input FloatFilter {
-  equals: Float
-  in: Float
-  notIn: Float
-  lt: Float
-  lte: Float
-  gt: Float
-  gte: Float
-  not: Float
 }
 
 input SeatListRelationFilter {
@@ -439,7 +488,7 @@ input CinemaOrderByWithRelationInput {
   name: SortOrder
   screens: ScreenOrderByRelationAggregateInput
   managers: ManagerOrderByRelationAggregateInput
-  Address: AddressOrderByWithRelationInput
+  address: AddressOrderByWithRelationInput
 }
 
 input ScreenOrderByRelationAggregateInput {
@@ -484,7 +533,17 @@ enum CinemaScalarFieldEnum {
   name
 }
 
+input LocationFilterInput {
+  ne_lat: Float!
+  ne_lng: Float!
+  sw_lat: Float!
+  sw_lng: Float!
+}
+
 input ScreenOrderByWithRelationInput {
+  projectionType: SortOrder
+  soundSystemType: SortOrder
+  price: SortOrder
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -513,6 +572,9 @@ enum ScreenScalarFieldEnum {
   updatedAt
   number
   cinemaId
+  projectionType
+  soundSystemType
+  price
 }
 
 input SeatOrderByWithRelationInput {
@@ -527,13 +589,16 @@ input SeatOrderByWithRelationInput {
 }
 
 input SeatWhereUniqueInput {
-  id: Int
+  screenId_row_column: SeatScreenIdRowColumnCompoundUniqueInput!
+}
+
+input SeatScreenIdRowColumnCompoundUniqueInput {
+  screenId: Int!
+  row: Int!
+  column: Int!
 }
 
 enum SeatScalarFieldEnum {
-  id
-  createdAt
-  updatedAt
   row
   column
   screenId
@@ -596,19 +661,21 @@ enum ShowtimeScalarFieldEnum {
 }
 
 input BookingOrderByWithRelationInput {
+  row: SortOrder
+  column: SortOrder
+  screenId: SortOrder
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
   showtimeId: SortOrder
-  seatId: SortOrder
   user: UserOrderByWithRelationInput
   showtime: ShowtimeOrderByWithRelationInput
   seat: SeatOrderByWithRelationInput
 }
 
 input BookingWhereUniqueInput {
-  id: Int
+  id: Int!
 }
 
 enum BookingScalarFieldEnum {
@@ -617,7 +684,9 @@ enum BookingScalarFieldEnum {
   updatedAt
   userId
   showtimeId
-  seatId
+  row
+  column
+  screenId
 }
 
 type Mutation {
@@ -639,7 +708,6 @@ type Mutation {
   updateScreen(updateScreenInput: UpdateScreenInput!): Screen!
   removeScreen(where: ScreenWhereUniqueInput): Screen!
   createSeat(createSeatInput: CreateSeatInput!): Seat!
-  updateSeat(updateSeatInput: UpdateSeatInput!): Seat!
   removeSeat(where: SeatWhereUniqueInput): Seat!
   createMovie(createMovieInput: CreateMovieInput!): Movie!
   updateMovie(updateMovieInput: UpdateMovieInput!): Movie!
@@ -703,6 +771,8 @@ input UpdateManagerInput {
 input CreateCinemaInput {
   name: String!
   manager: CreateManagerInputWithoutCinemaId!
+  address: CreateAddressInputWithoutCinemaId!
+  screens: [CreateScreenInputWithoutCinemaId!]!
 }
 
 input CreateManagerInputWithoutCinemaId {
@@ -710,20 +780,44 @@ input CreateManagerInputWithoutCinemaId {
   name: String!
 }
 
+input CreateAddressInputWithoutCinemaId {
+  lat: Float
+  lng: Float
+  address: String!
+}
+
+input CreateScreenInputWithoutCinemaId {
+  projectionType: ProjectionType!
+  soundSystemType: SoundSystemType!
+  number: Int!
+  rows: Int!
+  columns: Int!
+}
+
 input UpdateCinemaInput {
   name: String
   manager: CreateManagerInputWithoutCinemaId
+  address: CreateAddressInputWithoutCinemaId
+  screens: [CreateScreenInputWithoutCinemaId!]
   id: Int!
 }
 
 input CreateScreenInput {
+  projectionType: ProjectionType!
+  soundSystemType: SoundSystemType!
   number: Int!
   cinemaId: Int!
+  rows: Int!
+  columns: Int!
 }
 
 input UpdateScreenInput {
+  projectionType: ProjectionType
+  soundSystemType: SoundSystemType
   number: Int
   cinemaId: Int
+  rows: Int
+  columns: Int
   id: Int!
 }
 
@@ -731,13 +825,6 @@ input CreateSeatInput {
   row: Int!
   column: Int!
   screenId: Int!
-}
-
-input UpdateSeatInput {
-  row: Int
-  column: Int
-  screenId: Int
-  id: Int!
 }
 
 input CreateMovieInput {
@@ -775,14 +862,18 @@ input UpdateShowtimeInput {
 }
 
 input CreateBookingInput {
+  row: Int!
+  column: Int!
+  screenId: Int!
   userId: String!
   showtimeId: Int!
-  seatId: Int!
 }
 
 input UpdateBookingInput {
+  row: Int
+  column: Int
+  screenId: Int
   userId: String
   showtimeId: Int
-  seatId: Int
   id: Int!
 }

@@ -32,7 +32,7 @@ export class CinemaWhereInput implements Required<Prisma.CinemaWhereInput> {
   @Field(() => ManagerListRelationFilter, { nullable: true })
   managers: ManagerListRelationFilter
   @Field(() => AddressRelationFilter, { nullable: true })
-  Address: AddressRelationFilter
+  address: AddressRelationFilter
 
   @Field(() => [CinemaWhereInput], { nullable: true })
   AND: CinemaWhereInput[]

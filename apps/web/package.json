@@ -1,5 +1,5 @@
 {
-  "name": "@booking-org/web",
+  "name": "@showtime-org/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,9 @@
     "tsc": "tsc"
   },
   "dependencies": {
+    "@showtime-org/network": "*",
+    "@showtime-org/store": "*",
+    "@showtime-org/ui": "*",
     "@types/node": "18.15.11",
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",

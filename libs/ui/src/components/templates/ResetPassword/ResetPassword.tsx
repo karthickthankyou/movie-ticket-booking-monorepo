@@ -8,10 +8,10 @@ import { HtmlInput } from '../../atoms/HtmlInput'
 import {
   FormTypeResetPassword,
   useFormResetPassword,
-} from '@booking-org/forms/src/resetPassword'
+} from '@showtime-org/forms/src/resetPassword'
 
-import { useAsync } from '@booking-org/hooks/src/fetcher'
-import { resetPassword } from '@booking-org/network/src/auth'
+import { useAsync } from '@showtime-org/hooks/src/fetcher'
+import { resetPassword } from '@showtime-org/network/src/auth'
 import { Dialog } from '../../atoms/Dialog'
 
 const ResetPassword = () => {

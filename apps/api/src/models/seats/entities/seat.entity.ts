@@ -5,7 +5,6 @@ import { Seat as SeatType } from '@prisma/client'
 export class Seat implements SeatType {
   createdAt: Date
   updatedAt: Date
-  id: number
   row: number
   column: number
   screenId: number

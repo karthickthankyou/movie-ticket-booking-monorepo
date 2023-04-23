@@ -9,6 +9,12 @@ export class BookingOrderByWithRelationInput
   implements Required<Prisma.BookingOrderByWithRelationInput>
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  row: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  column: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  screenId: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   createdAt: Prisma.SortOrder
@@ -18,8 +24,6 @@ export class BookingOrderByWithRelationInput
   userId: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   showtimeId: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder, { nullable: true })
-  seatId: Prisma.SortOrder
   @Field(() => UserOrderByWithRelationInput, { nullable: true })
   user: UserOrderByWithRelationInput
   @Field(() => ShowtimeOrderByWithRelationInput, { nullable: true })

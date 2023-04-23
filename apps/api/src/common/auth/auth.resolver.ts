@@ -4,7 +4,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType, Role } from '@booking-org/types'
+import { GetUserType, Role } from '@showtime-org/types'
 
 import { AuthService } from './auth.service'
 

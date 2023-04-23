@@ -15,7 +15,7 @@ export type IButtonProps = {
 
 const variantColor = {
   contained: {
-    primary: 'text-black bg-primary hover:bg-primary-600',
+    primary: 'text-white bg-primary hover:bg-primary-600',
     white: 'text-black bg-white',
     black: 'text-primary bg-black hover:bg-gray-900',
     success: 'text-white bg-green hover:bg-green-700',

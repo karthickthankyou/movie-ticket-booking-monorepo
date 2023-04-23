@@ -19,9 +19,10 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@booking-org/types'
+import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { AuthService } from 'src/common/auth/auth.service'
+import { LocationFilterInput } from 'src/common/dtos/common.input'
 
 @Resolver(() => Cinema)
 export class CinemasResolver {
@@ -37,8 +38,10 @@ export class CinemasResolver {
     @Args('createCinemaInput') args: CreateCinemaInput,
     @GetUser() user: GetUserType,
   ) {
+    console.log('user', user, args)
     checkRowLevelPermission(user, args.manager.uid)
-    if (!user.roles.includes('manager')) this.auth.setRole(user, 'manager')
+    if (!(user.roles || []).includes('manager'))
+      this.auth.setRole(user, 'manager')
     return this.cinemasService.create(args)
   }
 
@@ -50,6 +53,10 @@ export class CinemasResolver {
   @Query(() => Cinema, { name: 'cinema' })
   findOne(@Args() args: FindUniqueCinemaArgs) {
     return this.cinemasService.findOne(args)
+  }
+  @Query(() => Cinema, { name: 'cinemaByManager' })
+  cinemaByManager(@Args('uid') uid: string) {
+    return this.cinemasService.findByManager(uid)
   }
 
   @AllowAuthenticated()
@@ -99,5 +106,30 @@ export class CinemasResolver {
   @ResolveField(() => [Screen])
   screens(@Parent() cinema: Cinema) {
     return this.prisma.screen.findMany({ where: { cinemaId: cinema.id } })
+  }
+
+  @Query(() => [Cinema], { name: 'searchCinemas' })
+  async searchKitchens(
+    @Args('locationFilter') locationFilter: LocationFilterInput,
+    @Args({ nullable: true })
+    { cursor, distinct, orderBy, skip, take, where }: FindManyCinemaArgs,
+  ) {
+    const { ne_lat, ne_lng, sw_lat, sw_lng } = locationFilter
+
+    return this.prisma.cinema.findMany({
+      cursor,
+      distinct,
+      orderBy,
+      skip,
+      take,
+      where: {
+        ...where,
+        // open: { equals: true },
+        address: {
+          lat: { lte: ne_lat, gte: sw_lat },
+          lng: { lte: ne_lng, gte: sw_lng },
+        },
+      },
+    })
   }
 }

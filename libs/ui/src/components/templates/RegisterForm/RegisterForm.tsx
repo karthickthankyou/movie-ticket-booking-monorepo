@@ -2,18 +2,18 @@ import { Button } from '../../atoms/Button'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import Link from 'next/link'
-import { register as registerUser } from '@booking-org/network/src/auth'
+import { register as registerUser } from '@showtime-org/network/src/auth'
 
 import { Form } from '../../atoms/Form'
 import {
   FormTypeRegister,
   useFormRegister,
-} from '@booking-org/forms/src/register'
-import { useAsync } from '@booking-org/hooks/src/fetcher'
-import { useAppDispatch, useAppSelector } from '@booking-org/store'
-import { selectUser } from '@booking-org/store/user'
-import { notification$ } from '@booking-org/util/subjects'
-import { useDebounce } from '@booking-org/hooks/src/async'
+} from '@showtime-org/forms/src/register'
+import { useAsync } from '@showtime-org/hooks/src/fetcher'
+import { useAppDispatch, useAppSelector } from '@showtime-org/store'
+import { selectUser } from '@showtime-org/store/user'
+import { notification$ } from '@showtime-org/util/subjects'
+import { useDebounce } from '@showtime-org/hooks/src/async'
 import { useRouter } from 'next/navigation'
 
 export interface ISignupFormProps {}
@@ -75,7 +75,7 @@ export const RegisterForm = ({ className }: { className?: string }) => {
           Please fix the above {Object.keys(errors).length} errors
         </div>
       ) : null}
-      <Button type="submit" fullWidth>
+      <Button type="submit" loading={loading} fullWidth>
         Create account
       </Button>
       <div className="mt-4 text-sm ">

@@ -9,6 +9,13 @@ export class ScreenOrderByWithRelationInput
   implements Required<Prisma.ScreenOrderByWithRelationInput>
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  projectionType: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  soundSystemType: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  price: Prisma.SortOrder
+
+  @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   createdAt: Prisma.SortOrder

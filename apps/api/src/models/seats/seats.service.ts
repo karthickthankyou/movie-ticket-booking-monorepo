@@ -21,14 +21,6 @@ export class SeatsService {
     return this.prisma.seat.findUnique(args)
   }
 
-  update(updateSeatInput: UpdateSeatInput) {
-    const { id, ...data } = updateSeatInput
-    return this.prisma.seat.update({
-      where: { id: id },
-      data: data,
-    })
-  }
-
   remove(args: FindUniqueSeatArgs) {
     return this.prisma.seat.delete(args)
   }

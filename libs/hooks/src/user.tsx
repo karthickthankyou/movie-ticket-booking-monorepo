@@ -1,6 +1,6 @@
-import { auth } from '@booking-org/network/src/config/firebase'
-import { useAppDispatch } from '@booking-org/store'
-import { resetUser, setUser } from '@booking-org/store/user'
+import { auth } from '@showtime-org/network/src/config/firebase'
+import { useAppDispatch } from '@showtime-org/store'
+import { resetUser, setUser } from '@showtime-org/store/user'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useEffect } from 'react'
 

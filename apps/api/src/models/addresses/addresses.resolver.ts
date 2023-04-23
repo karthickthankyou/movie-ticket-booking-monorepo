@@ -17,7 +17,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@booking-org/types'
+import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => Address)
@@ -66,7 +66,7 @@ export class AddressesResolver {
     @GetUser() user: GetUserType,
   ) {
     const cinema = await this.prisma.cinema.findFirst({
-      where: { Address: { id: args.where.id } },
+      where: { address: { id: args.where.id } },
       include: { managers: true },
     })
     const managers = cinema.managers.map((manager) => manager.uid)

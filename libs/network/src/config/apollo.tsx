@@ -5,15 +5,15 @@ import {
   createHttpLink,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { useAppSelector } from '@booking-org/store'
-import { selectUser } from '@booking-org/store/user'
+import { useAppSelector } from '@showtime-org/store'
+import { selectUser } from '@showtime-org/store/user'
 import { ReactNode } from 'react'
 import jwtDecode from 'jwt-decode'
 import {
   LoginDocument,
   LoginMutation,
   LoginMutationVariables,
-} from '@booking-org/network/src/generated'
+} from '@showtime-org/network/src/generated'
 
 export interface IApolloProviderProps {
   children: ReactNode

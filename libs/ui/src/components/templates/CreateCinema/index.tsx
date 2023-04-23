@@ -1,0 +1,1 @@
+export { CreateCinema } from './CreateCinema'

@@ -11,7 +11,7 @@ import {
   RegisterOutput,
 } from './dto/auth.input'
 
-import { GetUserType, Role } from '@booking-org/types'
+import { GetUserType, Role } from '@showtime-org/types'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
 
 @Injectable()
@@ -68,7 +68,7 @@ export class AuthService {
   }
 
   async setRole(user: GetUserType, role: Role): Promise<boolean> {
-    const existingRoles = user.roles
+    const existingRoles = user.roles || []
     if (existingRoles.includes(role)) {
       //   throw new BadRequestException(`User already has this role. ${role}`)
       console.error(`User already has this role. ${role}`)

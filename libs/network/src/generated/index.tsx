@@ -26,20 +26,19 @@ export type Scalars = {
 export type Address = {
   __typename?: 'Address'
   address: Scalars['String']
+  cinemaId: Scalars['Int']
   createdAt: Scalars['DateTime']
-  garage: Garage
-  garageId: Scalars['Int']
   id: Scalars['Int']
-  lat: Scalars['Int']
-  lng: Scalars['Int']
+  lat?: Maybe<Scalars['Float']>
+  lng?: Maybe<Scalars['Float']>
   updatedAt: Scalars['DateTime']
 }
 
 export type AddressOrderByWithRelationInput = {
   address?: InputMaybe<SortOrder>
+  cinema?: InputMaybe<CinemaOrderByWithRelationInput>
+  cinemaId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
-  garage?: InputMaybe<GarageOrderByWithRelationInput>
-  garageId?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   lat?: InputMaybe<SortOrder>
   lng?: InputMaybe<SortOrder>
@@ -51,51 +50,33 @@ export type AddressRelationFilter = {
   isNot?: InputMaybe<AddressWhereInput>
 }
 
-export enum AddressScalarFieldEnum {
-  Address = 'address',
-  CreatedAt = 'createdAt',
-  GarageId = 'garageId',
-  Id = 'id',
-  Lat = 'lat',
-  Lng = 'lng',
-  UpdatedAt = 'updatedAt',
-}
-
 export type AddressWhereInput = {
   AND?: InputMaybe<Array<AddressWhereInput>>
   NOT?: InputMaybe<Array<AddressWhereInput>>
   OR?: InputMaybe<Array<AddressWhereInput>>
   address?: InputMaybe<StringFilter>
+  cinema?: InputMaybe<CinemaRelationFilter>
+  cinemaId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  garage?: InputMaybe<GarageRelationFilter>
-  garageId?: InputMaybe<IntFilter>
-  id?: InputMaybe<StringFilter>
+  id?: InputMaybe<IntFilter>
   lat?: InputMaybe<FloatFilter>
   lng?: InputMaybe<FloatFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
-export type AddressWhereUniqueInput = {
-  garageId?: InputMaybe<Scalars['Int']>
-  id?: InputMaybe<Scalars['Int']>
-}
-
 export type Booking = {
   __typename?: 'Booking'
+  column: Scalars['Int']
   createdAt: Scalars['DateTime']
-  customer: Customer
-  customerId: Scalars['String']
-  endTime: Scalars['DateTime']
   id: Scalars['Int']
-  passcode: Scalars['String']
-  phoneNumber: Scalars['String']
-  pricePerHour: Scalars['Int']
-  slot: Slot
-  slotId: Scalars['Int']
-  startTime: Scalars['DateTime']
-  totalPrice: Scalars['Int']
+  row: Scalars['Int']
+  screenId: Scalars['Int']
+  seat: Seat
+  showtime: Showtime
+  showtimeId: Scalars['Int']
   updatedAt: Scalars['DateTime']
-  vehicleNumber: Scalars['String']
+  user: User
+  userId: Scalars['String']
 }
 
 export type BookingListRelationFilter = {
@@ -109,203 +90,175 @@ export type BookingOrderByRelationAggregateInput = {
 }
 
 export type BookingOrderByWithRelationInput = {
+  column?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
-  customer?: InputMaybe<CustomerOrderByWithRelationInput>
-  customerId?: InputMaybe<SortOrder>
-  endTime?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
-  passcode?: InputMaybe<SortOrder>
-  phoneNumber?: InputMaybe<SortOrder>
-  pricePerHour?: InputMaybe<SortOrder>
-  slot?: InputMaybe<SlotOrderByWithRelationInput>
-  slotId?: InputMaybe<SortOrder>
-  startTime?: InputMaybe<SortOrder>
-  totalPrice?: InputMaybe<SortOrder>
+  row?: InputMaybe<SortOrder>
+  screenId?: InputMaybe<SortOrder>
+  seat?: InputMaybe<SeatOrderByWithRelationInput>
+  showtime?: InputMaybe<ShowtimeOrderByWithRelationInput>
+  showtimeId?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
-  vehicleNumber?: InputMaybe<SortOrder>
+  user?: InputMaybe<UserOrderByWithRelationInput>
+  userId?: InputMaybe<SortOrder>
 }
 
 export enum BookingScalarFieldEnum {
+  Column = 'column',
   CreatedAt = 'createdAt',
-  CustomerId = 'customerId',
-  EndTime = 'endTime',
   Id = 'id',
-  Passcode = 'passcode',
-  PhoneNumber = 'phoneNumber',
-  PricePerHour = 'pricePerHour',
-  SlotId = 'slotId',
-  StartTime = 'startTime',
-  TotalPrice = 'totalPrice',
+  Row = 'row',
+  ScreenId = 'screenId',
+  ShowtimeId = 'showtimeId',
   UpdatedAt = 'updatedAt',
-  VehicleNumber = 'vehicleNumber',
+  UserId = 'userId',
 }
 
 export type BookingWhereInput = {
   AND?: InputMaybe<Array<BookingWhereInput>>
   NOT?: InputMaybe<Array<BookingWhereInput>>
   OR?: InputMaybe<Array<BookingWhereInput>>
+  column?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  customer?: InputMaybe<CustomerRelationFilter>
-  customerId?: InputMaybe<StringFilter>
-  endTime?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
-  passcode?: InputMaybe<StringFilter>
-  phoneNumber?: InputMaybe<StringFilter>
-  pricePerHour?: InputMaybe<FloatFilter>
-  slot?: InputMaybe<SlotRelationFilter>
-  slotId?: InputMaybe<IntFilter>
-  startTime?: InputMaybe<DateTimeFilter>
-  totalPrice?: InputMaybe<FloatFilter>
+  row?: InputMaybe<IntFilter>
+  screenId?: InputMaybe<IntFilter>
+  seat?: InputMaybe<SeatRelationFilter>
+  showtime?: InputMaybe<ShowtimeRelationFilter>
+  showtimeId?: InputMaybe<IntFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
-  vehicleNumber?: InputMaybe<StringFilter>
+  user?: InputMaybe<UserRelationFilter>
+  userId?: InputMaybe<StringFilter>
 }
 
 export type BookingWhereUniqueInput = {
-  id?: InputMaybe<Scalars['Int']>
+  id: Scalars['Int']
 }
 
-export type Company = {
-  __typename?: 'Company'
+export type Cinema = {
+  __typename?: 'Cinema'
+  address: Address
   createdAt: Scalars['DateTime']
-  displayName: Scalars['String']
-  garages: Array<Garage>
   id: Scalars['Int']
   managers: Array<Manager>
+  name: Scalars['String']
+  screens: Array<Screen>
   updatedAt: Scalars['DateTime']
 }
 
-export type CompanyOrderByWithRelationInput = {
+export type CinemaOrderByWithRelationInput = {
+  address?: InputMaybe<AddressOrderByWithRelationInput>
   createdAt?: InputMaybe<SortOrder>
-  displayName?: InputMaybe<SortOrder>
-  garages?: InputMaybe<GarageOrderByRelationAggregateInput>
   id?: InputMaybe<SortOrder>
   managers?: InputMaybe<ManagerOrderByRelationAggregateInput>
+  name?: InputMaybe<SortOrder>
+  screens?: InputMaybe<ScreenOrderByRelationAggregateInput>
   updatedAt?: InputMaybe<SortOrder>
 }
 
-export type CompanyRelationFilter = {
-  is?: InputMaybe<CompanyWhereInput>
-  isNot?: InputMaybe<CompanyWhereInput>
+export type CinemaRelationFilter = {
+  is?: InputMaybe<CinemaWhereInput>
+  isNot?: InputMaybe<CinemaWhereInput>
 }
 
-export enum CompanyScalarFieldEnum {
+export enum CinemaScalarFieldEnum {
   CreatedAt = 'createdAt',
-  DisplayName = 'displayName',
   Id = 'id',
+  Name = 'name',
   UpdatedAt = 'updatedAt',
 }
 
-export type CompanyWhereInput = {
-  AND?: InputMaybe<Array<CompanyWhereInput>>
-  NOT?: InputMaybe<Array<CompanyWhereInput>>
-  OR?: InputMaybe<Array<CompanyWhereInput>>
+export type CinemaWhereInput = {
+  AND?: InputMaybe<Array<CinemaWhereInput>>
+  NOT?: InputMaybe<Array<CinemaWhereInput>>
+  OR?: InputMaybe<Array<CinemaWhereInput>>
+  address?: InputMaybe<AddressRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  displayName?: InputMaybe<StringFilter>
-  garages?: InputMaybe<GarageListRelationFilter>
   id?: InputMaybe<IntFilter>
   managers?: InputMaybe<ManagerListRelationFilter>
+  name?: InputMaybe<StringFilter>
+  screens?: InputMaybe<ScreenListRelationFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
-export type CompanyWhereUniqueInput = {
+export type CinemaWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
 }
 
-export type CreateAddressInput = {
+export type CreateAddressInputWithoutCinemaId = {
   address: Scalars['String']
-  garageId: Scalars['Int']
-  lat: Scalars['Int']
-  lng: Scalars['Int']
+  lat?: InputMaybe<Scalars['Float']>
+  lng?: InputMaybe<Scalars['Float']>
 }
 
 export type CreateBookingInput = {
-  customerId: Scalars['String']
-  endTime: Scalars['DateTime']
-  garageId: Scalars['Int']
-  startTime: Scalars['DateTime']
-  type: SlotType
-  vehicleNumber: Scalars['String']
+  column: Scalars['Int']
+  row: Scalars['Int']
+  screenId: Scalars['Int']
+  showtimeId: Scalars['Int']
+  userId: Scalars['String']
 }
 
-export type CreateCompanyInput = {
-  displayName: Scalars['String']
-  managerDisplayName: Scalars['String']
-}
-
-export type CreateCustomerInput = {
-  displayName: Scalars['String']
-  uid: Scalars['String']
-}
-
-export type CreateGarageInput = {
-  companyId: Scalars['Int']
-  description: Scalars['String']
-  displayName: Scalars['String']
+export type CreateCinemaInput = {
+  address: CreateAddressInputWithoutCinemaId
+  manager: CreateManagerInputWithoutCinemaId
+  name: Scalars['String']
+  screens: Array<CreateScreenInputWithoutCinemaId>
 }
 
 export type CreateManagerInput = {
-  companyId: Scalars['Int']
-  displayName: Scalars['String']
+  cinemaId: Scalars['Int']
+  name: Scalars['String']
   uid: Scalars['String']
 }
 
-export type CreateSlotInput = {
-  displayName?: InputMaybe<Scalars['String']>
-  garageId: Scalars['Int']
-  height?: InputMaybe<Scalars['Int']>
-  length?: InputMaybe<Scalars['Int']>
-  pricePerHour: Scalars['Int']
-  type?: InputMaybe<SlotType>
-  width?: InputMaybe<Scalars['Int']>
-}
-
-export type Customer = {
-  __typename?: 'Customer'
-  bookings: Array<Booking>
-  createdAt: Scalars['DateTime']
-  displayName: Scalars['String']
+export type CreateManagerInputWithoutCinemaId = {
+  name: Scalars['String']
   uid: Scalars['String']
-  updatedAt: Scalars['DateTime']
 }
 
-export type CustomerOrderByWithRelationInput = {
-  bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
-  createdAt?: InputMaybe<SortOrder>
-  displayName?: InputMaybe<SortOrder>
-  uid?: InputMaybe<SortOrder>
-  updatedAt?: InputMaybe<SortOrder>
+export type CreateMovieInput = {
+  director: Scalars['String']
+  duration: Scalars['Int']
+  genre: Scalars['String']
+  posterUrl: Scalars['String']
+  releaseDate: Scalars['DateTime']
+  title: Scalars['String']
 }
 
-export type CustomerRelationFilter = {
-  is?: InputMaybe<CustomerWhereInput>
-  isNot?: InputMaybe<CustomerWhereInput>
+export type CreateScreenInput = {
+  cinemaId: Scalars['Int']
+  columns: Scalars['Int']
+  number: Scalars['Int']
+  projectionType: ProjectionType
+  rows: Scalars['Int']
+  soundSystemType: SoundSystemType
 }
 
-export enum CustomerScalarFieldEnum {
-  CreatedAt = 'createdAt',
-  DisplayName = 'displayName',
-  Uid = 'uid',
-  UpdatedAt = 'updatedAt',
+export type CreateScreenInputWithoutCinemaId = {
+  columns: Scalars['Int']
+  number: Scalars['Int']
+  projectionType: ProjectionType
+  rows: Scalars['Int']
+  soundSystemType: SoundSystemType
 }
 
-export type CustomerWhereInput = {
-  AND?: InputMaybe<Array<CustomerWhereInput>>
-  NOT?: InputMaybe<Array<CustomerWhereInput>>
-  OR?: InputMaybe<Array<CustomerWhereInput>>
-  bookings?: InputMaybe<BookingListRelationFilter>
-  createdAt?: InputMaybe<DateTimeFilter>
-  displayName?: InputMaybe<StringFilter>
-  uid?: InputMaybe<StringFilter>
-  updatedAt?: InputMaybe<DateTimeFilter>
+export type CreateSeatInput = {
+  column: Scalars['Int']
+  row: Scalars['Int']
+  screenId: Scalars['Int']
 }
 
-export type CustomerWhereUniqueInput = {
-  uid?: InputMaybe<Scalars['String']>
+export type CreateShowtimeInput = {
+  endTime: Scalars['DateTime']
+  movieId: Scalars['Int']
+  screenId: Scalars['Int']
+  startTime: Scalars['DateTime']
 }
 
-export type DateFilterInput = {
-  end: Scalars['String']
-  start: Scalars['String']
+export type CreateUserInput = {
+  name: Scalars['String']
+  uid: Scalars['String']
 }
 
 export type DateTimeFilter = {
@@ -318,11 +271,18 @@ export type DateTimeFilter = {
   notIn?: InputMaybe<Array<Scalars['String']>>
 }
 
-export type EnumSlotTypeFilter = {
-  equals?: InputMaybe<SlotType>
-  in?: InputMaybe<Array<SlotType>>
-  not?: InputMaybe<SlotType>
-  notIn?: InputMaybe<Array<SlotType>>
+export type EnumProjectionTypeFilter = {
+  equals?: InputMaybe<ProjectionType>
+  in?: InputMaybe<Array<ProjectionType>>
+  not?: InputMaybe<ProjectionType>
+  notIn?: InputMaybe<Array<ProjectionType>>
+}
+
+export type EnumSoundSystemTypeFilter = {
+  equals?: InputMaybe<SoundSystemType>
+  in?: InputMaybe<Array<SoundSystemType>>
+  not?: InputMaybe<SoundSystemType>
+  notIn?: InputMaybe<Array<SoundSystemType>>
 }
 
 export type FloatFilter = {
@@ -334,87 +294,6 @@ export type FloatFilter = {
   lte?: InputMaybe<Scalars['Float']>
   not?: InputMaybe<Scalars['Float']>
   notIn?: InputMaybe<Scalars['Float']>
-}
-
-export type Garage = {
-  __typename?: 'Garage'
-  address: Address
-  availableSlots: Array<MinimalSlotGroupBy>
-  company: Company
-  companyId: Scalars['Int']
-  createdAt: Scalars['DateTime']
-  description: Scalars['String']
-  displayName: Scalars['String']
-  id: Scalars['Int']
-  slots: Array<Slot>
-  updatedAt: Scalars['DateTime']
-}
-
-export type GarageAvailableSlotsArgs = {
-  dateFilter: DateFilterInput
-  slotsFilter?: InputMaybe<SlotWhereInput>
-}
-
-export type GarageFilter = {
-  orderBy?: InputMaybe<Array<GarageOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<GarageWhereInput>
-}
-
-export type GarageListRelationFilter = {
-  every?: InputMaybe<GarageWhereInput>
-  none?: InputMaybe<GarageWhereInput>
-  some?: InputMaybe<GarageWhereInput>
-}
-
-export type GarageOrderByRelationAggregateInput = {
-  _count?: InputMaybe<SortOrder>
-}
-
-export type GarageOrderByWithRelationInput = {
-  address?: InputMaybe<AddressOrderByWithRelationInput>
-  company?: InputMaybe<CompanyOrderByWithRelationInput>
-  companyId?: InputMaybe<SortOrder>
-  createdAt?: InputMaybe<SortOrder>
-  description?: InputMaybe<SortOrder>
-  displayName?: InputMaybe<SortOrder>
-  id?: InputMaybe<SortOrder>
-  slots?: InputMaybe<SlotOrderByRelationAggregateInput>
-  updatedAt?: InputMaybe<SortOrder>
-}
-
-export type GarageRelationFilter = {
-  is?: InputMaybe<GarageWhereInput>
-  isNot?: InputMaybe<GarageWhereInput>
-}
-
-export enum GarageScalarFieldEnum {
-  CompanyId = 'companyId',
-  CreatedAt = 'createdAt',
-  Description = 'description',
-  DisplayName = 'displayName',
-  Id = 'id',
-  UpdatedAt = 'updatedAt',
-}
-
-export type GarageWhereInput = {
-  AND?: InputMaybe<Array<GarageWhereInput>>
-  NOT?: InputMaybe<Array<GarageWhereInput>>
-  OR?: InputMaybe<Array<GarageWhereInput>>
-  address?: InputMaybe<AddressRelationFilter>
-  company?: InputMaybe<CompanyRelationFilter>
-  companyId?: InputMaybe<IntFilter>
-  createdAt?: InputMaybe<DateTimeFilter>
-  description?: InputMaybe<StringFilter>
-  displayName?: InputMaybe<StringFilter>
-  id?: InputMaybe<IntFilter>
-  slots?: InputMaybe<SlotListRelationFilter>
-  updatedAt?: InputMaybe<DateTimeFilter>
-}
-
-export type GarageWhereUniqueInput = {
-  id?: InputMaybe<Scalars['Int']>
 }
 
 export type IntFilter = {
@@ -429,10 +308,10 @@ export type IntFilter = {
 }
 
 export type LocationFilterInput = {
-  nw_lat: Scalars['Float']
-  nw_lng: Scalars['Float']
-  se_lat: Scalars['Float']
-  se_lng: Scalars['Float']
+  ne_lat: Scalars['Float']
+  ne_lng: Scalars['Float']
+  sw_lat: Scalars['Float']
+  sw_lng: Scalars['Float']
 }
 
 export type LoginInput = {
@@ -453,10 +332,10 @@ export type LoginOutput = {
 
 export type Manager = {
   __typename?: 'Manager'
-  company: Company
-  companyId: Scalars['Int']
+  cinema: Cinema
+  cinemaId: Scalars['Int']
   createdAt: Scalars['DateTime']
-  displayName: Scalars['String']
+  name: Scalars['String']
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -472,18 +351,18 @@ export type ManagerOrderByRelationAggregateInput = {
 }
 
 export type ManagerOrderByWithRelationInput = {
-  company?: InputMaybe<CompanyOrderByWithRelationInput>
-  companyId?: InputMaybe<SortOrder>
+  cinema?: InputMaybe<CinemaOrderByWithRelationInput>
+  cinemaId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
-  displayName?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
   uid?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
 
 export enum ManagerScalarFieldEnum {
-  CompanyId = 'companyId',
+  CinemaId = 'cinemaId',
   CreatedAt = 'createdAt',
-  DisplayName = 'displayName',
+  Name = 'name',
   Uid = 'uid',
   UpdatedAt = 'updatedAt',
 }
@@ -492,87 +371,144 @@ export type ManagerWhereInput = {
   AND?: InputMaybe<Array<ManagerWhereInput>>
   NOT?: InputMaybe<Array<ManagerWhereInput>>
   OR?: InputMaybe<Array<ManagerWhereInput>>
-  company?: InputMaybe<CompanyRelationFilter>
-  companyId?: InputMaybe<IntFilter>
+  cinema?: InputMaybe<CinemaRelationFilter>
+  cinemaId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  displayName?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
   uid?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
 export type ManagerWhereUniqueInput = {
-  companyId?: InputMaybe<Scalars['Int']>
   uid?: InputMaybe<Scalars['String']>
 }
 
-export type MinimalSlotGroupBy = {
-  __typename?: 'MinimalSlotGroupBy'
-  count: Scalars['Int']
-  pricePerHour: Scalars['Int']
-  type?: Maybe<SlotType>
+export type Movie = {
+  __typename?: 'Movie'
+  createdAt: Scalars['DateTime']
+  director: Scalars['String']
+  duration: Scalars['Int']
+  genre: Scalars['String']
+  id: Scalars['Int']
+  posterUrl: Scalars['String']
+  releaseDate: Scalars['DateTime']
+  showtimes: Array<Showtime>
+  title: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
+export type MovieOrderByWithRelationInput = {
+  createdAt?: InputMaybe<SortOrder>
+  director?: InputMaybe<SortOrder>
+  duration?: InputMaybe<SortOrder>
+  genre?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  posterUrl?: InputMaybe<SortOrder>
+  releaseDate?: InputMaybe<SortOrder>
+  showtimes?: InputMaybe<ShowtimeOrderByRelationAggregateInput>
+  title?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type MovieRelationFilter = {
+  is?: InputMaybe<MovieWhereInput>
+  isNot?: InputMaybe<MovieWhereInput>
+}
+
+export enum MovieScalarFieldEnum {
+  CreatedAt = 'createdAt',
+  Director = 'director',
+  Duration = 'duration',
+  Genre = 'genre',
+  Id = 'id',
+  PosterUrl = 'posterUrl',
+  ReleaseDate = 'releaseDate',
+  Title = 'title',
+  UpdatedAt = 'updatedAt',
+}
+
+export type MovieWhereInput = {
+  AND?: InputMaybe<Array<MovieWhereInput>>
+  NOT?: InputMaybe<Array<MovieWhereInput>>
+  OR?: InputMaybe<Array<MovieWhereInput>>
+  createdAt?: InputMaybe<DateTimeFilter>
+  director?: InputMaybe<StringFilter>
+  duration?: InputMaybe<IntFilter>
+  genre?: InputMaybe<StringFilter>
+  id?: InputMaybe<IntFilter>
+  posterUrl?: InputMaybe<StringFilter>
+  releaseDate?: InputMaybe<DateTimeFilter>
+  showtimes?: InputMaybe<ShowtimeListRelationFilter>
+  title?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type MovieWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
 }
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createAddress: Address
   createBooking: Booking
-  createCompany: Company
-  createCustomer: Customer
-  createGarage: Garage
+  createCinema: Cinema
   createManager: Manager
-  createManySlots: ReturnCount
-  createSlot: Slot
+  createMovie: Movie
+  createScreen: Screen
+  createSeat: Seat
+  createShowtime: Showtime
+  createUser: User
   login: LoginOutput
   refreshToken: RefreshTokenOutput
   register: RegisterOutput
-  removeAddress: Address
   removeBooking: Booking
-  removeCompany: Company
-  removeCustomer: Customer
-  removeGarage: Garage
+  removeCinema: Cinema
   removeManager: Manager
-  removeSlot: Slot
+  removeMovie: Movie
+  removeScreen: Screen
+  removeSeat: Seat
+  removeShowtime: Showtime
+  removeUser: User
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
-  updateAddress: Address
   updateBooking: Booking
-  updateCompany: Company
-  updateCustomer: Customer
-  updateGarage: Garage
+  updateCinema: Cinema
   updateManager: Manager
-  updateSlot: Slot
-}
-
-export type MutationCreateAddressArgs = {
-  createAddressInput: CreateAddressInput
+  updateMovie: Movie
+  updateScreen: Screen
+  updateShowtime: Showtime
+  updateUser: User
 }
 
 export type MutationCreateBookingArgs = {
   createBookingInput: CreateBookingInput
 }
 
-export type MutationCreateCompanyArgs = {
-  createCompanyInput: CreateCompanyInput
-}
-
-export type MutationCreateCustomerArgs = {
-  createCustomerInput: CreateCustomerInput
-}
-
-export type MutationCreateGarageArgs = {
-  createGarageInput: CreateGarageInput
+export type MutationCreateCinemaArgs = {
+  createCinemaInput: CreateCinemaInput
 }
 
 export type MutationCreateManagerArgs = {
   createManagerInput: CreateManagerInput
 }
 
-export type MutationCreateManySlotsArgs = {
-  slots: Array<CreateSlotInput>
+export type MutationCreateMovieArgs = {
+  createMovieInput: CreateMovieInput
 }
 
-export type MutationCreateSlotArgs = {
-  createSlotInput: CreateSlotInput
+export type MutationCreateScreenArgs = {
+  createScreenInput: CreateScreenInput
+}
+
+export type MutationCreateSeatArgs = {
+  createSeatInput: CreateSeatInput
+}
+
+export type MutationCreateShowtimeArgs = {
+  createShowtimeInput: CreateShowtimeInput
+}
+
+export type MutationCreateUserArgs = {
+  createUserInput: CreateUserInput
 }
 
 export type MutationLoginArgs = {
@@ -587,32 +523,36 @@ export type MutationRegisterArgs = {
   credentials: RegisterInput
 }
 
-export type MutationRemoveAddressArgs = {
-  where?: InputMaybe<AddressWhereUniqueInput>
-}
-
 export type MutationRemoveBookingArgs = {
   where?: InputMaybe<BookingWhereUniqueInput>
 }
 
-export type MutationRemoveCompanyArgs = {
-  where?: InputMaybe<CompanyWhereUniqueInput>
-}
-
-export type MutationRemoveCustomerArgs = {
-  where?: InputMaybe<CustomerWhereUniqueInput>
-}
-
-export type MutationRemoveGarageArgs = {
-  where?: InputMaybe<GarageWhereUniqueInput>
+export type MutationRemoveCinemaArgs = {
+  where?: InputMaybe<CinemaWhereUniqueInput>
 }
 
 export type MutationRemoveManagerArgs = {
   where?: InputMaybe<ManagerWhereUniqueInput>
 }
 
-export type MutationRemoveSlotArgs = {
-  where?: InputMaybe<SlotWhereUniqueInput>
+export type MutationRemoveMovieArgs = {
+  where?: InputMaybe<MovieWhereUniqueInput>
+}
+
+export type MutationRemoveScreenArgs = {
+  where?: InputMaybe<ScreenWhereUniqueInput>
+}
+
+export type MutationRemoveSeatArgs = {
+  where?: InputMaybe<SeatWhereUniqueInput>
+}
+
+export type MutationRemoveShowtimeArgs = {
+  where?: InputMaybe<ShowtimeWhereUniqueInput>
+}
+
+export type MutationRemoveUserArgs = {
+  where?: InputMaybe<UserWhereUniqueInput>
 }
 
 export type MutationSetAdminArgs = {
@@ -623,64 +563,64 @@ export type MutationSetRoleArgs = {
   setRoleInput: SetRoleInput
 }
 
-export type MutationUpdateAddressArgs = {
-  updateAddressInput: UpdateAddressInput
-}
-
 export type MutationUpdateBookingArgs = {
   updateBookingInput: UpdateBookingInput
 }
 
-export type MutationUpdateCompanyArgs = {
-  updateCompanyInput: UpdateCompanyInput
-}
-
-export type MutationUpdateCustomerArgs = {
-  updateCustomerInput: UpdateCustomerInput
-}
-
-export type MutationUpdateGarageArgs = {
-  updateGarageInput: UpdateGarageInput
+export type MutationUpdateCinemaArgs = {
+  updateCinemaInput: UpdateCinemaInput
 }
 
 export type MutationUpdateManagerArgs = {
   updateManagerInput: UpdateManagerInput
 }
 
-export type MutationUpdateSlotArgs = {
-  updateSlotInput: UpdateSlotInput
+export type MutationUpdateMovieArgs = {
+  updateMovieInput: UpdateMovieInput
+}
+
+export type MutationUpdateScreenArgs = {
+  updateScreenInput: UpdateScreenInput
+}
+
+export type MutationUpdateShowtimeArgs = {
+  updateShowtimeInput: UpdateShowtimeInput
+}
+
+export type MutationUpdateUserArgs = {
+  updateUserInput: UpdateUserInput
+}
+
+/** Enum for screen projection types */
+export enum ProjectionType {
+  DolbyCinema = 'DOLBY_CINEMA',
+  Imax = 'IMAX',
+  Plf = 'PLF',
+  Rpx = 'RPX',
+  Screenx = 'SCREENX',
+  Standard = 'STANDARD',
 }
 
 export type Query = {
   __typename?: 'Query'
-  address: Address
-  addresses: Array<Address>
   booking: Booking
   bookings: Array<Booking>
-  companies: Array<Company>
-  company: Company
-  customer: Customer
-  customers: Array<Customer>
-  garage: Garage
-  garages: Array<Garage>
+  cinema: Cinema
+  cinemaByManager: Cinema
+  cinemas: Array<Cinema>
   manager: Manager
   managers: Array<Manager>
-  searchGarages: Array<Garage>
-  slot: Slot
-  slots: Array<Slot>
-}
-
-export type QueryAddressArgs = {
-  where?: InputMaybe<AddressWhereUniqueInput>
-}
-
-export type QueryAddressesArgs = {
-  cursor?: InputMaybe<AddressWhereUniqueInput>
-  distinct?: InputMaybe<Array<AddressScalarFieldEnum>>
-  orderBy?: InputMaybe<Array<AddressOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<AddressWhereInput>
+  movie: Movie
+  movies: Array<Movie>
+  screen: Screen
+  screens: Array<Screen>
+  searchCinemas: Array<Cinema>
+  seat: Seat
+  seats: Array<Seat>
+  showtime: Showtime
+  showtimes: Array<Showtime>
+  user: User
+  users: Array<User>
 }
 
 export type QueryBookingArgs = {
@@ -696,43 +636,21 @@ export type QueryBookingsArgs = {
   where?: InputMaybe<BookingWhereInput>
 }
 
-export type QueryCompaniesArgs = {
-  cursor?: InputMaybe<CompanyWhereUniqueInput>
-  distinct?: InputMaybe<Array<CompanyScalarFieldEnum>>
-  orderBy?: InputMaybe<Array<CompanyOrderByWithRelationInput>>
+export type QueryCinemaArgs = {
+  where?: InputMaybe<CinemaWhereUniqueInput>
+}
+
+export type QueryCinemaByManagerArgs = {
+  uid: Scalars['String']
+}
+
+export type QueryCinemasArgs = {
+  cursor?: InputMaybe<CinemaWhereUniqueInput>
+  distinct?: InputMaybe<Array<CinemaScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<CinemaOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<CompanyWhereInput>
-}
-
-export type QueryCompanyArgs = {
-  where?: InputMaybe<CompanyWhereUniqueInput>
-}
-
-export type QueryCustomerArgs = {
-  where?: InputMaybe<CustomerWhereUniqueInput>
-}
-
-export type QueryCustomersArgs = {
-  cursor?: InputMaybe<CustomerWhereUniqueInput>
-  distinct?: InputMaybe<Array<CustomerScalarFieldEnum>>
-  orderBy?: InputMaybe<Array<CustomerOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<CustomerWhereInput>
-}
-
-export type QueryGarageArgs = {
-  where?: InputMaybe<GarageWhereUniqueInput>
-}
-
-export type QueryGaragesArgs = {
-  cursor?: InputMaybe<GarageWhereUniqueInput>
-  distinct?: InputMaybe<Array<GarageScalarFieldEnum>>
-  orderBy?: InputMaybe<Array<GarageOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<GarageWhereInput>
+  where?: InputMaybe<CinemaWhereInput>
 }
 
 export type QueryManagerArgs = {
@@ -748,24 +666,79 @@ export type QueryManagersArgs = {
   where?: InputMaybe<ManagerWhereInput>
 }
 
-export type QuerySearchGaragesArgs = {
-  dateFilter: DateFilterInput
-  garageFilter?: InputMaybe<GarageFilter>
-  locationFilter: LocationFilterInput
-  slotsFilter?: InputMaybe<SlotWhereInput>
+export type QueryMovieArgs = {
+  where?: InputMaybe<MovieWhereUniqueInput>
 }
 
-export type QuerySlotArgs = {
-  where?: InputMaybe<SlotWhereUniqueInput>
-}
-
-export type QuerySlotsArgs = {
-  cursor?: InputMaybe<SlotWhereUniqueInput>
-  distinct?: InputMaybe<Array<SlotScalarFieldEnum>>
-  orderBy?: InputMaybe<Array<SlotOrderByWithRelationInput>>
+export type QueryMoviesArgs = {
+  cursor?: InputMaybe<MovieWhereUniqueInput>
+  distinct?: InputMaybe<Array<MovieScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<MovieOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<SlotWhereInput>
+  where?: InputMaybe<MovieWhereInput>
+}
+
+export type QueryScreenArgs = {
+  where?: InputMaybe<ScreenWhereUniqueInput>
+}
+
+export type QueryScreensArgs = {
+  cursor?: InputMaybe<ScreenWhereUniqueInput>
+  distinct?: InputMaybe<Array<ScreenScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ScreenOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ScreenWhereInput>
+}
+
+export type QuerySearchCinemasArgs = {
+  cursor?: InputMaybe<CinemaWhereUniqueInput>
+  distinct?: InputMaybe<Array<CinemaScalarFieldEnum>>
+  locationFilter: LocationFilterInput
+  orderBy?: InputMaybe<Array<CinemaOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<CinemaWhereInput>
+}
+
+export type QuerySeatArgs = {
+  where?: InputMaybe<SeatWhereUniqueInput>
+}
+
+export type QuerySeatsArgs = {
+  cursor?: InputMaybe<SeatWhereUniqueInput>
+  distinct?: InputMaybe<Array<SeatScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<SeatOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<SeatWhereInput>
+}
+
+export type QueryShowtimeArgs = {
+  where?: InputMaybe<ShowtimeWhereUniqueInput>
+}
+
+export type QueryShowtimesArgs = {
+  cursor?: InputMaybe<ShowtimeWhereUniqueInput>
+  distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ShowtimeWhereInput>
+}
+
+export type QueryUserArgs = {
+  where?: InputMaybe<UserWhereUniqueInput>
+}
+
+export type QueryUsersArgs = {
+  cursor?: InputMaybe<UserWhereUniqueInput>
+  distinct?: InputMaybe<Array<UserScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<UserOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<UserWhereInput>
 }
 
 export enum QueryMode {
@@ -805,15 +778,154 @@ export type RegisterOutput = {
   refreshToken: Scalars['String']
 }
 
-export type ReturnCount = {
-  __typename?: 'ReturnCount'
-  count: Scalars['Int']
-}
-
 /** Enum for roles */
 export enum RoleEnum {
   Admin = 'admin',
   Moderator = 'moderator',
+}
+
+export type Screen = {
+  __typename?: 'Screen'
+  cinema: Cinema
+  cinemaId: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  id: Scalars['Int']
+  number: Scalars['Int']
+  price: Scalars['Int']
+  projectionType: ProjectionType
+  seats: Array<Seat>
+  seatsCount: Scalars['Int']
+  showtimes: Array<Showtime>
+  soundSystemType: SoundSystemType
+  updatedAt: Scalars['DateTime']
+}
+
+export type ScreenListRelationFilter = {
+  every?: InputMaybe<ScreenWhereInput>
+  none?: InputMaybe<ScreenWhereInput>
+  some?: InputMaybe<ScreenWhereInput>
+}
+
+export type ScreenOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type ScreenOrderByWithRelationInput = {
+  cinema?: InputMaybe<CinemaOrderByWithRelationInput>
+  cinemaId?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  number?: InputMaybe<SortOrder>
+  price?: InputMaybe<SortOrder>
+  projectionType?: InputMaybe<SortOrder>
+  seats?: InputMaybe<SeatOrderByRelationAggregateInput>
+  showtimes?: InputMaybe<ShowtimeOrderByRelationAggregateInput>
+  soundSystemType?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type ScreenRelationFilter = {
+  is?: InputMaybe<ScreenWhereInput>
+  isNot?: InputMaybe<ScreenWhereInput>
+}
+
+export enum ScreenScalarFieldEnum {
+  CinemaId = 'cinemaId',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  Number = 'number',
+  Price = 'price',
+  ProjectionType = 'projectionType',
+  SoundSystemType = 'soundSystemType',
+  UpdatedAt = 'updatedAt',
+}
+
+export type ScreenWhereInput = {
+  AND?: InputMaybe<Array<ScreenWhereInput>>
+  NOT?: InputMaybe<Array<ScreenWhereInput>>
+  OR?: InputMaybe<Array<ScreenWhereInput>>
+  cinema?: InputMaybe<CinemaRelationFilter>
+  cinemaId?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  number?: InputMaybe<IntFilter>
+  price?: InputMaybe<FloatFilter>
+  projectionType?: InputMaybe<EnumProjectionTypeFilter>
+  seats?: InputMaybe<SeatListRelationFilter>
+  showtimes?: InputMaybe<ShowtimeListRelationFilter>
+  soundSystemType?: InputMaybe<EnumSoundSystemTypeFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ScreenWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
+}
+
+export type Seat = {
+  __typename?: 'Seat'
+  bookings: Array<Booking>
+  column: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  row: Scalars['Int']
+  screen: Screen
+  screenId: Scalars['Int']
+  updatedAt: Scalars['DateTime']
+}
+
+export type SeatListRelationFilter = {
+  every?: InputMaybe<SeatWhereInput>
+  none?: InputMaybe<SeatWhereInput>
+  some?: InputMaybe<SeatWhereInput>
+}
+
+export type SeatOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type SeatOrderByWithRelationInput = {
+  bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
+  column?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  row?: InputMaybe<SortOrder>
+  screen?: InputMaybe<ScreenOrderByWithRelationInput>
+  screenId?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type SeatRelationFilter = {
+  is?: InputMaybe<SeatWhereInput>
+  isNot?: InputMaybe<SeatWhereInput>
+}
+
+export enum SeatScalarFieldEnum {
+  Column = 'column',
+  Row = 'row',
+  ScreenId = 'screenId',
+}
+
+export type SeatScreenIdRowColumnCompoundUniqueInput = {
+  column: Scalars['Int']
+  row: Scalars['Int']
+  screenId: Scalars['Int']
+}
+
+export type SeatWhereInput = {
+  AND?: InputMaybe<Array<SeatWhereInput>>
+  NOT?: InputMaybe<Array<SeatWhereInput>>
+  OR?: InputMaybe<Array<SeatWhereInput>>
+  bookings?: InputMaybe<BookingListRelationFilter>
+  column?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IntFilter>
+  row?: InputMaybe<IntFilter>
+  screen?: InputMaybe<ScreenRelationFilter>
+  screenId?: InputMaybe<IntFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type SeatWhereUniqueInput = {
+  screenId_row_column: SeatScreenIdRowColumnCompoundUniqueInput
 }
 
 export type SetRoleInput = {
@@ -821,97 +933,94 @@ export type SetRoleInput = {
   uid: Scalars['String']
 }
 
-export type Slot = {
-  __typename?: 'Slot'
-  bookings: Array<Booking>
+export type Showtime = {
+  __typename?: 'Showtime'
+  Booking: Array<Booking>
   createdAt: Scalars['DateTime']
-  displayName?: Maybe<Scalars['String']>
-  garage: Garage
-  garageId: Scalars['Int']
-  height?: Maybe<Scalars['Int']>
+  endTime: Scalars['DateTime']
   id: Scalars['Int']
-  length?: Maybe<Scalars['Int']>
-  pricePerHour: Scalars['Int']
-  type?: Maybe<SlotType>
+  movie: Movie
+  movieId: Scalars['Int']
+  screen: Screen
+  screenId: Scalars['Int']
+  startTime: Scalars['DateTime']
   updatedAt: Scalars['DateTime']
-  width?: Maybe<Scalars['Int']>
 }
 
-export type SlotListRelationFilter = {
-  every?: InputMaybe<SlotWhereInput>
-  none?: InputMaybe<SlotWhereInput>
-  some?: InputMaybe<SlotWhereInput>
+export type ShowtimeListRelationFilter = {
+  every?: InputMaybe<ShowtimeWhereInput>
+  none?: InputMaybe<ShowtimeWhereInput>
+  some?: InputMaybe<ShowtimeWhereInput>
 }
 
-export type SlotOrderByRelationAggregateInput = {
+export type ShowtimeOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>
 }
 
-export type SlotOrderByWithRelationInput = {
+export type ShowtimeOrderByWithRelationInput = {
   bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
-  displayName?: InputMaybe<SortOrder>
-  garage?: InputMaybe<GarageOrderByWithRelationInput>
-  garageId?: InputMaybe<SortOrder>
-  height?: InputMaybe<SortOrder>
+  endTime?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
-  length?: InputMaybe<SortOrder>
-  pricePerHour?: InputMaybe<SortOrder>
-  type?: InputMaybe<SortOrder>
+  movie?: InputMaybe<MovieOrderByWithRelationInput>
+  movieId?: InputMaybe<SortOrder>
+  screen?: InputMaybe<ScreenOrderByWithRelationInput>
+  screenId?: InputMaybe<SortOrder>
+  startTime?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
-  width?: InputMaybe<SortOrder>
 }
 
-export type SlotRelationFilter = {
-  is?: InputMaybe<SlotWhereInput>
-  isNot?: InputMaybe<SlotWhereInput>
+export type ShowtimeRelationFilter = {
+  is?: InputMaybe<ShowtimeWhereInput>
+  isNot?: InputMaybe<ShowtimeWhereInput>
 }
 
-export enum SlotScalarFieldEnum {
+export enum ShowtimeScalarFieldEnum {
   CreatedAt = 'createdAt',
-  DisplayName = 'displayName',
-  GarageId = 'garageId',
-  Height = 'height',
+  EndTime = 'endTime',
   Id = 'id',
-  Length = 'length',
-  PricePerHour = 'pricePerHour',
-  Type = 'type',
+  MovieId = 'movieId',
+  ScreenId = 'screenId',
+  StartTime = 'startTime',
   UpdatedAt = 'updatedAt',
-  Width = 'width',
 }
 
-export enum SlotType {
-  Bicycle = 'BICYCLE',
-  Bike = 'BIKE',
-  Car = 'CAR',
-  Heavy = 'HEAVY',
-}
-
-export type SlotWhereInput = {
-  AND?: InputMaybe<Array<SlotWhereInput>>
-  NOT?: InputMaybe<Array<SlotWhereInput>>
-  OR?: InputMaybe<Array<SlotWhereInput>>
+export type ShowtimeWhereInput = {
+  AND?: InputMaybe<Array<ShowtimeWhereInput>>
+  NOT?: InputMaybe<Array<ShowtimeWhereInput>>
+  OR?: InputMaybe<Array<ShowtimeWhereInput>>
   bookings?: InputMaybe<BookingListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  displayName?: InputMaybe<StringFilter>
-  garage?: InputMaybe<GarageRelationFilter>
-  garageId?: InputMaybe<IntFilter>
-  height?: InputMaybe<IntFilter>
+  endTime?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
-  length?: InputMaybe<IntFilter>
-  pricePerHour?: InputMaybe<FloatFilter>
-  type?: InputMaybe<EnumSlotTypeFilter>
+  movie?: InputMaybe<MovieRelationFilter>
+  movieId?: InputMaybe<IntFilter>
+  screen?: InputMaybe<ScreenRelationFilter>
+  screenId?: InputMaybe<IntFilter>
+  startTime?: InputMaybe<DateTimeFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
-  width?: InputMaybe<IntFilter>
 }
 
-export type SlotWhereUniqueInput = {
+export type ShowtimeWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
 }
 
 export enum SortOrder {
   Asc = 'asc',
   Desc = 'desc',
+}
+
+/** Enum for sound system types */
+export enum SoundSystemType {
+  Auro_3D = 'AURO_3D',
+  DolbyAtmos = 'DOLBY_ATMOS',
+  DolbyDigital = 'DOLBY_DIGITAL',
+  Dts = 'DTS',
+  DtsX = 'DTS_X',
+  ImaxEnhanced = 'IMAX_ENHANCED',
+  Mono = 'MONO',
+  SonySdds = 'SONY_SDDS',
+  Stereo = 'STEREO',
 }
 
 export type StringFilter = {
@@ -929,112 +1038,173 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>
 }
 
-export type UpdateAddressInput = {
-  address?: InputMaybe<Scalars['String']>
-  garageId?: InputMaybe<Scalars['Int']>
-  id: Scalars['Int']
-  lat?: InputMaybe<Scalars['Int']>
-  lng?: InputMaybe<Scalars['Int']>
-}
-
 export type UpdateBookingInput = {
-  customerId?: InputMaybe<Scalars['String']>
-  endTime?: InputMaybe<Scalars['DateTime']>
-  garageId?: InputMaybe<Scalars['Int']>
+  column?: InputMaybe<Scalars['Int']>
   id: Scalars['Int']
-  startTime?: InputMaybe<Scalars['DateTime']>
-  type?: InputMaybe<SlotType>
-  vehicleNumber?: InputMaybe<Scalars['String']>
+  row?: InputMaybe<Scalars['Int']>
+  screenId?: InputMaybe<Scalars['Int']>
+  showtimeId?: InputMaybe<Scalars['Int']>
+  userId?: InputMaybe<Scalars['String']>
 }
 
-export type UpdateCompanyInput = {
-  displayName?: InputMaybe<Scalars['String']>
+export type UpdateCinemaInput = {
+  address?: InputMaybe<CreateAddressInputWithoutCinemaId>
   id: Scalars['Int']
-  managerDisplayName?: InputMaybe<Scalars['String']>
-}
-
-export type UpdateCustomerInput = {
-  displayName?: InputMaybe<Scalars['String']>
-  uid: Scalars['String']
-}
-
-export type UpdateGarageInput = {
-  companyId?: InputMaybe<Scalars['Int']>
-  description?: InputMaybe<Scalars['String']>
-  displayName?: InputMaybe<Scalars['String']>
-  id: Scalars['Int']
+  manager?: InputMaybe<CreateManagerInputWithoutCinemaId>
+  name?: InputMaybe<Scalars['String']>
+  screens?: InputMaybe<Array<CreateScreenInputWithoutCinemaId>>
 }
 
 export type UpdateManagerInput = {
-  companyId?: InputMaybe<Scalars['Int']>
-  displayName?: InputMaybe<Scalars['String']>
+  cinemaId?: InputMaybe<Scalars['Int']>
+  name?: InputMaybe<Scalars['String']>
+  uid: Scalars['String']
+}
+
+export type UpdateMovieInput = {
+  director?: InputMaybe<Scalars['String']>
+  duration?: InputMaybe<Scalars['Int']>
+  genre?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
+  posterUrl?: InputMaybe<Scalars['String']>
+  releaseDate?: InputMaybe<Scalars['DateTime']>
+  title?: InputMaybe<Scalars['String']>
+}
+
+export type UpdateScreenInput = {
+  cinemaId?: InputMaybe<Scalars['Int']>
+  columns?: InputMaybe<Scalars['Int']>
+  id: Scalars['Int']
+  number?: InputMaybe<Scalars['Int']>
+  projectionType?: InputMaybe<ProjectionType>
+  rows?: InputMaybe<Scalars['Int']>
+  soundSystemType?: InputMaybe<SoundSystemType>
+}
+
+export type UpdateShowtimeInput = {
+  endTime?: InputMaybe<Scalars['DateTime']>
+  id: Scalars['Int']
+  movieId?: InputMaybe<Scalars['Int']>
+  screenId?: InputMaybe<Scalars['Int']>
+  startTime?: InputMaybe<Scalars['DateTime']>
+}
+
+export type UpdateUserInput = {
+  name?: InputMaybe<Scalars['String']>
+  uid: Scalars['String']
+}
+
+export type User = {
+  __typename?: 'User'
+  bookings: Array<Booking>
+  createdAt: Scalars['DateTime']
+  name: Scalars['String']
+  uid: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
+export type UserOrderByWithRelationInput = {
+  bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
+  createdAt?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+  uid?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type UserRelationFilter = {
+  is?: InputMaybe<UserWhereInput>
+  isNot?: InputMaybe<UserWhereInput>
+}
+
+export enum UserScalarFieldEnum {
+  CreatedAt = 'createdAt',
+  Name = 'name',
+  Uid = 'uid',
+  UpdatedAt = 'updatedAt',
+}
+
+export type UserWhereInput = {
+  AND?: InputMaybe<Array<UserWhereInput>>
+  NOT?: InputMaybe<Array<UserWhereInput>>
+  OR?: InputMaybe<Array<UserWhereInput>>
+  bookings?: InputMaybe<BookingListRelationFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  name?: InputMaybe<StringFilter>
+  uid?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type UserWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>
 }
 
-export type UpdateSlotInput = {
-  displayName?: InputMaybe<Scalars['String']>
-  garageId?: InputMaybe<Scalars['Int']>
-  height?: InputMaybe<Scalars['Int']>
-  id: Scalars['Int']
-  length?: InputMaybe<Scalars['Int']>
-  pricePerHour?: InputMaybe<Scalars['Int']>
-  type?: InputMaybe<SlotType>
-  width?: InputMaybe<Scalars['Int']>
-}
-
-export type CreateManagerMutationVariables = Exact<{
-  createManagerInput: CreateManagerInput
+export type CreateCinemaMutationVariables = Exact<{
+  createCinemaInput: CreateCinemaInput
 }>
 
-export type CreateManagerMutation = {
+export type CreateCinemaMutation = {
   __typename?: 'Mutation'
-  createManager: { __typename?: 'Manager'; uid: string }
+  createCinema: { __typename?: 'Cinema'; id: number }
 }
 
-export type CreateCustomerMutationVariables = Exact<{
-  createCustomerInput: CreateCustomerInput
+export type FindCinemaQueryVariables = Exact<{
+  uid: Scalars['String']
 }>
 
-export type CreateCustomerMutation = {
-  __typename?: 'Mutation'
-  createCustomer: { __typename?: 'Customer'; uid: string }
-}
-
-export type SearchGaragesQueryVariables = Exact<{
-  dateFilter: DateFilterInput
-  locationFilter: LocationFilterInput
-  garageFilter?: InputMaybe<GarageFilter>
-  slotsFilter?: InputMaybe<SlotWhereInput>
-}>
-
-export type SearchGaragesQuery = {
+export type FindCinemaQuery = {
   __typename?: 'Query'
-  searchGarages: Array<{
-    __typename?: 'Garage'
+  cinema: {
+    __typename?: 'Cinema'
     id: number
-    displayName: string
+    name: string
+    screens: Array<{
+      __typename?: 'Screen'
+      id: number
+      number: number
+      seatsCount: number
+      showtimes: Array<{
+        __typename?: 'Showtime'
+        id: number
+        startTime: any
+        endTime: any
+      }>
+    }>
+  }
+}
+
+export type CreateScreenMutationVariables = Exact<{
+  createScreenInput: CreateScreenInput
+}>
+
+export type CreateScreenMutation = {
+  __typename?: 'Mutation'
+  createScreen: { __typename?: 'Screen'; id: number }
+}
+
+export type SearchCinemasQueryVariables = Exact<{
+  locationFilter: LocationFilterInput
+  where?: InputMaybe<CinemaWhereInput>
+  orderBy?: InputMaybe<
+    Array<CinemaOrderByWithRelationInput> | CinemaOrderByWithRelationInput
+  >
+  cursor?: InputMaybe<CinemaWhereUniqueInput>
+  take?: InputMaybe<Scalars['Int']>
+  skip?: InputMaybe<Scalars['Int']>
+  distinct?: InputMaybe<Array<CinemaScalarFieldEnum> | CinemaScalarFieldEnum>
+}>
+
+export type SearchCinemasQuery = {
+  __typename?: 'Query'
+  cinemas: Array<{
+    __typename?: 'Cinema'
+    name: string
+    id: number
     address: {
       __typename?: 'Address'
-      lat: number
-      lng: number
-      address: string
+      lat?: number | null
+      lng?: number | null
     }
-    availableSlots: Array<{
-      __typename?: 'MinimalSlotGroupBy'
-      type?: SlotType | null
-      count: number
-      pricePerHour: number
-    }>
   }>
-}
-
-export type CreateBookingMutationVariables = Exact<{
-  createBookingInput: CreateBookingInput
-}>
-
-export type CreateBookingMutation = {
-  __typename?: 'Mutation'
-  createBooking: { __typename?: 'Booking'; id: number; passcode: string }
 }
 
 export type LoginMutationVariables = Exact<{
@@ -1045,307 +1215,290 @@ export type LoginMutation = {
   __typename?: 'Mutation'
   login: {
     __typename?: 'LoginOutput'
-    refreshToken: string
-    localId: string
-    kind: string
-    idToken: string
-    expiresIn: string
+    displayName: string
     email: string
-    displayName: string
+    expiresIn: string
+    idToken: string
+    kind: string
+    localId: string
+    refreshToken: string
   }
-}
-
-export type GetManagerQueryVariables = Exact<{
-  where: ManagerWhereUniqueInput
-}>
-
-export type GetManagerQuery = {
-  __typename?: 'Query'
-  manager: {
-    __typename?: 'Manager'
-    uid: string
-    createdAt: any
-    updatedAt: any
-    displayName: string
-  }
-}
-
-export type CreateCompanyMutationVariables = Exact<{
-  createCompanyInput: CreateCompanyInput
-}>
-
-export type CreateCompanyMutation = {
-  __typename?: 'Mutation'
-  createCompany: { __typename?: 'Company'; id: number }
-}
-
-export type CreateManySlotsMutationVariables = Exact<{
-  slots: Array<CreateSlotInput> | CreateSlotInput
-}>
-
-export type CreateManySlotsMutation = {
-  __typename?: 'Mutation'
-  createManySlots: { __typename?: 'ReturnCount'; count: number }
 }
 
 export const namedOperations = {
   Query: {
-    SearchGarages: 'SearchGarages',
-    getManager: 'getManager',
+    findCinema: 'findCinema',
+    SearchCinemas: 'SearchCinemas',
   },
   Mutation: {
-    CreateManager: 'CreateManager',
-    CreateCustomer: 'CreateCustomer',
-    createBooking: 'createBooking',
+    createCinema: 'createCinema',
+    createScreen: 'createScreen',
     Login: 'Login',
-    createCompany: 'createCompany',
-    createManySlots: 'createManySlots',
   },
 }
 
-export const CreateManagerDocument = /*#__PURE__*/ gql`
-  mutation CreateManager($createManagerInput: CreateManagerInput!) {
-    createManager(createManagerInput: $createManagerInput) {
-      uid
-    }
-  }
-`
-export type CreateManagerMutationFn = Apollo.MutationFunction<
-  CreateManagerMutation,
-  CreateManagerMutationVariables
->
-
-/**
- * __useCreateManagerMutation__
- *
- * To run a mutation, you first call `useCreateManagerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateManagerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createManagerMutation, { data, loading, error }] = useCreateManagerMutation({
- *   variables: {
- *      createManagerInput: // value for 'createManagerInput'
- *   },
- * });
- */
-export function useCreateManagerMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateManagerMutation,
-    CreateManagerMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateManagerMutation,
-    CreateManagerMutationVariables
-  >(CreateManagerDocument, options)
-}
-export type CreateManagerMutationHookResult = ReturnType<
-  typeof useCreateManagerMutation
->
-export type CreateManagerMutationResult =
-  Apollo.MutationResult<CreateManagerMutation>
-export type CreateManagerMutationOptions = Apollo.BaseMutationOptions<
-  CreateManagerMutation,
-  CreateManagerMutationVariables
->
-export const CreateCustomerDocument = /*#__PURE__*/ gql`
-  mutation CreateCustomer($createCustomerInput: CreateCustomerInput!) {
-    createCustomer(createCustomerInput: $createCustomerInput) {
-      uid
-    }
-  }
-`
-export type CreateCustomerMutationFn = Apollo.MutationFunction<
-  CreateCustomerMutation,
-  CreateCustomerMutationVariables
->
-
-/**
- * __useCreateCustomerMutation__
- *
- * To run a mutation, you first call `useCreateCustomerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCustomerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCustomerMutation, { data, loading, error }] = useCreateCustomerMutation({
- *   variables: {
- *      createCustomerInput: // value for 'createCustomerInput'
- *   },
- * });
- */
-export function useCreateCustomerMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateCustomerMutation,
-    CreateCustomerMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateCustomerMutation,
-    CreateCustomerMutationVariables
-  >(CreateCustomerDocument, options)
-}
-export type CreateCustomerMutationHookResult = ReturnType<
-  typeof useCreateCustomerMutation
->
-export type CreateCustomerMutationResult =
-  Apollo.MutationResult<CreateCustomerMutation>
-export type CreateCustomerMutationOptions = Apollo.BaseMutationOptions<
-  CreateCustomerMutation,
-  CreateCustomerMutationVariables
->
-export const SearchGaragesDocument = /*#__PURE__*/ gql`
-  query SearchGarages(
-    $dateFilter: DateFilterInput!
-    $locationFilter: LocationFilterInput!
-    $garageFilter: GarageFilter
-    $slotsFilter: SlotWhereInput
-  ) {
-    searchGarages(
-      dateFilter: $dateFilter
-      locationFilter: $locationFilter
-      garageFilter: $garageFilter
-      slotsFilter: $slotsFilter
-    ) {
+export const CreateCinemaDocument = /*#__PURE__*/ gql`
+  mutation createCinema($createCinemaInput: CreateCinemaInput!) {
+    createCinema(createCinemaInput: $createCinemaInput) {
       id
-      address {
-        lat
-        lng
-        address
-      }
-      displayName
-      availableSlots(slotsFilter: $slotsFilter, dateFilter: $dateFilter) {
-        type
-        count
-        pricePerHour
+    }
+  }
+`
+export type CreateCinemaMutationFn = Apollo.MutationFunction<
+  CreateCinemaMutation,
+  CreateCinemaMutationVariables
+>
+
+/**
+ * __useCreateCinemaMutation__
+ *
+ * To run a mutation, you first call `useCreateCinemaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCinemaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCinemaMutation, { data, loading, error }] = useCreateCinemaMutation({
+ *   variables: {
+ *      createCinemaInput: // value for 'createCinemaInput'
+ *   },
+ * });
+ */
+export function useCreateCinemaMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateCinemaMutation,
+    CreateCinemaMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateCinemaMutation,
+    CreateCinemaMutationVariables
+  >(CreateCinemaDocument, options)
+}
+export type CreateCinemaMutationHookResult = ReturnType<
+  typeof useCreateCinemaMutation
+>
+export type CreateCinemaMutationResult =
+  Apollo.MutationResult<CreateCinemaMutation>
+export type CreateCinemaMutationOptions = Apollo.BaseMutationOptions<
+  CreateCinemaMutation,
+  CreateCinemaMutationVariables
+>
+export const FindCinemaDocument = /*#__PURE__*/ gql`
+  query findCinema($uid: String!) {
+    cinema: cinemaByManager(uid: $uid) {
+      id
+      name
+      screens {
+        id
+        number
+        seatsCount
+        showtimes {
+          id
+          startTime
+          endTime
+        }
       }
     }
   }
 `
 
 /**
- * __useSearchGaragesQuery__
+ * __useFindCinemaQuery__
  *
- * To run a query within a React component, call `useSearchGaragesQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchGaragesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFindCinemaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindCinemaQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useSearchGaragesQuery({
+ * const { data, loading, error } = useFindCinemaQuery({
  *   variables: {
- *      dateFilter: // value for 'dateFilter'
- *      locationFilter: // value for 'locationFilter'
- *      garageFilter: // value for 'garageFilter'
- *      slotsFilter: // value for 'slotsFilter'
+ *      uid: // value for 'uid'
  *   },
  * });
  */
-export function useSearchGaragesQuery(
+export function useFindCinemaQuery(
   baseOptions: Apollo.QueryHookOptions<
-    SearchGaragesQuery,
-    SearchGaragesQueryVariables
+    FindCinemaQuery,
+    FindCinemaQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<SearchGaragesQuery, SearchGaragesQueryVariables>(
-    SearchGaragesDocument,
+  return Apollo.useQuery<FindCinemaQuery, FindCinemaQueryVariables>(
+    FindCinemaDocument,
     options,
   )
 }
-export function useSearchGaragesLazyQuery(
+export function useFindCinemaLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    SearchGaragesQuery,
-    SearchGaragesQueryVariables
+    FindCinemaQuery,
+    FindCinemaQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<SearchGaragesQuery, SearchGaragesQueryVariables>(
-    SearchGaragesDocument,
+  return Apollo.useLazyQuery<FindCinemaQuery, FindCinemaQueryVariables>(
+    FindCinemaDocument,
     options,
   )
 }
-export type SearchGaragesQueryHookResult = ReturnType<
-  typeof useSearchGaragesQuery
+export type FindCinemaQueryHookResult = ReturnType<typeof useFindCinemaQuery>
+export type FindCinemaLazyQueryHookResult = ReturnType<
+  typeof useFindCinemaLazyQuery
 >
-export type SearchGaragesLazyQueryHookResult = ReturnType<
-  typeof useSearchGaragesLazyQuery
+export type FindCinemaQueryResult = Apollo.QueryResult<
+  FindCinemaQuery,
+  FindCinemaQueryVariables
 >
-export type SearchGaragesQueryResult = Apollo.QueryResult<
-  SearchGaragesQuery,
-  SearchGaragesQueryVariables
->
-export const CreateBookingDocument = /*#__PURE__*/ gql`
-  mutation createBooking($createBookingInput: CreateBookingInput!) {
-    createBooking(createBookingInput: $createBookingInput) {
+export const CreateScreenDocument = /*#__PURE__*/ gql`
+  mutation createScreen($createScreenInput: CreateScreenInput!) {
+    createScreen(createScreenInput: $createScreenInput) {
       id
-      passcode
     }
   }
 `
-export type CreateBookingMutationFn = Apollo.MutationFunction<
-  CreateBookingMutation,
-  CreateBookingMutationVariables
+export type CreateScreenMutationFn = Apollo.MutationFunction<
+  CreateScreenMutation,
+  CreateScreenMutationVariables
 >
 
 /**
- * __useCreateBookingMutation__
+ * __useCreateScreenMutation__
  *
- * To run a mutation, you first call `useCreateBookingMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateBookingMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateScreenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateScreenMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createBookingMutation, { data, loading, error }] = useCreateBookingMutation({
+ * const [createScreenMutation, { data, loading, error }] = useCreateScreenMutation({
  *   variables: {
- *      createBookingInput: // value for 'createBookingInput'
+ *      createScreenInput: // value for 'createScreenInput'
  *   },
  * });
  */
-export function useCreateBookingMutation(
+export function useCreateScreenMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    CreateBookingMutation,
-    CreateBookingMutationVariables
+    CreateScreenMutation,
+    CreateScreenMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<
-    CreateBookingMutation,
-    CreateBookingMutationVariables
-  >(CreateBookingDocument, options)
+    CreateScreenMutation,
+    CreateScreenMutationVariables
+  >(CreateScreenDocument, options)
 }
-export type CreateBookingMutationHookResult = ReturnType<
-  typeof useCreateBookingMutation
+export type CreateScreenMutationHookResult = ReturnType<
+  typeof useCreateScreenMutation
 >
-export type CreateBookingMutationResult =
-  Apollo.MutationResult<CreateBookingMutation>
-export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<
-  CreateBookingMutation,
-  CreateBookingMutationVariables
+export type CreateScreenMutationResult =
+  Apollo.MutationResult<CreateScreenMutation>
+export type CreateScreenMutationOptions = Apollo.BaseMutationOptions<
+  CreateScreenMutation,
+  CreateScreenMutationVariables
+>
+export const SearchCinemasDocument = /*#__PURE__*/ gql`
+  query SearchCinemas(
+    $locationFilter: LocationFilterInput!
+    $where: CinemaWhereInput
+    $orderBy: [CinemaOrderByWithRelationInput!]
+    $cursor: CinemaWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [CinemaScalarFieldEnum!]
+  ) {
+    cinemas: searchCinemas(
+      locationFilter: $locationFilter
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      address {
+        lat
+        lng
+      }
+      name
+      id
+    }
+  }
+`
+
+/**
+ * __useSearchCinemasQuery__
+ *
+ * To run a query within a React component, call `useSearchCinemasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchCinemasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchCinemasQuery({
+ *   variables: {
+ *      locationFilter: // value for 'locationFilter'
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      cursor: // value for 'cursor'
+ *      take: // value for 'take'
+ *      skip: // value for 'skip'
+ *      distinct: // value for 'distinct'
+ *   },
+ * });
+ */
+export function useSearchCinemasQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchCinemasQuery,
+    SearchCinemasQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SearchCinemasQuery, SearchCinemasQueryVariables>(
+    SearchCinemasDocument,
+    options,
+  )
+}
+export function useSearchCinemasLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchCinemasQuery,
+    SearchCinemasQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SearchCinemasQuery, SearchCinemasQueryVariables>(
+    SearchCinemasDocument,
+    options,
+  )
+}
+export type SearchCinemasQueryHookResult = ReturnType<
+  typeof useSearchCinemasQuery
+>
+export type SearchCinemasLazyQueryHookResult = ReturnType<
+  typeof useSearchCinemasLazyQuery
+>
+export type SearchCinemasQueryResult = Apollo.QueryResult<
+  SearchCinemasQuery,
+  SearchCinemasQueryVariables
 >
 export const LoginDocument = /*#__PURE__*/ gql`
   mutation Login($credentials: LoginInput!) {
     login(credentials: $credentials) {
-      refreshToken
-      localId
-      kind
-      idToken
-      expiresIn
-      email
       displayName
+      email
+      expiresIn
+      idToken
+      kind
+      localId
+      refreshToken
     }
   }
 `
@@ -1388,163 +1541,4 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
 export type LoginMutationOptions = Apollo.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
->
-export const GetManagerDocument = /*#__PURE__*/ gql`
-  query getManager($where: ManagerWhereUniqueInput!) {
-    manager(where: $where) {
-      uid
-      createdAt
-      updatedAt
-      displayName
-    }
-  }
-`
-
-/**
- * __useGetManagerQuery__
- *
- * To run a query within a React component, call `useGetManagerQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetManagerQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useGetManagerQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetManagerQuery,
-    GetManagerQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetManagerQuery, GetManagerQueryVariables>(
-    GetManagerDocument,
-    options,
-  )
-}
-export function useGetManagerLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetManagerQuery,
-    GetManagerQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetManagerQuery, GetManagerQueryVariables>(
-    GetManagerDocument,
-    options,
-  )
-}
-export type GetManagerQueryHookResult = ReturnType<typeof useGetManagerQuery>
-export type GetManagerLazyQueryHookResult = ReturnType<
-  typeof useGetManagerLazyQuery
->
-export type GetManagerQueryResult = Apollo.QueryResult<
-  GetManagerQuery,
-  GetManagerQueryVariables
->
-export const CreateCompanyDocument = /*#__PURE__*/ gql`
-  mutation createCompany($createCompanyInput: CreateCompanyInput!) {
-    createCompany(createCompanyInput: $createCompanyInput) {
-      id
-    }
-  }
-`
-export type CreateCompanyMutationFn = Apollo.MutationFunction<
-  CreateCompanyMutation,
-  CreateCompanyMutationVariables
->
-
-/**
- * __useCreateCompanyMutation__
- *
- * To run a mutation, you first call `useCreateCompanyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCompanyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCompanyMutation, { data, loading, error }] = useCreateCompanyMutation({
- *   variables: {
- *      createCompanyInput: // value for 'createCompanyInput'
- *   },
- * });
- */
-export function useCreateCompanyMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateCompanyMutation,
-    CreateCompanyMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateCompanyMutation,
-    CreateCompanyMutationVariables
-  >(CreateCompanyDocument, options)
-}
-export type CreateCompanyMutationHookResult = ReturnType<
-  typeof useCreateCompanyMutation
->
-export type CreateCompanyMutationResult =
-  Apollo.MutationResult<CreateCompanyMutation>
-export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<
-  CreateCompanyMutation,
-  CreateCompanyMutationVariables
->
-export const CreateManySlotsDocument = /*#__PURE__*/ gql`
-  mutation createManySlots($slots: [CreateSlotInput!]!) {
-    createManySlots(slots: $slots) {
-      count
-    }
-  }
-`
-export type CreateManySlotsMutationFn = Apollo.MutationFunction<
-  CreateManySlotsMutation,
-  CreateManySlotsMutationVariables
->
-
-/**
- * __useCreateManySlotsMutation__
- *
- * To run a mutation, you first call `useCreateManySlotsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateManySlotsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createManySlotsMutation, { data, loading, error }] = useCreateManySlotsMutation({
- *   variables: {
- *      slots: // value for 'slots'
- *   },
- * });
- */
-export function useCreateManySlotsMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateManySlotsMutation,
-    CreateManySlotsMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateManySlotsMutation,
-    CreateManySlotsMutationVariables
-  >(CreateManySlotsDocument, options)
-}
-export type CreateManySlotsMutationHookResult = ReturnType<
-  typeof useCreateManySlotsMutation
->
-export type CreateManySlotsMutationResult =
-  Apollo.MutationResult<CreateManySlotsMutation>
-export type CreateManySlotsMutationOptions = Apollo.BaseMutationOptions<
-  CreateManySlotsMutation,
-  CreateManySlotsMutationVariables
 >

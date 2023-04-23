@@ -6,7 +6,7 @@ import React, {
   useContext,
   useMemo,
 } from 'react'
-import { useScroll } from '@booking-org/hooks/src'
+import { useScroll } from '@showtime-org/hooks/src'
 
 export interface IHScrollProps {
   children: ReactNode

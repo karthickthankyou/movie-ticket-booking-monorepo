@@ -1,5 +1,5 @@
 {
-  "name": "@booking-org/ui",
+  "name": "@showtime-org/ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,11 +14,11 @@
     "comp": "node ./src/generators/index.js"
   },
   "dependencies": {
-    "@booking-org/forms": "*",
-    "@booking-org/hooks": "*",
-    "@booking-org/network": "*",
-    "@booking-org/store": "*",
-    "@booking-org/util": "*",
+    "@showtime-org/forms": "*",
+    "@showtime-org/hooks": "*",
+    "@showtime-org/network": "*",
+    "@showtime-org/store": "*",
+    "@showtime-org/util": "*",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@headlessui/react": "^1.7.13",

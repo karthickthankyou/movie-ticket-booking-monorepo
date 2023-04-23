@@ -7,10 +7,31 @@ import { UpdateScreenInput } from './dto/update-screen.input'
 @Injectable()
 export class ScreensService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createScreenInput: CreateScreenInput) {
-    return this.prisma.screen.create({
-      data: createScreenInput,
+  async create({
+    cinemaId,
+    projectionType,
+    soundSystemType,
+    columns,
+    rows,
+  }: CreateScreenInput) {
+    const screenNumber = await this.prisma.screen.count({ where: { cinemaId } })
+
+    const screen = await this.prisma.screen.create({
+      data: {
+        number: screenNumber + 1,
+        cinemaId,
+        projectionType,
+        soundSystemType,
+      },
     })
+
+    for (let i = 1; i <= rows; i++) {
+      for (let j = 1; j <= columns; j++) {
+        const seat = await this.prisma.seat.create({
+          data: { column: j, row: i, screenId: screen.id },
+        })
+      }
+    }
   }
 
   findAll(args: FindManyScreenArgs) {

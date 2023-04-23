@@ -1,11 +1,11 @@
 {
-  "name": "@booking-org/forms",
+  "name": "@showtime-org/forms",
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "@booking-org/hooks": "*",
-    "@booking-org/network": "*",
+    "@showtime-org/hooks": "*",
+    "@showtime-org/network": "*",
     "@hookform/resolvers": "^3.0.1",
     "react-hook-form": "^7.43.9",
     "zod": "^3.21.4"

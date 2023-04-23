@@ -34,7 +34,7 @@ model Cinema {
     name      String
     screens   Screen[]
     managers  Manager[]
-    Address   Address?
+    address   Address?
 }
 
 model Address {
@@ -49,25 +49,30 @@ model Address {
 }
 
 model Screen {
-    id        Int        @id @default(autoincrement())
-    createdAt DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
-    number    Int
-    cinemaId  Int
-    cinema    Cinema     @relation(fields: [cinemaId], references: [id])
-    showtimes Showtime[]
-    seats     Seat[]
+    id              Int             @id @default(autoincrement())
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+    number          Int
+    cinemaId        Int
+    cinema          Cinema          @relation(fields: [cinemaId], references: [id])
+    showtimes       Showtime[]
+    seats           Seat[]
+    projectionType  ProjectionType  @default(STANDARD)
+    soundSystemType SoundSystemType @default(DOLBY_ATMOS)
+
+    price Float @default(180)
+
+    @@unique([cinemaId, number])
 }
 
 model Seat {
-    id        Int       @id @default(autoincrement())
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    row       Int
-    column    Int
-    screenId  Int
-    screen    Screen    @relation(fields: [screenId], references: [id])
-    bookings  Booking[]
+    row      Int
+    column   Int
+    screenId Int
+    screen   Screen    @relation(fields: [screenId], references: [id])
+    bookings Booking[]
+
+    @@id([screenId, row, column])
 }
 
 model Movie {
@@ -104,11 +109,37 @@ model Booking {
     user       User     @relation(fields: [userId], references: [uid])
     showtimeId Int
     showtime   Showtime @relation(fields: [showtimeId], references: [id])
-    seat       Seat?    @relation(fields: [seatId], references: [id])
-    seatId     Int?
+    row        Int?
+    column     Int?
+    screenId   Int?
+    seat       Seat?    @relation(fields: [screenId, row, column], references: [screenId, row, column])
+
+    @@unique([screenId, row, column, showtimeId], name: "uniqueSeatShowtime")
+    @@index([screenId, row, column], name: "seatIndex")
 }
 
 enum UserRole {
     ADMIN
     CUSTOMER
+}
+
+enum ProjectionType {
+    STANDARD
+    IMAX
+    DOLBY_CINEMA
+    RPX
+    SCREENX
+    PLF // Premium Large Format
+}
+
+enum SoundSystemType {
+    MONO
+    STEREO
+    DOLBY_DIGITAL
+    DOLBY_ATMOS
+    DTS
+    DTS_X
+    SONY_SDDS
+    AURO_3D
+    IMAX_ENHANCED
 }

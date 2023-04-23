@@ -1,8 +1,8 @@
-import { useAppSelector } from '@booking-org/store'
+import { useAppSelector } from '@showtime-org/store'
 import {
   LocationInfo,
   useSearchLocation,
-} from '@booking-org/hooks/src/location'
+} from '@showtime-org/hooks/src/location'
 
 import { Autocomplete } from '../../atoms/Autocomplete'
 

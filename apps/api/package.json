@@ -1,5 +1,5 @@
 {
-  "name": "@booking-org/api",
+  "name": "@showtime-org/api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -21,8 +21,11 @@
     "tsc": "tsc",
     "resource": "npx ts-node-dev src/common/generator"
   },
+  "prisma": {
+    "seed": "npx ts-node-dev --compiler-options {\"module\":\"CommonJS\"} prisma/seed/index.ts"
+  },
   "dependencies": {
-    "@booking-org/types": "*",
+    "@showtime-org/types": "*",
     "@apollo/server": "^4.6.0",
     "@nestjs/apollo": "^11.0.5",
     "@nestjs/common": "^9.0.0",

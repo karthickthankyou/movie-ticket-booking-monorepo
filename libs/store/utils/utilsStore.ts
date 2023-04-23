@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { NotificationType } from '@booking-org/types'
+import { NotificationType } from '@showtime-org/types'
 
 import { RootState } from '..'
 

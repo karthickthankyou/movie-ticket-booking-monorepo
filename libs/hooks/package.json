@@ -1,12 +1,12 @@
 {
-  "name": "@booking-org/hooks",
+  "name": "@showtime-org/hooks",
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "@booking-org/network": "*",
-    "@booking-org/store": "*",
-    "@booking-org/hooks": "*"
+    "@showtime-org/network": "*",
+    "@showtime-org/store": "*",
+    "@showtime-org/hooks": "*"
   },
   "scripts": {
     "tsc": "tsc"

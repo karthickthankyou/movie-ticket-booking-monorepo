@@ -1,8 +1,9 @@
 import { CreateSeatInput } from './create-seat.input'
-import { InputType, PartialType } from '@nestjs/graphql'
-import { Seat } from '@prisma/client'
+import { Field, InputType, PartialType } from '@nestjs/graphql'
+import { SeatScreenIdRowColumnCompoundUniqueInput } from './where.args'
 
 @InputType()
 export class UpdateSeatInput extends PartialType(CreateSeatInput) {
-  id: Seat['id']
+  @Field(() => SeatScreenIdRowColumnCompoundUniqueInput)
+  screenId_row_column: SeatScreenIdRowColumnCompoundUniqueInput
 }

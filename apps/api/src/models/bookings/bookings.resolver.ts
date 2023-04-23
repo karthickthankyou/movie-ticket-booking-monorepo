@@ -19,7 +19,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@booking-org/types'
+import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => Booking)
@@ -93,9 +93,11 @@ export class BookingsResolver {
     })
   }
   @ResolveField(() => Seat)
-  seat(@Parent() booking: Booking) {
+  seat(@Parent() { column, row, screenId }: Booking) {
     return this.prisma.seat.findUnique({
-      where: { id: booking.seatId },
+      where: {
+        screenId_row_column: { column, row, screenId },
+      },
     })
   }
 }

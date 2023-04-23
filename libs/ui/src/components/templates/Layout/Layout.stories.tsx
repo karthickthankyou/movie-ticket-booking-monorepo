@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { userReducer, userInitialState } from '@booking-org/store/user'
+import { userReducer, userInitialState } from '@showtime-org/store/user'
 
 import { combineReducers, createStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'

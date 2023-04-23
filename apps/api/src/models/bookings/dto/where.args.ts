@@ -10,15 +10,27 @@ import { ShowtimeRelationFilter } from 'src/models/showtimes/dto/where.args'
 import { UserRelationFilter } from 'src/models/users/dto/where.args'
 
 @InputType()
-export class BookingWhereUniqueInput
-  implements Required<Prisma.BookingWhereUniqueInput>
-{
-  @Field(() => Number, { nullable: true })
+export class BookingUniqueSeatShowtimeCompoundUniqueInput {
+  screenId: number
+  row: number
+  column: number
+  showtimeId: number
+}
+
+// implements Required<Prisma.BookingWhereUniqueInput>
+@InputType()
+export class BookingWhereUniqueInput {
   id: number
 }
 
 @InputType()
 export class BookingWhereInput implements Required<Prisma.BookingWhereInput> {
+  @Field(() => IntFilter, { nullable: true })
+  row: IntFilter
+  @Field(() => IntFilter, { nullable: true })
+  column: IntFilter
+  @Field(() => IntFilter, { nullable: true })
+  screenId: IntFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })
@@ -29,8 +41,6 @@ export class BookingWhereInput implements Required<Prisma.BookingWhereInput> {
   userId: StringFilter
   @Field(() => IntFilter, { nullable: true })
   showtimeId: IntFilter
-  @Field(() => IntFilter, { nullable: true })
-  seatId: IntFilter
   @Field(() => UserRelationFilter, { nullable: true })
   user: UserRelationFilter
   @Field(() => ShowtimeRelationFilter, { nullable: true })

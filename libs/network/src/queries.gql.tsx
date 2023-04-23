@@ -1,55 +1,65 @@
 import { gql } from 'graphql-request'
 
-export const createManager = gql`
-  mutation CreateManager($createManagerInput: CreateManagerInput!) {
-    createManager(createManagerInput: $createManagerInput) {
-      uid
-    }
-  }
-`
-
-export const createCustomer = gql`
-  mutation CreateCustomer($createCustomerInput: CreateCustomerInput!) {
-    createCustomer(createCustomerInput: $createCustomerInput) {
-      uid
-    }
-  }
-`
-
-export const searchGarages = gql`
-  query SearchGarages(
-    $dateFilter: DateFilterInput!
-    $locationFilter: LocationFilterInput!
-    $garageFilter: GarageFilter
-    $slotsFilter: SlotWhereInput
-  ) {
-    searchGarages(
-      dateFilter: $dateFilter
-      locationFilter: $locationFilter
-      garageFilter: $garageFilter
-      slotsFilter: $slotsFilter
-    ) {
+export const createCinema = gql`
+  mutation createCinema($createCinemaInput: CreateCinemaInput!) {
+    createCinema(createCinemaInput: $createCinemaInput) {
       id
+    }
+  }
+`
+
+export const findCinema = gql`
+  query findCinema($uid: String!) {
+    cinema: cinemaByManager(uid: $uid) {
+      id
+      name
+      screens {
+        id
+        number
+        seatsCount
+        showtimes {
+          id
+          startTime
+          endTime
+        }
+      }
+    }
+  }
+`
+
+export const createScreen = gql`
+  mutation createScreen($createScreenInput: CreateScreenInput!) {
+    createScreen(createScreenInput: $createScreenInput) {
+      id
+    }
+  }
+`
+
+export const searchCinemas = gql`
+  query SearchCinemas(
+    $locationFilter: LocationFilterInput!
+    $where: CinemaWhereInput
+    $orderBy: [CinemaOrderByWithRelationInput!]
+    $cursor: CinemaWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [CinemaScalarFieldEnum!]
+  ) {
+    cinemas: searchCinemas(
+      locationFilter: $locationFilter
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
       address {
         lat
         lng
-        address
       }
-      displayName
-      availableSlots(slotsFilter: $slotsFilter, dateFilter: $dateFilter) {
-        type
-        count
-        pricePerHour
-      }
-    }
-  }
-`
-
-export const createBooking = gql`
-  mutation createBooking($createBookingInput: CreateBookingInput!) {
-    createBooking(createBookingInput: $createBookingInput) {
+      name
       id
-      passcode
     }
   }
 `
@@ -57,40 +67,13 @@ export const createBooking = gql`
 export const login = gql`
   mutation Login($credentials: LoginInput!) {
     login(credentials: $credentials) {
-      refreshToken
-      localId
-      kind
-      idToken
-      expiresIn
+      displayName
       email
-      displayName
-    }
-  }
-`
-
-export const getManager = gql`
-  query getManager($where: ManagerWhereUniqueInput!) {
-    manager(where: $where) {
-      uid
-      createdAt
-      updatedAt
-      displayName
-    }
-  }
-`
-
-export const createCompany = gql`
-  mutation createCompany($createCompanyInput: CreateCompanyInput!) {
-    createCompany(createCompanyInput: $createCompanyInput) {
-      id
-    }
-  }
-`
-
-export const createManySlots = gql`
-  mutation createManySlots($slots: [CreateSlotInput!]!) {
-    createManySlots(slots: $slots) {
-      count
+      expiresIn
+      idToken
+      kind
+      localId
+      refreshToken
     }
   }
 `

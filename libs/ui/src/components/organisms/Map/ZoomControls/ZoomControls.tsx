@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import {
-  IconFloatCenter,
+  IconFocusCentered,
   IconMinus,
   IconPlus,
   IconSoup,
@@ -58,7 +58,7 @@ export const CenterOfMap = ({
         onClick({ lat, lng })
       }}
     >
-      <IconSoup className="w-8 h-8 p-1.5 text-black" />
+      <IconFocusCentered className="w-8 h-8 p-1.5 text-black" />
     </button>
   )
 }

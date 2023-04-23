@@ -5,11 +5,17 @@ import { BookingListRelationFilter } from 'src/models/bookings/dto/where.args'
 import { ScreenRelationFilter } from 'src/models/screens/dto/where.args'
 
 @InputType()
+export class SeatScreenIdRowColumnCompoundUniqueInput {
+  screenId: number
+  row: number
+  column: number
+}
+@InputType()
 export class SeatWhereUniqueInput
   implements Required<Prisma.SeatWhereUniqueInput>
 {
-  @Field(() => Number, { nullable: true })
-  id: number
+  @Field(() => SeatScreenIdRowColumnCompoundUniqueInput)
+  screenId_row_column: SeatScreenIdRowColumnCompoundUniqueInput
 }
 
 @InputType()

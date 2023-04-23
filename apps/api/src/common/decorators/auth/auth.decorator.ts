@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 
-import { Role } from '@booking-org/types'
+import { Role } from '@showtime-org/types'
 import { AuthGuard } from 'src/common/guards/auth/auth.guard'
 
 export const AllowAuthenticated = (...roles: Role[]) =>

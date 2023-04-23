@@ -1,5 +1,5 @@
-import { useUserListener } from '@booking-org/hooks/src/user'
-import { useNotification } from '@booking-org/hooks/src/notifications'
+import { useUserListener } from '@showtime-org/hooks/src/user'
+import { useNotification } from '@showtime-org/hooks/src/notifications'
 
 export interface IAppLevelListenersProps {}
 

@@ -21,7 +21,7 @@ export class CinemaOrderByWithRelationInput
   @Field(() => ManagerOrderByRelationAggregateInput, { nullable: true })
   managers: ManagerOrderByRelationAggregateInput
   @Field(() => AddressOrderByWithRelationInput, { nullable: true })
-  Address: AddressOrderByWithRelationInput
+  address: AddressOrderByWithRelationInput
 }
 
 @InputType()

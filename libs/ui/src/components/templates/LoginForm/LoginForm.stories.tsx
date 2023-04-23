@@ -4,7 +4,7 @@ import { LoginForm } from './LoginForm'
 
 import { combineReducers, configureStore, createStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import { userInitialState, userReducer } from '@booking-org/store/user'
+import { userInitialState, userReducer } from '@showtime-org/store/user'
 
 const reducers = { user: userReducer }
 

@@ -20,7 +20,7 @@ import {
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { GetUserType } from '@booking-org/types'
+import { GetUserType } from '@showtime-org/types'
 
 @Resolver(() => Screen)
 export class ScreensResolver {
@@ -95,6 +95,13 @@ export class ScreensResolver {
   @ResolveField(() => [Seat])
   seats(@Parent() screen: Screen) {
     return this.prisma.seat.findMany({ where: { screenId: screen.id } })
+  }
+  @ResolveField(() => Number)
+  async seatsCount(@Parent() screen: Screen) {
+    const count = await this.prisma.seat.count({
+      where: { screenId: screen.id },
+    })
+    return count
   }
   @ResolveField(() => [Showtime])
   showtimes(@Parent() screen: Screen) {

@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
 
 import { notification$ } from './subjects'
-import { storage } from '@booking-org/network/src/config/firebase'
+import { storage } from '@showtime-org/network/src/config/firebase'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 
 export const getYesterday = () => {

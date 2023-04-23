@@ -1,11 +1,11 @@
 {
-  "name": "@booking-org/util",
+  "name": "@showtime-org/util",
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
   "dependencies": {
-    "@booking-org/network": "*",
-    "@booking-org/types": "*",
+    "@showtime-org/network": "*",
+    "@showtime-org/types": "*",
     "pluralize": "^8.0.0"
   },
   "devDependencies": {

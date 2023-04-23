@@ -1,5 +1,5 @@
-import { useAppSelector } from '@booking-org/store'
-import { NotificationType } from '@booking-org/types'
+import { useAppSelector } from '@showtime-org/store'
+import { NotificationType } from '@showtime-org/types'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export const Notifications = () => {

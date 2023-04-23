@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Role } from '@showtime-org/types'
 
 import { RootState } from '..'
 
@@ -10,8 +11,6 @@ export type UserSliceType = {
   token?: string
   loaded: boolean
 } | null
-
-export type Role = 'admin' | 'cook'
 
 export const userInitialState: UserSliceType = {
   loaded: false,

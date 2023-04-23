@@ -1,5 +1,5 @@
 {
-  "name": "@booking-org/store",
+  "name": "@showtime-org/store",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -9,9 +9,9 @@
     "react-redux": "^8.0.5"
   },
   "devDependencies": {
-    "@booking-org/network": "*",
-    "@booking-org/types": "*",
-    "@booking-org/ui": "*",
+    "@showtime-org/network": "*",
+    "@showtime-org/types": "*",
+    "@showtime-org/ui": "*",
     "@redux-devtools/extension": "^3.2.5"
   }
 }

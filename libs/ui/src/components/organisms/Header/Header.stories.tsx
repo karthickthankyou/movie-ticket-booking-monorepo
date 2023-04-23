@@ -4,7 +4,7 @@ import { Header } from './Header'
 import { Provider } from 'react-redux'
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { userReducer } from '@booking-org/store/user'
+import { userReducer } from '@showtime-org/store/user'
 
 const reducers = { user: userReducer }
 
@@ -25,7 +25,9 @@ export default {
   decorators: [(story) => <Provider store={store}>{story()}</Provider>],
 } as ComponentMeta<typeof Header>
 
-const Template: ComponentStory<typeof Header> = () => <Header />
+const Template: ComponentStory<typeof Header> = (args): JSX.Element => (
+  <Header {...args} />
+)
 
 export const Primary = Template.bind({})
 Primary.args = {}

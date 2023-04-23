@@ -1,9 +1,9 @@
-import { useAppDispatch } from '@booking-org/store'
+import { useAppDispatch } from '@showtime-org/store'
 import {
   removeNotification,
   addNotification,
-} from '@booking-org/store/utils/utilsStore'
-import { notification$ } from '@booking-org/util/subjects'
+} from '@showtime-org/store/utils/utilsStore'
+import { notification$ } from '@showtime-org/util/subjects'
 import { useEffect } from 'react'
 import {
   debounceTime,

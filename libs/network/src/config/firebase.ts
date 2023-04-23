@@ -4,13 +4,13 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDSx4n7_pmood9KrGdLytTIKmSCo6rcC5w',
-  authDomain: 'common-kitchen.firebaseapp.com',
-  projectId: 'common-kitchen',
-  storageBucket: 'common-kitchen.appspot.com',
-  messagingSenderId: '700734495716',
-  appId: '1:700734495716:web:b103adbef29c6291d945f1',
-  measurementId: 'G-MJNC3DKLJP',
+  apiKey: 'AIzaSyA-Xq1pyyRSHgjwP0rRznPCi8x4Do-oauY',
+  authDomain: 'movie-tickets-karthick.firebaseapp.com',
+  projectId: 'movie-tickets-karthick',
+  storageBucket: 'movie-tickets-karthick.appspot.com',
+  messagingSenderId: '42740907431',
+  appId: '1:42740907431:web:b479c002185ca041268a82',
+  measurementId: 'G-2H9H91KF87',
 }
 
 // Initialize Firebase

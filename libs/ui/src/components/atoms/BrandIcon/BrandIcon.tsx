@@ -14,10 +14,15 @@ export const BrandIcon = ({
   height = 24,
 }: IBrandIconProps) => {
   return (
-    <div className="overflow-hidden">
-      <div className="flex items-center justify-center w-4 h-6 border-2 border-yellow-500">
-        <div className="w-2 h-4 bg-gray-100 shadow animate-park-car " />
-      </div>
-    </div>
+    <svg
+      className="w-8 h-6 "
+      viewBox="0 0 200 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0,10 Q100,20 200,10 L200,90 Q100,80 0,90 Z"
+        className="stroke-[16] stroke-primary fill-white/50"
+      />
+    </svg>
   )
 }

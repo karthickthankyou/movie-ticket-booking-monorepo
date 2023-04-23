@@ -3,23 +3,24 @@ import { HtmlInput } from '../../atoms/HtmlInput'
 import { Button } from '../../atoms/Button'
 import Link from 'next/link'
 
-import { FormTypeLogin, useFormLogin } from '@booking-org/forms/src/login'
-import { useAsync } from '@booking-org/hooks/src/fetcher'
+import { FormTypeLogin, useFormLogin } from '@showtime-org/forms/src/login'
+import { useAsync } from '@showtime-org/hooks/src/fetcher'
 import { FormError } from '../../atoms/FormError'
 import { Form } from '../../atoms/Form'
 
 import { useRouter } from 'next/navigation'
-import { useDebounce } from '@booking-org/hooks/src/async'
-import { notification$ } from '@booking-org/util/subjects'
-import { selectUser } from '@booking-org/store/user'
-import { useAppSelector } from '@booking-org/store'
-import { login } from '@booking-org/network/src/auth'
+import { useDebounce } from '@showtime-org/hooks/src/async'
+import { notification$ } from '@showtime-org/util/subjects'
+import { selectUser } from '@showtime-org/store/user'
+import { useAppSelector } from '@showtime-org/store'
+import { login } from '@showtime-org/network/src/auth'
 
 export interface ILoginFormProps {
   className?: string
+  linkToRegister?: boolean
 }
 
-const LoginForm = ({ className }: ILoginFormProps) => {
+const LoginForm = ({ className, linkToRegister = true }: ILoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -70,14 +71,16 @@ const LoginForm = ({ className }: ILoginFormProps) => {
         Login
       </Button>
       {error ? <FormError error={error} /> : null}
-      <div className="mt-4 text-sm">
-        Do not have a common kitchen account?
-        <br />
-        <Link href="/register" className="font-bold">
-          Create one{' '}
-        </Link>
-        now.
-      </div>
+      {linkToRegister ? (
+        <div className="mt-4 text-sm">
+          Do not have a common kitchen account?
+          <br />
+          <Link href="/register" className="font-bold">
+            Create one{' '}
+          </Link>
+          now.
+        </div>
+      ) : null}
     </Form>
   )
 }

@@ -1,6 +1,6 @@
 const colors = require('tailwindcss/colors')
 
-const brandHue = 52
+const brandHue = 348
 const primaryPallete = {
   DEFAULT: `hsl(${brandHue}, 100%, 50%)`,
   25: `hsl(${brandHue}, 100%, 98%)`,

@@ -1,6 +1,6 @@
-import { useAppSelector } from '@booking-org/store'
-import { selectUid } from '@booking-org/store/user'
-import { notification$ } from '@booking-org/util/subjects'
+import { useAppSelector } from '@showtime-org/store'
+import { selectUid } from '@showtime-org/store/user'
+import { notification$ } from '@showtime-org/util/subjects'
 import { useRouter } from 'next/router'
 import { RefObject, useEffect, useRef, useState } from 'react'
 

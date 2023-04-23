@@ -7,3 +7,10 @@ export class CreateAddressInput extends PickType(
   ['address', 'cinemaId', 'lat', 'lng'],
   InputType,
 ) {}
+
+@InputType()
+export class CreateAddressInputWithoutCinemaId extends PickType(
+  CreateAddressInput,
+  ['address', 'lat', 'lng'],
+  InputType,
+) {}

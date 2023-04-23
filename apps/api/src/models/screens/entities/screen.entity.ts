@@ -1,8 +1,26 @@
-import { ObjectType } from '@nestjs/graphql'
-import { Screen as ScreenType } from '@prisma/client'
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
+import {
+  ProjectionType,
+  Screen as ScreenType,
+  SoundSystemType,
+} from '@prisma/client'
+
+registerEnumType(ProjectionType, {
+  name: 'ProjectionType',
+  description: 'Enum for screen projection types',
+})
+registerEnumType(SoundSystemType, {
+  name: 'SoundSystemType',
+  description: 'Enum for sound system types',
+})
 
 @ObjectType()
 export class Screen implements ScreenType {
+  price: number
+  @Field(() => ProjectionType)
+  projectionType: ProjectionType
+  @Field(() => SoundSystemType)
+  soundSystemType: SoundSystemType
   id: number
   createdAt: Date
   updatedAt: Date

@@ -13,7 +13,7 @@ export default {
     colors: colorsConfig,
     extend: {
       borderRadius: {
-        DEFAULT: '0',
+        DEFAULT: '4px',
       },
       spacing: spacingConfig,
       animation: animationConfig,

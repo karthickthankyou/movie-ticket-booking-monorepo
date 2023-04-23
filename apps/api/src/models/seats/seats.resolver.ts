@@ -10,7 +10,6 @@ import { SeatsService } from './seats.service'
 import { Seat } from './entities/seat.entity'
 import { FindManySeatArgs, FindUniqueSeatArgs } from './dto/find.args'
 import { CreateSeatInput } from './dto/create-seat.input'
-import { UpdateSeatInput } from './dto/update-seat.input'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Booking } from '../bookings/entities/booking.entity'
 import { Screen } from '../screens/entities/screen.entity'
@@ -19,7 +18,7 @@ import {
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { GetUserType } from '@booking-org/types'
+import { GetUserType } from '@showtime-org/types'
 
 @Resolver(() => Seat)
 export class SeatsResolver {
@@ -56,28 +55,12 @@ export class SeatsResolver {
   }
 
   @Mutation(() => Seat)
-  async updateSeat(
-    @Args('updateSeatInput') args: UpdateSeatInput,
-    @GetUser() user: GetUserType,
-  ) {
-    const screen = await this.prisma.screen.findUnique({
-      where: { id: args.screenId },
-      include: { cinema: { include: { managers: true } } },
-    })
-    checkRowLevelPermission(
-      user,
-      screen.cinema.managers.map((m) => m.uid),
-    )
-    return this.seatsService.update(args)
-  }
-
-  @Mutation(() => Seat)
   async removeSeat(
     @Args() args: FindUniqueSeatArgs,
     @GetUser() user: GetUserType,
   ) {
     const seat = await this.prisma.seat.findUnique({
-      where: { id: args.where.id },
+      where: { screenId_row_column: args.where.screenId_row_column },
       include: {
         screen: { include: { cinema: { include: { managers: true } } } },
       },
@@ -95,7 +78,9 @@ export class SeatsResolver {
   }
 
   @ResolveField(() => [Booking])
-  bookings(@Parent() seat: Seat) {
-    return this.prisma.booking.findMany({ where: { seatId: seat.id } })
+  bookings(@Parent() { column, row, screenId }: Seat) {
+    return this.prisma.booking.findMany({
+      where: { seat: { column, row, screenId } },
+    })
   }
 }

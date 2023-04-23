@@ -4,6 +4,6 @@ import { Booking } from '../entities/booking.entity'
 @InputType()
 export class CreateBookingInput extends PickType(
   Booking,
-  ['seatId', 'showtimeId', 'userId'],
+  ['column', 'row', 'screenId', 'showtimeId', 'userId'],
   InputType,
 ) {}

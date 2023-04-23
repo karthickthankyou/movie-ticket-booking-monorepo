@@ -1,13 +1,12 @@
-import { GetUserType, Role } from '@booking-org/types'
+import { GetUserType, Role } from '@showtime-org/types'
 import { Injectable } from '@nestjs/common'
 import * as admin from 'firebase-admin'
-import { PrismaService } from '../prisma/prisma.service'
 
 @Injectable()
 export class FirebaseService {
   private firebaseApp: admin.app.App
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor() {
     this.firebaseApp = admin.initializeApp({
       credential: admin.credential.cert({
         clientEmail: process.env.firebaseClientEmail,
