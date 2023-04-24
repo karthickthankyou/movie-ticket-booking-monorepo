@@ -7,7 +7,6 @@ export class Showtime implements ShowtimeType {
   createdAt: Date
   updatedAt: Date
   startTime: Date
-  endTime: Date
   movieId: number
   screenId: number
   // Todo fill all properties. To make it nullable add below.

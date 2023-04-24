@@ -89,11 +89,11 @@ model Movie {
 }
 
 model Showtime {
-    id        Int       @id @default(autoincrement())
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     startTime DateTime
-    endTime   DateTime
     movieId   Int
     movie     Movie     @relation(fields: [movieId], references: [id])
     screenId  Int

@@ -165,3 +165,8 @@ export class LocationFilterInput {
   @Field(() => Float)
   sw_lng: number
 }
+
+@ObjectType()
+export class BatchPayload {
+  count: number
+}

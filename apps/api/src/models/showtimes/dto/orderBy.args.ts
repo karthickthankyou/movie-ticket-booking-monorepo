@@ -17,8 +17,6 @@ export class ShowtimeOrderByWithRelationInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   startTime: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
-  endTime: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder, { nullable: true })
   movieId: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   screenId: Prisma.SortOrder

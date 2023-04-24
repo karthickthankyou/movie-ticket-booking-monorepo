@@ -38,8 +38,7 @@ export const Manager = ({}: IManagerProps) => {
   if (!data.cinema.screens.length) return <CreateScreen />
   return (
     <div>
-      Hello, This is Manager component!
-      <div>{data.cinema.name}</div>
+      <div>Cinema name: {data.cinema.name}</div>
       <div>
         {data.cinema.screens.map((screen) => (
           <>

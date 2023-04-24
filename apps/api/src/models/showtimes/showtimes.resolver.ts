@@ -21,6 +21,8 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
+import { Prisma } from '@prisma/client'
+import { BatchPayload } from 'src/common/dtos/common.input'
 
 @Resolver(() => Showtime)
 export class ShowtimesResolver {
@@ -30,7 +32,7 @@ export class ShowtimesResolver {
   ) {}
 
   @AllowAuthenticated('admin', 'manager')
-  @Mutation(() => Showtime)
+  @Mutation(() => BatchPayload)
   async createShowtime(
     @Args('createShowtimeInput') args: CreateShowtimeInput,
     @GetUser() user: GetUserType,
@@ -39,11 +41,23 @@ export class ShowtimesResolver {
       where: { id: args.screenId },
       include: { cinema: { include: { managers: true } } },
     })
+
     checkRowLevelPermission(
       user,
-      screen.cinema.managers.map((m) => m.uid),
+      screen?.cinema.managers.map((m) => m.uid),
     )
-    return this.showtimesService.create(args)
+    console.log('Screen:  ', screen)
+    const showtimes: Prisma.ShowtimeCreateManyInput[] = args.showtimes.map(
+      (showtime) => ({
+        screenId: args.screenId,
+        movieId: args.movieId,
+        startTime: new Date(showtime),
+      }),
+    )
+    const newShowtimes = await this.prisma.showtime.createMany({
+      data: showtimes,
+    })
+    return newShowtimes
   }
 
   @Query(() => [Showtime], { name: 'showtimes' })

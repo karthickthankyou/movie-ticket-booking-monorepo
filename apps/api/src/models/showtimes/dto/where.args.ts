@@ -23,8 +23,6 @@ export class ShowtimeWhereInput implements Required<Prisma.ShowtimeWhereInput> {
   updatedAt: DateTimeFilter
   @Field(() => DateTimeFilter, { nullable: true })
   startTime: DateTimeFilter
-  @Field(() => DateTimeFilter, { nullable: true })
-  endTime: DateTimeFilter
   @Field(() => IntFilter, { nullable: true })
   movieId: IntFilter
   @Field(() => IntFilter, { nullable: true })

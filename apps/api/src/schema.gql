@@ -19,6 +19,10 @@ type AggregateCountOutput {
   count: Int!
 }
 
+type BatchPayload {
+  count: Int!
+}
+
 type Booking {
   row: Int!
   column: Int!
@@ -115,7 +119,6 @@ type Showtime {
   createdAt: DateTime!
   updatedAt: DateTime!
   startTime: DateTime!
-  endTime: DateTime!
   movieId: Int!
   screenId: Int!
   screen: Screen!
@@ -303,7 +306,6 @@ input ShowtimeWhereInput {
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   startTime: DateTimeFilter
-  endTime: DateTimeFilter
   movieId: IntFilter
   screenId: IntFilter
   movie: MovieRelationFilter
@@ -675,7 +677,6 @@ input ShowtimeOrderByWithRelationInput {
   createdAt: SortOrder
   updatedAt: SortOrder
   startTime: SortOrder
-  endTime: SortOrder
   movieId: SortOrder
   screenId: SortOrder
   movie: MovieOrderByWithRelationInput
@@ -692,7 +693,6 @@ enum ShowtimeScalarFieldEnum {
   createdAt
   updatedAt
   startTime
-  endTime
   movieId
   screenId
 }
@@ -749,7 +749,7 @@ type Mutation {
   createMovie(createMovieInput: CreateMovieInput!): Movie!
   updateMovie(updateMovieInput: UpdateMovieInput!): Movie!
   removeMovie(where: MovieWhereUniqueInput): Movie!
-  createShowtime(createShowtimeInput: CreateShowtimeInput!): Showtime!
+  createShowtime(createShowtimeInput: CreateShowtimeInput!): BatchPayload!
   updateShowtime(updateShowtimeInput: UpdateShowtimeInput!): Showtime!
   removeShowtime(where: ShowtimeWhereUniqueInput): Showtime!
   createBooking(createBookingInput: CreateBookingInput!): Booking!
@@ -887,17 +887,15 @@ input UpdateMovieInput {
 }
 
 input CreateShowtimeInput {
-  startTime: DateTime!
-  endTime: DateTime!
   movieId: Int!
   screenId: Int!
+  showtimes: [String!]!
 }
 
 input UpdateShowtimeInput {
-  startTime: DateTime
-  endTime: DateTime
   movieId: Int
   screenId: Int
+  showtimes: [String!]
   id: Int!
 }
 

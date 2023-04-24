@@ -13,6 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ApolloProvider>
         <Header
           menuItems={[
+            ['Create Showtime', '/createShowtime'],
             ['Create cinema', '/createCinema'],
             ['Settings', '/settings'],
           ]}

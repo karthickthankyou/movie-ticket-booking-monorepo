@@ -69,6 +69,11 @@ export type AggregateCountOutput = {
   count: Scalars['Int']
 }
 
+export type BatchPayload = {
+  __typename?: 'BatchPayload'
+  count: Scalars['Int']
+}
+
 export type Booking = {
   __typename?: 'Booking'
   column: Scalars['Int']
@@ -235,6 +240,7 @@ export type CreateScreenInput = {
   cinemaId: Scalars['Int']
   columns: Scalars['Int']
   number: Scalars['Int']
+  price: Scalars['Int']
   projectionType: ProjectionType
   rows: Scalars['Int']
   soundSystemType: SoundSystemType
@@ -243,6 +249,7 @@ export type CreateScreenInput = {
 export type CreateScreenInputWithoutCinemaId = {
   columns: Scalars['Int']
   number: Scalars['Int']
+  price: Scalars['Int']
   projectionType: ProjectionType
   rows: Scalars['Int']
   soundSystemType: SoundSystemType
@@ -255,10 +262,9 @@ export type CreateSeatInput = {
 }
 
 export type CreateShowtimeInput = {
-  endTime: Scalars['DateTime']
   movieId: Scalars['Int']
   screenId: Scalars['Int']
-  startTime: Scalars['DateTime']
+  showtimes: Array<Scalars['String']>
 }
 
 export type CreateUserInput = {
@@ -492,7 +498,7 @@ export type Mutation = {
   createMovie: Movie
   createScreen: Screen
   createSeat: Seat
-  createShowtime: Showtime
+  createShowtime: BatchPayload
   createUser: User
   login: LoginOutput
   refreshToken: RefreshTokenOutput
@@ -979,7 +985,6 @@ export type Showtime = {
   __typename?: 'Showtime'
   Booking: Array<Booking>
   createdAt: Scalars['DateTime']
-  endTime: Scalars['DateTime']
   id: Scalars['Int']
   movie: Movie
   movieId: Scalars['Int']
@@ -1002,7 +1007,6 @@ export type ShowtimeOrderByRelationAggregateInput = {
 export type ShowtimeOrderByWithRelationInput = {
   bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
-  endTime?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   movie?: InputMaybe<MovieOrderByWithRelationInput>
   movieId?: InputMaybe<SortOrder>
@@ -1019,7 +1023,6 @@ export type ShowtimeRelationFilter = {
 
 export enum ShowtimeScalarFieldEnum {
   CreatedAt = 'createdAt',
-  EndTime = 'endTime',
   Id = 'id',
   MovieId = 'movieId',
   ScreenId = 'screenId',
@@ -1033,7 +1036,6 @@ export type ShowtimeWhereInput = {
   OR?: InputMaybe<Array<ShowtimeWhereInput>>
   bookings?: InputMaybe<BookingListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  endTime?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
   movie?: InputMaybe<MovieRelationFilter>
   movieId?: InputMaybe<IntFilter>
@@ -1118,17 +1120,17 @@ export type UpdateScreenInput = {
   columns?: InputMaybe<Scalars['Int']>
   id: Scalars['Int']
   number?: InputMaybe<Scalars['Int']>
+  price?: InputMaybe<Scalars['Int']>
   projectionType?: InputMaybe<ProjectionType>
   rows?: InputMaybe<Scalars['Int']>
   soundSystemType?: InputMaybe<SoundSystemType>
 }
 
 export type UpdateShowtimeInput = {
-  endTime?: InputMaybe<Scalars['DateTime']>
   id: Scalars['Int']
   movieId?: InputMaybe<Scalars['Int']>
   screenId?: InputMaybe<Scalars['Int']>
-  startTime?: InputMaybe<Scalars['DateTime']>
+  showtimes?: InputMaybe<Array<Scalars['String']>>
 }
 
 export type UpdateUserInput = {
@@ -1213,12 +1215,7 @@ export type FindCinemaQuery = {
       id: number
       number: number
       seatsCount: number
-      showtimes: Array<{
-        __typename?: 'Showtime'
-        id: number
-        startTime: any
-        endTime: any
-      }>
+      showtimes: Array<{ __typename?: 'Showtime'; id: number; startTime: any }>
     }>
   }
 }
@@ -1304,6 +1301,15 @@ export type MoviesQuery = {
   moviesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
+export type CreateShowtimeMutationVariables = Exact<{
+  createShowtimeInput: CreateShowtimeInput
+}>
+
+export type CreateShowtimeMutation = {
+  __typename?: 'Mutation'
+  createShowtime: { __typename?: 'BatchPayload'; count: number }
+}
+
 export const namedOperations = {
   Query: {
     findCinema: 'findCinema',
@@ -1315,6 +1321,7 @@ export const namedOperations = {
     createMovie: 'createMovie',
     createScreen: 'createScreen',
     Login: 'Login',
+    createShowtime: 'createShowtime',
   },
 }
 
@@ -1430,7 +1437,6 @@ export const FindCinemaDocument = /*#__PURE__*/ gql`
         showtimes {
           id
           startTime
-          endTime
         }
       }
     }
@@ -1750,4 +1756,54 @@ export type MoviesLazyQueryHookResult = ReturnType<typeof useMoviesLazyQuery>
 export type MoviesQueryResult = Apollo.QueryResult<
   MoviesQuery,
   MoviesQueryVariables
+>
+export const CreateShowtimeDocument = /*#__PURE__*/ gql`
+  mutation createShowtime($createShowtimeInput: CreateShowtimeInput!) {
+    createShowtime(createShowtimeInput: $createShowtimeInput) {
+      count
+    }
+  }
+`
+export type CreateShowtimeMutationFn = Apollo.MutationFunction<
+  CreateShowtimeMutation,
+  CreateShowtimeMutationVariables
+>
+
+/**
+ * __useCreateShowtimeMutation__
+ *
+ * To run a mutation, you first call `useCreateShowtimeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateShowtimeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createShowtimeMutation, { data, loading, error }] = useCreateShowtimeMutation({
+ *   variables: {
+ *      createShowtimeInput: // value for 'createShowtimeInput'
+ *   },
+ * });
+ */
+export function useCreateShowtimeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateShowtimeMutation,
+    CreateShowtimeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateShowtimeMutation,
+    CreateShowtimeMutationVariables
+  >(CreateShowtimeDocument, options)
+}
+export type CreateShowtimeMutationHookResult = ReturnType<
+  typeof useCreateShowtimeMutation
+>
+export type CreateShowtimeMutationResult =
+  Apollo.MutationResult<CreateShowtimeMutation>
+export type CreateShowtimeMutationOptions = Apollo.BaseMutationOptions<
+  CreateShowtimeMutation,
+  CreateShowtimeMutationVariables
 >

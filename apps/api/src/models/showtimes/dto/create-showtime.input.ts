@@ -1,9 +1,12 @@
-import { InputType, PickType } from '@nestjs/graphql'
+import { Field, InputType, PickType } from '@nestjs/graphql'
 import { Showtime } from '../entities/showtime.entity'
 
 @InputType()
 export class CreateShowtimeInput extends PickType(
   Showtime,
-  ['startTime', 'endTime', 'screenId', 'movieId'],
+  ['screenId', 'movieId'],
   InputType,
-) {}
+) {
+  @Field(() => [String])
+  showtimes: string[]
+}

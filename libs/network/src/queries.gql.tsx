@@ -28,7 +28,6 @@ export const findCinema = gql`
         showtimes {
           id
           startTime
-          endTime
         }
       }
     }
@@ -114,6 +113,14 @@ export const movies = gql`
       updatedAt
     }
     moviesCount(where: $where) {
+      count
+    }
+  }
+`
+
+export const createShowtime = gql`
+  mutation createShowtime($createShowtimeInput: CreateShowtimeInput!) {
+    createShowtime(createShowtimeInput: $createShowtimeInput) {
       count
     }
   }

@@ -7,9 +7,9 @@ import { UpdateShowtimeInput } from './dto/update-showtime.input'
 @Injectable()
 export class ShowtimesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createShowtimeInput: CreateShowtimeInput) {
+  create({ movieId, screenId, showtimes }: CreateShowtimeInput) {
     return this.prisma.showtime.create({
-      data: createShowtimeInput,
+      data: { movieId, screenId, startTime: showtimes[0] },
     })
   }
 

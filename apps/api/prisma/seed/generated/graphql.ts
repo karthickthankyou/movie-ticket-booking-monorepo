@@ -68,6 +68,11 @@ export type AggregateCountOutput = {
   count: Scalars['Int']
 }
 
+export type BatchPayload = {
+  __typename?: 'BatchPayload'
+  count: Scalars['Int']
+}
+
 export type Booking = {
   __typename?: 'Booking'
   column: Scalars['Int']
@@ -234,6 +239,7 @@ export type CreateScreenInput = {
   cinemaId: Scalars['Int']
   columns: Scalars['Int']
   number: Scalars['Int']
+  price: Scalars['Int']
   projectionType: ProjectionType
   rows: Scalars['Int']
   soundSystemType: SoundSystemType
@@ -242,6 +248,7 @@ export type CreateScreenInput = {
 export type CreateScreenInputWithoutCinemaId = {
   columns: Scalars['Int']
   number: Scalars['Int']
+  price: Scalars['Int']
   projectionType: ProjectionType
   rows: Scalars['Int']
   soundSystemType: SoundSystemType
@@ -254,10 +261,9 @@ export type CreateSeatInput = {
 }
 
 export type CreateShowtimeInput = {
-  endTime: Scalars['DateTime']
   movieId: Scalars['Int']
   screenId: Scalars['Int']
-  startTime: Scalars['DateTime']
+  showtimes: Array<Scalars['String']>
 }
 
 export type CreateUserInput = {
@@ -491,7 +497,7 @@ export type Mutation = {
   createMovie: Movie
   createScreen: Screen
   createSeat: Seat
-  createShowtime: Showtime
+  createShowtime: BatchPayload
   createUser: User
   login: LoginOutput
   refreshToken: RefreshTokenOutput
@@ -978,7 +984,6 @@ export type Showtime = {
   __typename?: 'Showtime'
   Booking: Array<Booking>
   createdAt: Scalars['DateTime']
-  endTime: Scalars['DateTime']
   id: Scalars['Int']
   movie: Movie
   movieId: Scalars['Int']
@@ -1001,7 +1006,6 @@ export type ShowtimeOrderByRelationAggregateInput = {
 export type ShowtimeOrderByWithRelationInput = {
   bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
-  endTime?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
   movie?: InputMaybe<MovieOrderByWithRelationInput>
   movieId?: InputMaybe<SortOrder>
@@ -1018,7 +1022,6 @@ export type ShowtimeRelationFilter = {
 
 export enum ShowtimeScalarFieldEnum {
   CreatedAt = 'createdAt',
-  EndTime = 'endTime',
   Id = 'id',
   MovieId = 'movieId',
   ScreenId = 'screenId',
@@ -1032,7 +1035,6 @@ export type ShowtimeWhereInput = {
   OR?: InputMaybe<Array<ShowtimeWhereInput>>
   bookings?: InputMaybe<BookingListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
-  endTime?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
   movie?: InputMaybe<MovieRelationFilter>
   movieId?: InputMaybe<IntFilter>
@@ -1117,17 +1119,17 @@ export type UpdateScreenInput = {
   columns?: InputMaybe<Scalars['Int']>
   id: Scalars['Int']
   number?: InputMaybe<Scalars['Int']>
+  price?: InputMaybe<Scalars['Int']>
   projectionType?: InputMaybe<ProjectionType>
   rows?: InputMaybe<Scalars['Int']>
   soundSystemType?: InputMaybe<SoundSystemType>
 }
 
 export type UpdateShowtimeInput = {
-  endTime?: InputMaybe<Scalars['DateTime']>
   id: Scalars['Int']
   movieId?: InputMaybe<Scalars['Int']>
   screenId?: InputMaybe<Scalars['Int']>
-  startTime?: InputMaybe<Scalars['DateTime']>
+  showtimes?: InputMaybe<Array<Scalars['String']>>
 }
 
 export type UpdateUserInput = {
