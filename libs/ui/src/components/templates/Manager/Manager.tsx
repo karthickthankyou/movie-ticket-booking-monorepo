@@ -24,7 +24,17 @@ export const Manager = ({}: IManagerProps) => {
 
   if (loading) return <LoaderPanel />
   if (!uid) return <Link href="/login">Login</Link>
-  if (!data?.cinema) return <CreateCinema />
+  if (!data?.cinema)
+    return (
+      <div className="flex items-center justify-center">
+        <div className="p-4 space-y-2 shadow-sm">
+          <div>You dont have a cinema associated with you.</div>
+          <Link className="underline underline-offset-4" href={'/createCinema'}>
+            Create cinema
+          </Link>
+        </div>
+      </div>
+    )
   if (!data.cinema.screens.length) return <CreateScreen />
   return (
     <div>
