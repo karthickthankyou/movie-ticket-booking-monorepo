@@ -826,6 +826,7 @@ input CreateAddressInputWithoutCinemaId {
 input CreateScreenInputWithoutCinemaId {
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
+  price: Int!
   number: Int!
   rows: Int!
   columns: Int!
@@ -842,6 +843,7 @@ input UpdateCinemaInput {
 input CreateScreenInput {
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
+  price: Int!
   number: Int!
   cinemaId: Int!
   rows: Int!
@@ -851,6 +853,7 @@ input CreateScreenInput {
 input UpdateScreenInput {
   projectionType: ProjectionType
   soundSystemType: SoundSystemType
+  price: Int
   number: Int
   cinemaId: Int
   rows: Int

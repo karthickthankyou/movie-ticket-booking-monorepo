@@ -22,6 +22,12 @@ export type FormTypeCreateCinema = z.infer<typeof formSchemacreateCinema>
 export const useFormCreateCinema = () =>
   useForm<FormTypeCreateCinema>({
     resolver: zodResolver(formSchemacreateCinema),
+    defaultValues: {
+      address: { address: '', lat: 0, lng: 0 },
+      cinemaName: '',
+      managerName: '',
+      screens: [],
+    },
   })
 
 export const FormProviderCreateCinema = ({

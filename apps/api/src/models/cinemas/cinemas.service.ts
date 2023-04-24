@@ -30,10 +30,17 @@ export class CinemasService {
           seats: { create: seats },
         }
       })
+
+    const existingManager = await this.prisma.manager.findUnique({
+      where: { uid: manager.uid },
+    })
+
     return this.prisma.cinema.create({
       data: {
         ...createCinemaInput,
-        managers: { create: manager },
+        ...(existingManager?.uid
+          ? { managers: { connect: { uid: manager.uid } } }
+          : { managers: { create: manager } }),
         address: { create: address },
         screens: { create: screensWithSeats },
       },

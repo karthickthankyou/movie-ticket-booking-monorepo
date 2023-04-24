@@ -25,10 +25,11 @@ import {
 } from '../../organisms/Map/ZoomControls/ZoomControls'
 import { useMap } from 'react-map-gl'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
-import { useMemo, useState } from 'react'
-import { IconDeviceLaptop, IconPlus, IconScreenshot } from '@tabler/icons-react'
+import { SetStateAction, useState } from 'react'
+import { IconDeviceLaptop, IconPlus } from '@tabler/icons-react'
 import { Accordion } from '../../molecules/Accordion'
 import { HtmlSelect } from '../../atoms/HtmlSelect'
+import { Dialog } from '../../atoms/Dialog'
 export interface ICreateCinemaProps {}
 
 export const CreateCinema = () => (
@@ -39,12 +40,17 @@ export const CreateCinema = () => (
 
 export const CreateCinemaContent = ({}: ICreateCinemaProps) => {
   const uid = useAppSelector(selectUid)
-  const { register, handleSubmit, setValue, control } =
+  const { register, handleSubmit, setValue, reset, control } =
     useFormContext<FormTypeCreateCinema>()
   const [createCinema, { loading, data, error }] = useCreateCinemaMutation()
 
+  const [open, setOpen] = useState(false)
+
   return (
     <div className="grid gap-3 md:grid-cols-2">
+      <Dialog open={open} setOpen={setOpen} title={'Success.'}>
+        Cinema created successfully.
+      </Dialog>
       <Form
         onSubmit={handleSubmit(
           async ({
@@ -53,7 +59,6 @@ export const CreateCinemaContent = ({}: ICreateCinemaProps) => {
             managerName,
             screens,
           }) => {
-            console.log('uid', uid)
             if (!uid) {
               return
             }
@@ -76,6 +81,8 @@ export const CreateCinemaContent = ({}: ICreateCinemaProps) => {
               refetchQueries: [namedOperations.Query.findCinema],
               awaitRefetchQueries: true,
             })
+            reset()
+            setOpen(true)
           },
         )}
       >
@@ -273,7 +280,7 @@ const AddScreens = () => {
       ))}{' '}
       <div>
         <Button
-          className="flex items-center justify-center w-full py-2 text-xs border-2 border-dashed"
+          className="flex items-center justify-center w-full py-2 text-xs border border-dashed"
           size="none"
           variant="text"
           onClick={() =>

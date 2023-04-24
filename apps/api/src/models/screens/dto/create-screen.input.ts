@@ -4,7 +4,7 @@ import { Screen } from '../entities/screen.entity'
 @InputType()
 export class CreateScreenInput extends PickType(
   Screen,
-  ['cinemaId', 'projectionType', 'soundSystemType', 'number'],
+  ['cinemaId', 'projectionType', 'soundSystemType', 'number', 'price'],
   InputType,
 ) {
   rows: number
