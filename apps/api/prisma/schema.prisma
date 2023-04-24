@@ -16,6 +16,7 @@ model User {
     updatedAt DateTime  @updatedAt
     name      String
     bookings  Booking[]
+    tickets   Ticket[]
 }
 
 model Manager {
@@ -113,9 +114,21 @@ model Booking {
     column     Int
     screenId   Int
     seat       Seat?    @relation(fields: [screenId, row, column], references: [screenId, row, column])
+    Ticket     Ticket?  @relation(fields: [ticketId], references: [id])
+    ticketId   Int?
 
     @@unique([screenId, row, column, showtimeId], name: "uniqueSeatShowtime")
     @@index([screenId, row, column], name: "seatIndex")
+}
+
+model Ticket {
+    id   Int    @id @default(autoincrement())
+    uid  String
+    user User   @relation(fields: [uid], references: [uid])
+
+    qrCode String?
+
+    bookings Booking[]
 }
 
 enum UserRole {

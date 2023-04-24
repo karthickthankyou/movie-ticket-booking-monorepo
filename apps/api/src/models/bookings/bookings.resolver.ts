@@ -6,6 +6,7 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql'
+
 import { BookingsService } from './bookings.service'
 import { Booking } from './entities/booking.entity'
 import { FindManyBookingArgs, FindUniqueBookingArgs } from './dto/find.args'
@@ -22,23 +23,25 @@ import {
 import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { Prisma } from '@prisma/client'
-import { BatchPayload } from 'src/common/dtos/common.input'
-
+import * as bwipjs from 'bwip-js'
+import { FirebaseService } from 'src/common/firebase/firebase.service'
+import { Ticket } from '../tickets/entities/ticket.entity'
 @Resolver(() => Booking)
 export class BookingsResolver {
   constructor(
     private readonly bookingsService: BookingsService,
     private readonly prisma: PrismaService,
+    private readonly firebase: FirebaseService,
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => BatchPayload)
-  createBooking(
+  @Mutation(() => Ticket)
+  async createBooking(
     @Args('createBookingInput') args: CreateBookingInput,
     @GetUser() user: GetUserType,
   ) {
     checkRowLevelPermission(user, args.userId)
-    const bookings: Prisma.BookingCreateManyInput[] = args.seats.map(
+    const bookingsData: Prisma.BookingCreateManyInput[] = args.seats.map(
       (seat) => ({
         row: seat.row,
         column: seat.column,
@@ -47,7 +50,24 @@ export class BookingsResolver {
         userId: user.uid,
       }),
     )
-    return this.prisma.booking.createMany({ data: bookings })
+
+    const ticket = await this.prisma.ticket.create({
+      data: { uid: user.uid, bookings: { create: bookingsData } },
+    })
+
+    const png = await bwipjs.toBuffer({
+      bcid: 'qrcode', // Barcode type
+      text: JSON.stringify(ticket), // Text to encode
+      textxalign: 'center', // Align the text to the center
+    })
+
+    const qrCode = await this.firebase.uploadFile2(png, user.uid, ticket.id)
+    const updatedTicket = await this.prisma.ticket.update({
+      where: { id: ticket.id },
+      data: { qrCode },
+    })
+
+    return updatedTicket
   }
 
   @AllowAuthenticated('admin')

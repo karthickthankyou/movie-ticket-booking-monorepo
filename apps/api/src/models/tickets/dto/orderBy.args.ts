@@ -1,28 +1,26 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { BookingOrderByRelationAggregateInput } from 'src/models/bookings/dto/orderBy.args'
-import { TicketOrderByRelationAggregateInput } from 'src/models/tickets/dto/orderBy.args'
+import { UserOrderByWithRelationInput } from 'src/models/users/dto/orderBy.args'
 
 @InputType()
-export class UserOrderByWithRelationInput
-  implements Required<Prisma.UserOrderByWithRelationInput>
+export class TicketOrderByWithRelationInput
+  implements Required<Prisma.TicketOrderByWithRelationInput>
 {
-  @Field(() => TicketOrderByRelationAggregateInput, { nullable: true })
-  tickets: TicketOrderByRelationAggregateInput
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   uid: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
-  createdAt: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder, { nullable: true })
-  updatedAt: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder, { nullable: true })
-  name: Prisma.SortOrder
+  qrCode: Prisma.SortOrder
+  @Field(() => UserOrderByWithRelationInput, { nullable: true })
+  user: UserOrderByWithRelationInput
   @Field(() => BookingOrderByRelationAggregateInput, { nullable: true })
   bookings: BookingOrderByRelationAggregateInput
 }
 
 @InputType()
-export class UserOrderByRelationAggregateInput {
+export class TicketOrderByRelationAggregateInput {
   @Field(() => Prisma.SortOrder, { nullable: true })
   _count: Prisma.SortOrder
 }

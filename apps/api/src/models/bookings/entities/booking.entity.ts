@@ -3,6 +3,7 @@ import { Booking as BookingType } from '@prisma/client'
 
 @ObjectType()
 export class Booking implements BookingType {
+  ticketId: number
   row: number
   column: number
   screenId: number

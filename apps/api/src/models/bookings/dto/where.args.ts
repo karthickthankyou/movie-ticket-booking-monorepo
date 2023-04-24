@@ -7,6 +7,7 @@ import {
 } from 'src/common/dtos/common.input'
 import { SeatRelationFilter } from 'src/models/seats/dto/where.args'
 import { ShowtimeRelationFilter } from 'src/models/showtimes/dto/where.args'
+import { TicketRelationFilter } from 'src/models/tickets/dto/where.args'
 import { UserRelationFilter } from 'src/models/users/dto/where.args'
 
 @InputType()
@@ -25,6 +26,10 @@ export class BookingWhereUniqueInput {
 
 @InputType()
 export class BookingWhereInput implements Required<Prisma.BookingWhereInput> {
+  @Field(() => IntFilter, { nullable: true })
+  ticketId: IntFilter
+  @Field(() => TicketRelationFilter, { nullable: true })
+  Ticket: TicketRelationFilter
   @Field(() => IntFilter, { nullable: true })
   row: IntFilter
   @Field(() => IntFilter, { nullable: true })

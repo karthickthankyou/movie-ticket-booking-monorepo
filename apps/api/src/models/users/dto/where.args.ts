@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
 import { DateTimeFilter, StringFilter } from 'src/common/dtos/common.input'
 import { BookingListRelationFilter } from 'src/models/bookings/dto/where.args'
+import { TicketListRelationFilter } from 'src/models/tickets/dto/where.args'
 
 @InputType()
 export class UserWhereUniqueInput
@@ -13,6 +14,8 @@ export class UserWhereUniqueInput
 
 @InputType()
 export class UserWhereInput implements Required<Prisma.UserWhereInput> {
+  @Field(() => TicketListRelationFilter, { nullable: true })
+  tickets: TicketListRelationFilter
   @Field(() => StringFilter, { nullable: true })
   uid: StringFilter
   @Field(() => DateTimeFilter, { nullable: true })

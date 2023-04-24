@@ -167,7 +167,7 @@ export const showtime = gql`
 export const createBooking = gql`
   mutation createBooking($createBookingInput: CreateBookingInput!) {
     createBooking(createBookingInput: $createBookingInput) {
-      count
+      id
     }
   }
 `

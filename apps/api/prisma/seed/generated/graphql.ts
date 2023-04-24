@@ -83,6 +83,7 @@ export type Booking = {
   seat: Seat
   showtime: Showtime
   showtimeId: Scalars['Int']
+  ticketId: Scalars['Int']
   updatedAt: Scalars['DateTime']
   user: User
   userId: Scalars['String']
@@ -99,6 +100,7 @@ export type BookingOrderByRelationAggregateInput = {
 }
 
 export type BookingOrderByWithRelationInput = {
+  Ticket?: InputMaybe<TicketOrderByWithRelationInput>
   column?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
@@ -107,6 +109,7 @@ export type BookingOrderByWithRelationInput = {
   seat?: InputMaybe<SeatOrderByWithRelationInput>
   showtime?: InputMaybe<ShowtimeOrderByWithRelationInput>
   showtimeId?: InputMaybe<SortOrder>
+  ticketId?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
   user?: InputMaybe<UserOrderByWithRelationInput>
   userId?: InputMaybe<SortOrder>
@@ -119,6 +122,7 @@ export enum BookingScalarFieldEnum {
   Row = 'row',
   ScreenId = 'screenId',
   ShowtimeId = 'showtimeId',
+  TicketId = 'ticketId',
   UpdatedAt = 'updatedAt',
   UserId = 'userId',
 }
@@ -127,6 +131,7 @@ export type BookingWhereInput = {
   AND?: InputMaybe<Array<BookingWhereInput>>
   NOT?: InputMaybe<Array<BookingWhereInput>>
   OR?: InputMaybe<Array<BookingWhereInput>>
+  Ticket?: InputMaybe<TicketRelationFilter>
   column?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   id?: InputMaybe<IntFilter>
@@ -135,6 +140,7 @@ export type BookingWhereInput = {
   seat?: InputMaybe<SeatRelationFilter>
   showtime?: InputMaybe<ShowtimeRelationFilter>
   showtimeId?: InputMaybe<IntFilter>
+  ticketId?: InputMaybe<IntFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
   user?: InputMaybe<UserRelationFilter>
   userId?: InputMaybe<StringFilter>
@@ -490,7 +496,7 @@ export type MovieWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createBooking: BatchPayload
+  createBooking: Ticket
   createCinema: Cinema
   createManager: Manager
   createMovie: Movie
@@ -1113,6 +1119,47 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>
 }
 
+export type Ticket = {
+  __typename?: 'Ticket'
+  id: Scalars['Int']
+  qrCode: Scalars['String']
+  uid: Scalars['String']
+}
+
+export type TicketListRelationFilter = {
+  every?: InputMaybe<TicketWhereInput>
+  none?: InputMaybe<TicketWhereInput>
+  some?: InputMaybe<TicketWhereInput>
+}
+
+export type TicketOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type TicketOrderByWithRelationInput = {
+  bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
+  id?: InputMaybe<SortOrder>
+  qrCode?: InputMaybe<SortOrder>
+  uid?: InputMaybe<SortOrder>
+  user?: InputMaybe<UserOrderByWithRelationInput>
+}
+
+export type TicketRelationFilter = {
+  is?: InputMaybe<TicketWhereInput>
+  isNot?: InputMaybe<TicketWhereInput>
+}
+
+export type TicketWhereInput = {
+  AND?: InputMaybe<Array<TicketWhereInput>>
+  NOT?: InputMaybe<Array<TicketWhereInput>>
+  OR?: InputMaybe<Array<TicketWhereInput>>
+  bookings?: InputMaybe<BookingListRelationFilter>
+  id?: InputMaybe<IntFilter>
+  qrCode?: InputMaybe<StringFilter>
+  uid?: InputMaybe<StringFilter>
+  user?: InputMaybe<UserRelationFilter>
+}
+
 export type UpdateBookingInput = {
   id: Scalars['Int']
   screenId?: InputMaybe<Scalars['Int']>
@@ -1181,6 +1228,7 @@ export type UserOrderByWithRelationInput = {
   bookings?: InputMaybe<BookingOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
+  tickets?: InputMaybe<TicketOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
@@ -1204,6 +1252,7 @@ export type UserWhereInput = {
   bookings?: InputMaybe<BookingListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   name?: InputMaybe<StringFilter>
+  tickets?: InputMaybe<TicketListRelationFilter>
   uid?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
