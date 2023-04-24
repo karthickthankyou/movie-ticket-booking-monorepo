@@ -35,6 +35,21 @@ export class MoviesResolver {
     return this.moviesService.findAll(args)
   }
 
+  @Query(() => [Movie], { name: 'moviesPerCinema' })
+  moviesPerCinema(
+    @Args() { cursor, distinct, orderBy, skip, take, where }: FindManyMovieArgs,
+    @Args('cinemaId') cinemaId: number,
+  ) {
+    return this.prisma.movie.findMany({
+      cursor,
+      distinct,
+      orderBy,
+      skip,
+      take,
+      where: { ...where, showtimes: { some: { screen: { cinemaId } } } },
+    })
+  }
+
   @Query(() => AggregateCountOutput, {
     name: 'moviesCount',
   })

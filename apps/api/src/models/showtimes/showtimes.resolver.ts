@@ -46,7 +46,7 @@ export class ShowtimesResolver {
       user,
       screen?.cinema.managers.map((m) => m.uid),
     )
-    console.log('Screen:  ', screen)
+
     const showtimes: Prisma.ShowtimeCreateManyInput[] = args.showtimes.map(
       (showtime) => ({
         screenId: args.screenId,
@@ -63,6 +63,24 @@ export class ShowtimesResolver {
   @Query(() => [Showtime], { name: 'showtimes' })
   findAll(@Args() args: FindManyShowtimeArgs) {
     return this.showtimesService.findAll(args)
+  }
+
+  @Query(() => [Showtime], { name: 'showtimesInCinema' })
+  async showtimesInCinema(
+    @Args()
+    { cursor, distinct, orderBy, skip, take, where }: FindManyShowtimeArgs,
+    @Args('cinemaId') cinemaId: number,
+    @Args('movieId') movieId: number,
+  ) {
+    const shows = await this.prisma.showtime.findMany({
+      cursor,
+      distinct,
+      orderBy,
+      skip,
+      take,
+      where: { ...where, movieId, screen: { cinemaId } },
+    })
+    return shows
   }
 
   @Query(() => Showtime, { name: 'showtime' })

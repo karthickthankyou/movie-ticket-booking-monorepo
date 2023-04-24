@@ -201,9 +201,8 @@ export type CreateAddressInputWithoutCinemaId = {
 }
 
 export type CreateBookingInput = {
-  column: Scalars['Int']
-  row: Scalars['Int']
   screenId: Scalars['Int']
+  seats: Array<RowColumn>
   showtimeId: Scalars['Int']
   userId: Scalars['String']
 }
@@ -491,7 +490,7 @@ export type MovieWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createBooking: Booking
+  createBooking: BatchPayload
   createCinema: Cinema
   createManager: Manager
   createMovie: Movie
@@ -655,6 +654,7 @@ export type Query = {
   movie: Movie
   movies: Array<Movie>
   moviesCount: AggregateCountOutput
+  moviesPerCinema: Array<Movie>
   screen: Screen
   screens: Array<Screen>
   searchCinemas: Array<Cinema>
@@ -662,6 +662,7 @@ export type Query = {
   seats: Array<Seat>
   showtime: Showtime
   showtimes: Array<Showtime>
+  showtimesInCinema: Array<Showtime>
   user: User
   users: Array<User>
 }
@@ -726,6 +727,16 @@ export type QueryMoviesCountArgs = {
   where?: InputMaybe<MovieWhereInput>
 }
 
+export type QueryMoviesPerCinemaArgs = {
+  cinemaId: Scalars['Int']
+  cursor?: InputMaybe<MovieWhereUniqueInput>
+  distinct?: InputMaybe<Array<MovieScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<MovieOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<MovieWhereInput>
+}
+
 export type QueryScreenArgs = {
   where?: InputMaybe<ScreenWhereUniqueInput>
 }
@@ -769,6 +780,17 @@ export type QueryShowtimeArgs = {
 export type QueryShowtimesArgs = {
   cursor?: InputMaybe<ShowtimeWhereUniqueInput>
   distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ShowtimeWhereInput>
+}
+
+export type QueryShowtimesInCinemaArgs = {
+  cinemaId: Scalars['Int']
+  cursor?: InputMaybe<ShowtimeWhereUniqueInput>
+  distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
+  movieId: Scalars['Int']
   orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
@@ -829,6 +851,11 @@ export type RegisterOutput = {
 export enum RoleEnum {
   Admin = 'admin',
   Moderator = 'moderator',
+}
+
+export type RowColumn = {
+  column: Scalars['Int']
+  row: Scalars['Int']
 }
 
 export type Screen = {
@@ -910,6 +937,7 @@ export type ScreenWhereUniqueInput = {
 
 export type Seat = {
   __typename?: 'Seat'
+  booked?: Maybe<Scalars['Boolean']>
   bookings: Array<Booking>
   column: Scalars['Int']
   createdAt: Scalars['DateTime']
@@ -917,6 +945,10 @@ export type Seat = {
   screen: Screen
   screenId: Scalars['Int']
   updatedAt: Scalars['DateTime']
+}
+
+export type SeatBookedArgs = {
+  showtimeId: Scalars['Int']
 }
 
 export type SeatListRelationFilter = {
@@ -1082,10 +1114,9 @@ export type StringFilter = {
 }
 
 export type UpdateBookingInput = {
-  column?: InputMaybe<Scalars['Int']>
   id: Scalars['Int']
-  row?: InputMaybe<Scalars['Int']>
   screenId?: InputMaybe<Scalars['Int']>
+  seats?: InputMaybe<Array<RowColumn>>
   showtimeId?: InputMaybe<Scalars['Int']>
   userId?: InputMaybe<Scalars['String']>
 }

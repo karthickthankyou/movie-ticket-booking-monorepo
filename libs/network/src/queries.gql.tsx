@@ -125,3 +125,49 @@ export const createShowtime = gql`
     }
   }
 `
+
+export const moviesPerCinema = gql`
+  query moviesPerCinema($cinemaId: Int!) {
+    moviesPerCinema(cinemaId: $cinemaId) {
+      id
+      director
+      title
+    }
+  }
+`
+
+export const showtimesInCinema = gql`
+  query showtimesInCinema($cinemaId: Int!, $movieId: Int!) {
+    showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
+      id
+      startTime
+      screen {
+        id
+        number
+        price
+      }
+    }
+  }
+`
+
+export const showtime = gql`
+  query showtime($where: ShowtimeWhereUniqueInput, $showtimeId: Int!) {
+    showtime(where: $where) {
+      screen {
+        seats {
+          row
+          column
+          booked(showtimeId: $showtimeId)
+        }
+      }
+    }
+  }
+`
+
+export const createBooking = gql`
+  mutation createBooking($createBookingInput: CreateBookingInput!) {
+    createBooking(createBookingInput: $createBookingInput) {
+      count
+    }
+  }
+`

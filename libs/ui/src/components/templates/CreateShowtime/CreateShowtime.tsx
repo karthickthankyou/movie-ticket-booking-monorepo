@@ -7,14 +7,14 @@ import {
   useMoviesLazyQuery,
 } from '@showtime-org/network/src/generated'
 import { Autocomplete } from '../../atoms/Autocomplete'
-import { SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { FormTypeCreateShowtime } from '@showtime-org/forms/src/createShowtime'
 import { Form } from '../../atoms/Form'
 import { Button } from '../../atoms/Button'
 import { useAppSelector } from '@showtime-org/store'
 import { selectUid } from '@showtime-org/store/user'
-import { useFormContext, useWatch, useFieldArray } from 'react-hook-form'
+import { useFormContext, useFieldArray } from 'react-hook-form'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { IconPlus } from '@tabler/icons-react'
 import { Dialog } from '../../atoms/Dialog'
@@ -65,7 +65,7 @@ export const CreateShowtime = ({}: ICreateShowtimeProps) => {
             setValue('movieId', v)
           }}
         />
-        <SelectCinema
+        <SelectScreen
           setValue={(v) => {
             setValue('screenId', v)
           }}
@@ -154,7 +154,7 @@ export const SelectMovie = ({
   )
 }
 
-export const SelectCinema = ({
+export const SelectScreen = ({
   setValue,
 }: {
   setValue: (id: number) => void
@@ -172,7 +172,7 @@ export const SelectCinema = ({
       })
   }, [searchText])
   return (
-    <HtmlLabel title="Cinema">
+    <HtmlLabel title="Screen number">
       <Autocomplete<
         FindCinemaQuery['cinema']['screens'][0],
         false,

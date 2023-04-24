@@ -15,6 +15,7 @@ import {
   SoundSystemType,
   namedOperations,
   useCreateCinemaMutation,
+  useFindCinemaLazyQuery,
 } from '@showtime-org/network/src/generated'
 import { SearchPlaceBox } from '../../organisms/SearchPlaceBox'
 import { Panel } from '../../organisms/Map/Panel'
@@ -25,7 +26,7 @@ import {
 } from '../../organisms/Map/ZoomControls/ZoomControls'
 import { useMap } from 'react-map-gl'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
-import { SetStateAction, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import { IconDeviceLaptop, IconPlus } from '@tabler/icons-react'
 import { Accordion } from '../../molecules/Accordion'
 import { HtmlSelect } from '../../atoms/HtmlSelect'
@@ -46,6 +47,16 @@ export const CreateCinemaContent = ({}: ICreateCinemaProps) => {
 
   const [open, setOpen] = useState(false)
 
+  const [findCinema, { loading: findCinemaLoading, data: existingCinema }] =
+    useFindCinemaLazyQuery()
+
+  useEffect(() => {
+    if (uid) findCinema()
+  }, [uid])
+
+  if (existingCinema?.cinema) {
+    return <div>Cinema exists.</div>
+  }
   return (
     <div className="grid gap-3 md:grid-cols-2">
       <Dialog open={open} setOpen={setOpen} title={'Success.'}>
@@ -379,11 +390,22 @@ const CurvedScreen = ({ width = 300, height = 10 }) => {
   )
 }
 
-const Square = ({ size = 25, color = 'blue' }) => {
-  return <div className="w-4 h-4 border rounded bg-blue" />
+export const Square = ({
+  size = 25,
+  color = 'blue',
+  booked = false,
+  selected = false,
+}) => {
+  return (
+    <div
+      className={`w-4 h-4  border rounded ${booked ? 'bg-yellow-500' : ''} ${
+        selected ? 'bg-primary-500' : ''
+      }`}
+    />
+  )
 }
 
-const Grid = ({ rows, columns }: { rows: number; columns: number }) => {
+export const Grid = ({ rows, columns }: { rows: number; columns: number }) => {
   const renderRows = () => {
     const rowElements = []
 

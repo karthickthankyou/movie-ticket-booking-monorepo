@@ -72,6 +72,17 @@ export class SeatsResolver {
     return this.seatsService.remove(args)
   }
 
+  @ResolveField(() => Boolean, { nullable: true })
+  async booked(
+    @Parent() { column, row, screenId }: Seat,
+    @Args('showtimeId') showtimeId: number,
+  ) {
+    const booking = await this.prisma.booking.findUnique({
+      where: { uniqueSeatShowtime: { column, row, screenId, showtimeId } },
+    })
+
+    return booking ? true : false
+  }
   @ResolveField(() => Screen)
   screen(@Parent() seat: Seat) {
     return this.prisma.screen.findUnique({ where: { id: seat.screenId } })

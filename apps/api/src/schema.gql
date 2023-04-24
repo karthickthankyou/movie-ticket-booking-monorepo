@@ -110,6 +110,7 @@ type Seat {
   row: Int!
   column: Int!
   screenId: Int!
+  booked(showtimeId: Int!): Boolean
   screen: Screen!
   bookings: [Booking!]!
 }
@@ -208,9 +209,11 @@ type Query {
   seats(where: SeatWhereInput, orderBy: [SeatOrderByWithRelationInput!], cursor: SeatWhereUniqueInput, take: Int, skip: Int, distinct: [SeatScalarFieldEnum!]): [Seat!]!
   seat(where: SeatWhereUniqueInput): Seat!
   movies(where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int, distinct: [MovieScalarFieldEnum!]): [Movie!]!
+  moviesPerCinema(where: MovieWhereInput, orderBy: [MovieOrderByWithRelationInput!], cursor: MovieWhereUniqueInput, take: Int, skip: Int, distinct: [MovieScalarFieldEnum!], cinemaId: Int!): [Movie!]!
   moviesCount(where: MovieWhereInput): AggregateCountOutput!
   movie(where: MovieWhereUniqueInput): Movie!
   showtimes(where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int, distinct: [ShowtimeScalarFieldEnum!]): [Showtime!]!
+  showtimesInCinema(where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int, distinct: [ShowtimeScalarFieldEnum!], cinemaId: Int!, movieId: Int!): [Showtime!]!
   showtime(where: ShowtimeWhereUniqueInput): Showtime!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   booking(where: BookingWhereUniqueInput): Booking!
@@ -752,7 +755,7 @@ type Mutation {
   createShowtime(createShowtimeInput: CreateShowtimeInput!): BatchPayload!
   updateShowtime(updateShowtimeInput: UpdateShowtimeInput!): Showtime!
   removeShowtime(where: ShowtimeWhereUniqueInput): Showtime!
-  createBooking(createBookingInput: CreateBookingInput!): Booking!
+  createBooking(createBookingInput: CreateBookingInput!): BatchPayload!
   updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
   removeBooking(where: BookingWhereUniqueInput): Booking!
 }
@@ -900,18 +903,21 @@ input UpdateShowtimeInput {
 }
 
 input CreateBookingInput {
-  row: Int!
-  column: Int!
   screenId: Int!
   userId: String!
   showtimeId: Int!
+  seats: [RowColumn!]!
+}
+
+input RowColumn {
+  row: Int!
+  column: Int!
 }
 
 input UpdateBookingInput {
-  row: Int
-  column: Int
   screenId: Int
   userId: String
   showtimeId: Int
+  seats: [RowColumn!]
   id: Int!
 }

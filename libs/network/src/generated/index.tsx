@@ -202,9 +202,8 @@ export type CreateAddressInputWithoutCinemaId = {
 }
 
 export type CreateBookingInput = {
-  column: Scalars['Int']
-  row: Scalars['Int']
   screenId: Scalars['Int']
+  seats: Array<RowColumn>
   showtimeId: Scalars['Int']
   userId: Scalars['String']
 }
@@ -492,7 +491,7 @@ export type MovieWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createBooking: Booking
+  createBooking: BatchPayload
   createCinema: Cinema
   createManager: Manager
   createMovie: Movie
@@ -656,6 +655,7 @@ export type Query = {
   movie: Movie
   movies: Array<Movie>
   moviesCount: AggregateCountOutput
+  moviesPerCinema: Array<Movie>
   screen: Screen
   screens: Array<Screen>
   searchCinemas: Array<Cinema>
@@ -663,6 +663,7 @@ export type Query = {
   seats: Array<Seat>
   showtime: Showtime
   showtimes: Array<Showtime>
+  showtimesInCinema: Array<Showtime>
   user: User
   users: Array<User>
 }
@@ -727,6 +728,16 @@ export type QueryMoviesCountArgs = {
   where?: InputMaybe<MovieWhereInput>
 }
 
+export type QueryMoviesPerCinemaArgs = {
+  cinemaId: Scalars['Int']
+  cursor?: InputMaybe<MovieWhereUniqueInput>
+  distinct?: InputMaybe<Array<MovieScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<MovieOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<MovieWhereInput>
+}
+
 export type QueryScreenArgs = {
   where?: InputMaybe<ScreenWhereUniqueInput>
 }
@@ -770,6 +781,17 @@ export type QueryShowtimeArgs = {
 export type QueryShowtimesArgs = {
   cursor?: InputMaybe<ShowtimeWhereUniqueInput>
   distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ShowtimeWhereInput>
+}
+
+export type QueryShowtimesInCinemaArgs = {
+  cinemaId: Scalars['Int']
+  cursor?: InputMaybe<ShowtimeWhereUniqueInput>
+  distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
+  movieId: Scalars['Int']
   orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
@@ -830,6 +852,11 @@ export type RegisterOutput = {
 export enum RoleEnum {
   Admin = 'admin',
   Moderator = 'moderator',
+}
+
+export type RowColumn = {
+  column: Scalars['Int']
+  row: Scalars['Int']
 }
 
 export type Screen = {
@@ -911,6 +938,7 @@ export type ScreenWhereUniqueInput = {
 
 export type Seat = {
   __typename?: 'Seat'
+  booked?: Maybe<Scalars['Boolean']>
   bookings: Array<Booking>
   column: Scalars['Int']
   createdAt: Scalars['DateTime']
@@ -918,6 +946,10 @@ export type Seat = {
   screen: Screen
   screenId: Scalars['Int']
   updatedAt: Scalars['DateTime']
+}
+
+export type SeatBookedArgs = {
+  showtimeId: Scalars['Int']
 }
 
 export type SeatListRelationFilter = {
@@ -1083,10 +1115,9 @@ export type StringFilter = {
 }
 
 export type UpdateBookingInput = {
-  column?: InputMaybe<Scalars['Int']>
   id: Scalars['Int']
-  row?: InputMaybe<Scalars['Int']>
   screenId?: InputMaybe<Scalars['Int']>
+  seats?: InputMaybe<Array<RowColumn>>
   showtimeId?: InputMaybe<Scalars['Int']>
   userId?: InputMaybe<Scalars['String']>
 }
@@ -1310,11 +1341,73 @@ export type CreateShowtimeMutation = {
   createShowtime: { __typename?: 'BatchPayload'; count: number }
 }
 
+export type MoviesPerCinemaQueryVariables = Exact<{
+  cinemaId: Scalars['Int']
+}>
+
+export type MoviesPerCinemaQuery = {
+  __typename?: 'Query'
+  moviesPerCinema: Array<{
+    __typename?: 'Movie'
+    id: number
+    director: string
+    title: string
+  }>
+}
+
+export type ShowtimesInCinemaQueryVariables = Exact<{
+  cinemaId: Scalars['Int']
+  movieId: Scalars['Int']
+}>
+
+export type ShowtimesInCinemaQuery = {
+  __typename?: 'Query'
+  showtimesInCinema: Array<{
+    __typename?: 'Showtime'
+    id: number
+    startTime: any
+    screen: { __typename?: 'Screen'; id: number; number: number; price: number }
+  }>
+}
+
+export type ShowtimeQueryVariables = Exact<{
+  where?: InputMaybe<ShowtimeWhereUniqueInput>
+  showtimeId: Scalars['Int']
+}>
+
+export type ShowtimeQuery = {
+  __typename?: 'Query'
+  showtime: {
+    __typename?: 'Showtime'
+    screen: {
+      __typename?: 'Screen'
+      seats: Array<{
+        __typename?: 'Seat'
+        row: number
+        column: number
+        booked?: boolean | null
+      }>
+    }
+  }
+}
+
+export type CreateBookingMutationVariables = Exact<{
+  createBookingInput: CreateBookingInput
+}>
+
+export type CreateBookingMutation = {
+  __typename?: 'Mutation'
+  createBooking: { __typename?: 'BatchPayload'; count: number }
+}
+
 export const namedOperations = {
   Query: {
     findCinema: 'findCinema',
     SearchCinemas: 'SearchCinemas',
     movies: 'movies',
+    moviesPerCinema: 'moviesPerCinema',
+    showtimesInCinema: 'showtimesInCinema',
+    showtime: 'showtime',
   },
   Mutation: {
     createCinema: 'createCinema',
@@ -1322,6 +1415,7 @@ export const namedOperations = {
     createScreen: 'createScreen',
     Login: 'Login',
     createShowtime: 'createShowtime',
+    createBooking: 'createBooking',
   },
 }
 
@@ -1806,4 +1900,239 @@ export type CreateShowtimeMutationResult =
 export type CreateShowtimeMutationOptions = Apollo.BaseMutationOptions<
   CreateShowtimeMutation,
   CreateShowtimeMutationVariables
+>
+export const MoviesPerCinemaDocument = /*#__PURE__*/ gql`
+  query moviesPerCinema($cinemaId: Int!) {
+    moviesPerCinema(cinemaId: $cinemaId) {
+      id
+      director
+      title
+    }
+  }
+`
+
+/**
+ * __useMoviesPerCinemaQuery__
+ *
+ * To run a query within a React component, call `useMoviesPerCinemaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMoviesPerCinemaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMoviesPerCinemaQuery({
+ *   variables: {
+ *      cinemaId: // value for 'cinemaId'
+ *   },
+ * });
+ */
+export function useMoviesPerCinemaQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    MoviesPerCinemaQuery,
+    MoviesPerCinemaQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MoviesPerCinemaQuery, MoviesPerCinemaQueryVariables>(
+    MoviesPerCinemaDocument,
+    options,
+  )
+}
+export function useMoviesPerCinemaLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MoviesPerCinemaQuery,
+    MoviesPerCinemaQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    MoviesPerCinemaQuery,
+    MoviesPerCinemaQueryVariables
+  >(MoviesPerCinemaDocument, options)
+}
+export type MoviesPerCinemaQueryHookResult = ReturnType<
+  typeof useMoviesPerCinemaQuery
+>
+export type MoviesPerCinemaLazyQueryHookResult = ReturnType<
+  typeof useMoviesPerCinemaLazyQuery
+>
+export type MoviesPerCinemaQueryResult = Apollo.QueryResult<
+  MoviesPerCinemaQuery,
+  MoviesPerCinemaQueryVariables
+>
+export const ShowtimesInCinemaDocument = /*#__PURE__*/ gql`
+  query showtimesInCinema($cinemaId: Int!, $movieId: Int!) {
+    showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
+      id
+      startTime
+      screen {
+        id
+        number
+        price
+      }
+    }
+  }
+`
+
+/**
+ * __useShowtimesInCinemaQuery__
+ *
+ * To run a query within a React component, call `useShowtimesInCinemaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowtimesInCinemaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowtimesInCinemaQuery({
+ *   variables: {
+ *      cinemaId: // value for 'cinemaId'
+ *      movieId: // value for 'movieId'
+ *   },
+ * });
+ */
+export function useShowtimesInCinemaQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ShowtimesInCinemaQuery,
+    ShowtimesInCinemaQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    ShowtimesInCinemaQuery,
+    ShowtimesInCinemaQueryVariables
+  >(ShowtimesInCinemaDocument, options)
+}
+export function useShowtimesInCinemaLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ShowtimesInCinemaQuery,
+    ShowtimesInCinemaQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    ShowtimesInCinemaQuery,
+    ShowtimesInCinemaQueryVariables
+  >(ShowtimesInCinemaDocument, options)
+}
+export type ShowtimesInCinemaQueryHookResult = ReturnType<
+  typeof useShowtimesInCinemaQuery
+>
+export type ShowtimesInCinemaLazyQueryHookResult = ReturnType<
+  typeof useShowtimesInCinemaLazyQuery
+>
+export type ShowtimesInCinemaQueryResult = Apollo.QueryResult<
+  ShowtimesInCinemaQuery,
+  ShowtimesInCinemaQueryVariables
+>
+export const ShowtimeDocument = /*#__PURE__*/ gql`
+  query showtime($where: ShowtimeWhereUniqueInput, $showtimeId: Int!) {
+    showtime(where: $where) {
+      screen {
+        seats {
+          row
+          column
+          booked(showtimeId: $showtimeId)
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useShowtimeQuery__
+ *
+ * To run a query within a React component, call `useShowtimeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowtimeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowtimeQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      showtimeId: // value for 'showtimeId'
+ *   },
+ * });
+ */
+export function useShowtimeQuery(
+  baseOptions: Apollo.QueryHookOptions<ShowtimeQuery, ShowtimeQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ShowtimeQuery, ShowtimeQueryVariables>(
+    ShowtimeDocument,
+    options,
+  )
+}
+export function useShowtimeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ShowtimeQuery,
+    ShowtimeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ShowtimeQuery, ShowtimeQueryVariables>(
+    ShowtimeDocument,
+    options,
+  )
+}
+export type ShowtimeQueryHookResult = ReturnType<typeof useShowtimeQuery>
+export type ShowtimeLazyQueryHookResult = ReturnType<
+  typeof useShowtimeLazyQuery
+>
+export type ShowtimeQueryResult = Apollo.QueryResult<
+  ShowtimeQuery,
+  ShowtimeQueryVariables
+>
+export const CreateBookingDocument = /*#__PURE__*/ gql`
+  mutation createBooking($createBookingInput: CreateBookingInput!) {
+    createBooking(createBookingInput: $createBookingInput) {
+      count
+    }
+  }
+`
+export type CreateBookingMutationFn = Apollo.MutationFunction<
+  CreateBookingMutation,
+  CreateBookingMutationVariables
+>
+
+/**
+ * __useCreateBookingMutation__
+ *
+ * To run a mutation, you first call `useCreateBookingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBookingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBookingMutation, { data, loading, error }] = useCreateBookingMutation({
+ *   variables: {
+ *      createBookingInput: // value for 'createBookingInput'
+ *   },
+ * });
+ */
+export function useCreateBookingMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateBookingMutation,
+    CreateBookingMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateBookingMutation,
+    CreateBookingMutationVariables
+  >(CreateBookingDocument, options)
+}
+export type CreateBookingMutationHookResult = ReturnType<
+  typeof useCreateBookingMutation
+>
+export type CreateBookingMutationResult =
+  Apollo.MutationResult<CreateBookingMutation>
+export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<
+  CreateBookingMutation,
+  CreateBookingMutationVariables
 >

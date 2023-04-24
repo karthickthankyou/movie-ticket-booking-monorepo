@@ -7,11 +7,6 @@ import { UpdateBookingInput } from './dto/update-booking.input'
 @Injectable()
 export class BookingsService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createBookingInput: CreateBookingInput) {
-    return this.prisma.booking.create({
-      data: createBookingInput,
-    })
-  }
 
   findAll(args: FindManyBookingArgs) {
     return this.prisma.booking.findMany(args)

@@ -45,6 +45,20 @@ const yellowPallete = {
   800: 'hsl(51, 97%, 10%)',
   900: 'hsl(51, 97%, 04%)',
 }
+const bluePallete = {
+  DEFAULT: 'hsl(180, 100%, 50%)',
+  25: 'hsl(180, 97%, 98%)',
+  50: 'hsl(180, 97%, 92%)',
+  100: 'hsl(180, 97%, 84%)',
+  200: 'hsl(180, 97%, 75%)',
+  300: 'hsl(180, 97%, 66%)',
+  400: 'hsl(180, 97%, 58%)',
+  500: 'hsl(180, 97%, 50%)',
+  600: 'hsl(180, 97%, 38%)',
+  700: 'hsl(180, 97%, 24%)',
+  800: 'hsl(180, 97%, 10%)',
+  900: 'hsl(180, 97%, 04%)',
+}
 const greenPallete = {
   DEFAULT: 'hsl(116, 100%, 27%)',
   25: 'hsl(116, 100%, 98%)',
@@ -202,6 +216,7 @@ module.exports.colorsConfig = {
   //   primary: colors.black,
   primary: primaryPallete,
   red: redPallete,
+  blue: bluePallete,
   green: greenPallete,
   yellow: yellowPallete,
   gray: grayPallete,

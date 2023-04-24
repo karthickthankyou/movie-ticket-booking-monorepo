@@ -109,9 +109,9 @@ model Booking {
     user       User     @relation(fields: [userId], references: [uid])
     showtimeId Int
     showtime   Showtime @relation(fields: [showtimeId], references: [id])
-    row        Int?
-    column     Int?
-    screenId   Int?
+    row        Int
+    column     Int
+    screenId   Int
     seat       Seat?    @relation(fields: [screenId, row, column], references: [screenId, row, column])
 
     @@unique([screenId, row, column, showtimeId], name: "uniqueSeatShowtime")

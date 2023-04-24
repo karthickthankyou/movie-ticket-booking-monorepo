@@ -21,6 +21,8 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
+import { Prisma } from '@prisma/client'
+import { BatchPayload } from 'src/common/dtos/common.input'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -30,13 +32,22 @@ export class BookingsResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Booking)
+  @Mutation(() => BatchPayload)
   createBooking(
     @Args('createBookingInput') args: CreateBookingInput,
     @GetUser() user: GetUserType,
   ) {
     checkRowLevelPermission(user, args.userId)
-    return this.bookingsService.create(args)
+    const bookings: Prisma.BookingCreateManyInput[] = args.seats.map(
+      (seat) => ({
+        row: seat.row,
+        column: seat.column,
+        screenId: args.screenId,
+        showtimeId: args.showtimeId,
+        userId: user.uid,
+      }),
+    )
+    return this.prisma.booking.createMany({ data: bookings })
   }
 
   @AllowAuthenticated('admin')

@@ -6,11 +6,13 @@ import { composeWithDevTools } from '@redux-devtools/extension'
 import { userReducer } from './user'
 
 import utilReducer from './utils/utilsStore'
+import { moviesReducer } from './movies/store'
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     utils: utilReducer,
+    movies: moviesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
