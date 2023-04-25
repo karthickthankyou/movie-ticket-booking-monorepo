@@ -132,6 +132,7 @@ export const moviesPerCinema = gql`
       id
       director
       title
+      posterUrl
     }
   }
 `
@@ -139,12 +140,17 @@ export const moviesPerCinema = gql`
 export const showtimesInCinema = gql`
   query showtimesInCinema($cinemaId: Int!, $movieId: Int!) {
     showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
-      id
-      startTime
-      screen {
+      date
+      showtimes {
         id
-        number
-        price
+        startTime
+        screen {
+          id
+          price
+          projectionType
+          soundSystemType
+          number
+        }
       }
     }
   }

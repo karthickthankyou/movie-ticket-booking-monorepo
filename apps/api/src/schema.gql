@@ -128,6 +128,18 @@ type Showtime {
   Booking: [Booking!]!
 }
 
+type ShowtimeSimple {
+  screen: Screen!
+  id: Int!
+  startTime: String!
+  movieId: Int!
+}
+
+type GroupedShowtime {
+  showtimes: [ShowtimeSimple!]!
+  date: String!
+}
+
 type Movie {
   genre: Genre!
   id: Int!
@@ -220,7 +232,7 @@ type Query {
   moviesCount(where: MovieWhereInput): AggregateCountOutput!
   movie(where: MovieWhereUniqueInput): Movie!
   showtimes(where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int, distinct: [ShowtimeScalarFieldEnum!]): [Showtime!]!
-  showtimesInCinema(where: ShowtimeWhereInput, orderBy: [ShowtimeOrderByWithRelationInput!], cursor: ShowtimeWhereUniqueInput, take: Int, skip: Int, distinct: [ShowtimeScalarFieldEnum!], cinemaId: Int!, movieId: Int!): [Showtime!]!
+  showtimesInCinema(cinemaId: Int!, movieId: Int!): [GroupedShowtime!]!
   showtime(where: ShowtimeWhereUniqueInput): Showtime!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   booking(where: BookingWhereUniqueInput): Booking!

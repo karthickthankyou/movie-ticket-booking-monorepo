@@ -1,5 +1,6 @@
-import { ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { Showtime as ShowtimeType } from '@prisma/client'
+import { Screen } from '../../screens/entities/screen.entity'
 
 @ObjectType()
 export class Showtime implements ShowtimeType {
@@ -11,4 +12,21 @@ export class Showtime implements ShowtimeType {
   screenId: number
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })
+}
+@ObjectType()
+export class ShowtimeSimple {
+  id: number
+  startTime: string
+  movieId: number
+  @Field(() => Screen)
+  screen: Screen
+  // Todo fill all properties. To make it nullable add below.
+  // @Field(() => String, { nullable: true })
+}
+
+@ObjectType()
+export class GroupedShowtime {
+  date: string
+  @Field(() => [ShowtimeSimple])
+  showtimes: ShowtimeSimple[]
 }

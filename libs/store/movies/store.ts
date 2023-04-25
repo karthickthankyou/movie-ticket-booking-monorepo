@@ -33,6 +33,8 @@ const moviesSlice = createSlice({
       action: PayloadAction<MovieSliceType['selectedMovieId']>,
     ) => {
       state.selectedMovieId = action.payload
+      state.selectedShowtimeId = undefined
+      state.selectedSeats = []
     },
     addScreenId: (
       state,
@@ -45,6 +47,7 @@ const moviesSlice = createSlice({
       action: PayloadAction<MovieSliceType['selectedShowtimeId']>,
     ) => {
       state.selectedShowtimeId = action.payload
+      state.selectedSeats = []
     },
     addSeat: (state, action: PayloadAction<SeatRowcolumn>) => {
       const existingSelection = state.selectedSeats?.find(

@@ -344,6 +344,12 @@ export enum Genre {
   Western = 'WESTERN',
 }
 
+export type GroupedShowtime = {
+  __typename?: 'GroupedShowtime'
+  date: Scalars['String']
+  showtimes: Array<ShowtimeSimple>
+}
+
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>
   gt?: InputMaybe<Scalars['Int']>
@@ -669,7 +675,7 @@ export type Query = {
   seats: Array<Seat>
   showtime: Showtime
   showtimes: Array<Showtime>
-  showtimesInCinema: Array<Showtime>
+  showtimesInCinema: Array<GroupedShowtime>
   user: User
   users: Array<User>
 }
@@ -795,13 +801,7 @@ export type QueryShowtimesArgs = {
 
 export type QueryShowtimesInCinemaArgs = {
   cinemaId: Scalars['Int']
-  cursor?: InputMaybe<ShowtimeWhereUniqueInput>
-  distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
   movieId: Scalars['Int']
-  orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<ShowtimeWhereInput>
 }
 
 export type QueryUserArgs = {
@@ -1066,6 +1066,14 @@ export enum ShowtimeScalarFieldEnum {
   ScreenId = 'screenId',
   StartTime = 'startTime',
   UpdatedAt = 'updatedAt',
+}
+
+export type ShowtimeSimple = {
+  __typename?: 'ShowtimeSimple'
+  id: Scalars['Int']
+  movieId: Scalars['Int']
+  screen: Screen
+  startTime: Scalars['String']
 }
 
 export type ShowtimeWhereInput = {
@@ -1401,6 +1409,7 @@ export type MoviesPerCinemaQuery = {
     id: number
     director: string
     title: string
+    posterUrl: string
   }>
 }
 
@@ -1412,10 +1421,21 @@ export type ShowtimesInCinemaQueryVariables = Exact<{
 export type ShowtimesInCinemaQuery = {
   __typename?: 'Query'
   showtimesInCinema: Array<{
-    __typename?: 'Showtime'
-    id: number
-    startTime: any
-    screen: { __typename?: 'Screen'; id: number; number: number; price: number }
+    __typename?: 'GroupedShowtime'
+    date: string
+    showtimes: Array<{
+      __typename?: 'ShowtimeSimple'
+      id: number
+      startTime: string
+      screen: {
+        __typename?: 'Screen'
+        id: number
+        price: number
+        projectionType: ProjectionType
+        soundSystemType: SoundSystemType
+        number: number
+      }
+    }>
   }>
 }
 
@@ -1956,6 +1976,7 @@ export const MoviesPerCinemaDocument = /*#__PURE__*/ gql`
       id
       director
       title
+      posterUrl
     }
   }
 `
@@ -2013,12 +2034,17 @@ export type MoviesPerCinemaQueryResult = Apollo.QueryResult<
 export const ShowtimesInCinemaDocument = /*#__PURE__*/ gql`
   query showtimesInCinema($cinemaId: Int!, $movieId: Int!) {
     showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
-      id
-      startTime
-      screen {
+      date
+      showtimes {
         id
-        number
-        price
+        startTime
+        screen {
+          id
+          price
+          projectionType
+          soundSystemType
+          number
+        }
       }
     }
   }

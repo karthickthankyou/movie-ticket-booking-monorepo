@@ -343,6 +343,12 @@ export enum Genre {
   Western = 'WESTERN',
 }
 
+export type GroupedShowtime = {
+  __typename?: 'GroupedShowtime'
+  date: Scalars['String']
+  showtimes: Array<ShowtimeSimple>
+}
+
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>
   gt?: InputMaybe<Scalars['Int']>
@@ -668,7 +674,7 @@ export type Query = {
   seats: Array<Seat>
   showtime: Showtime
   showtimes: Array<Showtime>
-  showtimesInCinema: Array<Showtime>
+  showtimesInCinema: Array<GroupedShowtime>
   user: User
   users: Array<User>
 }
@@ -794,13 +800,7 @@ export type QueryShowtimesArgs = {
 
 export type QueryShowtimesInCinemaArgs = {
   cinemaId: Scalars['Int']
-  cursor?: InputMaybe<ShowtimeWhereUniqueInput>
-  distinct?: InputMaybe<Array<ShowtimeScalarFieldEnum>>
   movieId: Scalars['Int']
-  orderBy?: InputMaybe<Array<ShowtimeOrderByWithRelationInput>>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  where?: InputMaybe<ShowtimeWhereInput>
 }
 
 export type QueryUserArgs = {
@@ -1065,6 +1065,14 @@ export enum ShowtimeScalarFieldEnum {
   ScreenId = 'screenId',
   StartTime = 'startTime',
   UpdatedAt = 'updatedAt',
+}
+
+export type ShowtimeSimple = {
+  __typename?: 'ShowtimeSimple'
+  id: Scalars['Int']
+  movieId: Scalars['Int']
+  screen: Screen
+  startTime: Scalars['String']
 }
 
 export type ShowtimeWhereInput = {

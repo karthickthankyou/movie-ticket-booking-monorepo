@@ -370,7 +370,7 @@ const MapMarker = () => {
   )
 }
 
-const CurvedScreen = ({ width = 300, height = 10 }) => {
+export const CurvedScreen = ({ width = 300, height = 10 }) => {
   const curveOffset = height * 0.9 // Controls the curvature of the screen
 
   return (
@@ -398,9 +398,9 @@ export const Square = ({
 }) => {
   return (
     <div
-      className={`w-4 h-4  border rounded ${booked ? 'bg-yellow-500' : ''} ${
-        selected ? 'bg-primary-500' : ''
-      }`}
+      className={`w-4 h-4  border rounded ${
+        booked ? 'bg-gray-50 border-0' : ''
+      } ${selected ? 'bg-primary-500' : ''}`}
     />
   )
 }

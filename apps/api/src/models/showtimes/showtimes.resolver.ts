@@ -7,7 +7,7 @@ import {
   ResolveField,
 } from '@nestjs/graphql'
 import { ShowtimesService } from './showtimes.service'
-import { Showtime } from './entities/showtime.entity'
+import { GroupedShowtime, Showtime } from './entities/showtime.entity'
 import { FindManyShowtimeArgs, FindUniqueShowtimeArgs } from './dto/find.args'
 import { CreateShowtimeInput } from './dto/create-showtime.input'
 import { UpdateShowtimeInput } from './dto/update-showtime.input'
@@ -65,21 +65,37 @@ export class ShowtimesResolver {
     return this.showtimesService.findAll(args)
   }
 
-  @Query(() => [Showtime], { name: 'showtimesInCinema' })
+  @Query(() => [GroupedShowtime], { name: 'showtimesInCinema' })
   async showtimesInCinema(
-    @Args()
-    { cursor, distinct, orderBy, skip, take, where }: FindManyShowtimeArgs,
     @Args('cinemaId') cinemaId: number,
     @Args('movieId') movieId: number,
   ) {
-    const shows = await this.prisma.showtime.findMany({
-      cursor,
-      distinct,
-      orderBy,
-      skip,
-      take,
-      where: { ...where, movieId, screen: { cinemaId } },
-    })
+    // const shows = await this.prisma.showtime.findMany({
+    //   cursor,
+    //   distinct,
+    //   orderBy,
+    //   skip,
+    //   take,
+    //   where: { ...where, movieId, screen: { cinemaId } },
+    // })
+
+    const shows = await this.prisma.$queryRaw`
+    SELECT
+      DATE("startTime") AS date,
+     ARRAY_AGG(
+        json_build_object(
+          'id', "Showtime"."id",
+          'startTime', "startTime",
+          'screen', "Screen"
+        )
+      ) AS showtimes
+    FROM "Showtime"
+    JOIN "Screen" ON "Showtime"."screenId" = "Screen"."id"
+    WHERE "Showtime"."movieId" = ${movieId} AND "Screen"."cinemaId" = ${cinemaId}
+    GROUP BY DATE("startTime")
+    ORDER BY DATE("startTime");
+  `
+    console.log('shows', JSON.stringify(shows))
     return shows
   }
 

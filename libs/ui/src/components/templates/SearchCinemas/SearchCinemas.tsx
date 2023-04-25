@@ -2,10 +2,11 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { Map } from '../../organisms/Map'
 import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
-import { SearchBox, Square } from '../CreateCinema/CreateCinema'
+import { SearchBox, Square, CurvedScreen } from '../CreateCinema/CreateCinema'
 import { LngLatBounds, Marker, useMap } from 'react-map-gl'
 import {
   SearchCinemasQuery,
+  Showtime,
   namedOperations,
   useCreateBookingMutation,
   useMoviesPerCinemaLazyQuery,
@@ -22,13 +23,16 @@ import {
   addScreenId,
   addSeat,
   addShowtimeId,
-  resetMovies,
   resetSeats,
 } from '@showtime-org/store/movies/store'
 import { ShowtimeQuery } from '@showtime-org/network/src/generated'
 import { Button } from '../../atoms/Button'
 import { selectUid } from '@showtime-org/store/user'
 import { notification$ } from '@showtime-org/util/subjects'
+import { CinemaSelectCard } from '../../organisms/CinemaSelectCard'
+import { ShowtimeSelectCard } from '../../organisms/ShowtimeSelectCard'
+import { ShowtimesInCinemaQuery } from '@showtime-org/network/src/generated'
+import { format } from 'date-fns'
 
 export interface ISearchCinemasProps {}
 
@@ -137,7 +141,7 @@ export const MarkerText = ({ children }: { children: ReactNode }) => (
 export const BookingStepper = ({ cinemaId }: { cinemaId: number }) => {
   const { data, loading } = useMoviesPerCinemaQuery({ variables: { cinemaId } })
   return (
-    <div>
+    <div className="space-y-8">
       <SelectMovie cinemaId={cinemaId} />
       <SelectShowtimes cinemaId={cinemaId} />
       <SelectSeats />
@@ -156,20 +160,32 @@ export const SelectMovie = ({ cinemaId }: { cinemaId: number }) => {
   }, [cinemaId])
 
   const dispatch = useAppDispatch()
+  const selectedMovieId = useAppSelector(
+    (state) => state.movies.selectedMovieId,
+  )
 
   return (
     <div>
-      {data?.moviesPerCinema.map((movie) => (
-        <button onClick={() => dispatch(addMovieId(movie.id))}>
-          <div key={movie.id}>{movie.title}</div>
-        </button>
-      ))}
+      <div>Select movie</div>
+      <div className="grid grid-cols-3 gap-2">
+        {data?.moviesPerCinema.map((movie) => (
+          <button onClick={() => dispatch(addMovieId(movie.id))}>
+            <CinemaSelectCard
+              movie={movie}
+              selected={selectedMovieId === movie.id}
+            />
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
 
 export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
   const movieId = useAppSelector((state) => state.movies.selectedMovieId)
+  const selectedShowtimeId = useAppSelector(
+    (state) => state.movies.selectedShowtimeId,
+  )
 
   const [showtimesInCinema, { data, loading }] = useShowtimesInCinemaLazyQuery()
 
@@ -180,20 +196,38 @@ export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
 
   const dispatch = useAppDispatch()
 
+  console.log('data ', data)
+
   if (!movieId) return null
 
   return (
-    <div className="flex flex-col items-start">
-      {data?.showtimesInCinema.map((showtime) => (
-        <button
-          onClick={() => {
-            dispatch(addShowtimeId(showtime.id))
-            dispatch(addScreenId(showtime.screen.id))
-          }}
-        >
-          <div key={showtime.id}>{showtime.id}</div>
-        </button>
-      ))}
+    <div>
+      <div>Select showtime</div>
+      <div className="flex flex-col items-start gap-4">
+        {data?.showtimesInCinema.map((date) => (
+          <div key={date.date}>
+            <div className="mb-2 text-xs font-semibold">
+              {format(new Date(+date.date), 'PPPP')}
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {date.showtimes.map((showtime) => (
+                <button
+                  onClick={() => {
+                    dispatch(addShowtimeId(showtime.id))
+                    dispatch(addScreenId(showtime.screen.id))
+                  }}
+                >
+                  <ShowtimeSelectCard
+                    selected={showtime.id === selectedShowtimeId}
+                    key={showtime.id}
+                    showtime={showtime}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -248,32 +282,34 @@ export const SelectSeats = () => {
 
   return (
     <div>
-      helo {selectedShowtimeId}
-      {Object.entries(rows).map(([rowNumber, seatsInRow]) => (
-        <div key={rowNumber} className="flex gap-1 mb-1">
-          {seatsInRow.map((seat) => (
-            <button
-              disabled={Boolean(seat?.booked)}
-              onClick={() => {
-                console.log('Seat ', seat)
-                dispatch(addSeat({ column: seat.column, row: seat.row }))
-              }}
-            >
-              <Square
-                key={`${seat.row}-${seat.column}`}
-                booked={Boolean(seat?.booked)}
-                selected={Boolean(
-                  selectedSeats?.find(
-                    (selectedSeat) =>
-                      seat.column === selectedSeat.column &&
-                      seat.row === selectedSeat.row,
-                  ),
-                )}
-              />
-            </button>
-          ))}
-        </div>
-      ))}
+      <div>
+        {Object.entries(rows).map(([rowNumber, seatsInRow]) => (
+          <div key={rowNumber} className="flex gap-1 mb-1">
+            {seatsInRow.map((seat) => (
+              <button
+                disabled={Boolean(seat?.booked)}
+                onClick={() => {
+                  console.log('Seat ', seat)
+                  dispatch(addSeat({ column: seat.column, row: seat.row }))
+                }}
+              >
+                <Square
+                  key={`${seat.row}-${seat.column}`}
+                  booked={Boolean(seat?.booked)}
+                  selected={Boolean(
+                    selectedSeats?.find(
+                      (selectedSeat) =>
+                        seat.column === selectedSeat.column &&
+                        seat.row === selectedSeat.row,
+                    ),
+                  )}
+                />
+              </button>
+            ))}
+          </div>
+        ))}
+        <CurvedScreen />
+      </div>
       {selectedSeats.length ? (
         <Button
           loading={createBookingLoading}
