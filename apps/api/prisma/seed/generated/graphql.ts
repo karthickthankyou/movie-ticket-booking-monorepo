@@ -520,6 +520,7 @@ export type Mutation = {
   removeScreen: Screen
   removeSeat: Seat
   removeShowtime: Showtime
+  removeTicket: Ticket
   removeUser: User
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
@@ -604,6 +605,10 @@ export type MutationRemoveShowtimeArgs = {
   where?: InputMaybe<ShowtimeWhereUniqueInput>
 }
 
+export type MutationRemoveTicketArgs = {
+  where?: InputMaybe<TicketWhereUniqueInput>
+}
+
 export type MutationRemoveUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
 }
@@ -675,6 +680,8 @@ export type Query = {
   showtime: Showtime
   showtimes: Array<Showtime>
   showtimesInCinema: Array<GroupedShowtime>
+  ticket: Ticket
+  tickets: Array<Ticket>
   user: User
   users: Array<User>
 }
@@ -801,6 +808,19 @@ export type QueryShowtimesArgs = {
 export type QueryShowtimesInCinemaArgs = {
   cinemaId: Scalars['Int']
   movieId: Scalars['Int']
+}
+
+export type QueryTicketArgs = {
+  where?: InputMaybe<TicketWhereUniqueInput>
+}
+
+export type QueryTicketsArgs = {
+  cursor?: InputMaybe<TicketWhereUniqueInput>
+  distinct?: InputMaybe<Array<TicketScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<TicketOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<TicketWhereInput>
 }
 
 export type QueryUserArgs = {
@@ -1157,6 +1177,12 @@ export type TicketRelationFilter = {
   isNot?: InputMaybe<TicketWhereInput>
 }
 
+export enum TicketScalarFieldEnum {
+  Id = 'id',
+  QrCode = 'qrCode',
+  Uid = 'uid',
+}
+
 export type TicketWhereInput = {
   AND?: InputMaybe<Array<TicketWhereInput>>
   NOT?: InputMaybe<Array<TicketWhereInput>>
@@ -1166,6 +1192,10 @@ export type TicketWhereInput = {
   qrCode?: InputMaybe<StringFilter>
   uid?: InputMaybe<StringFilter>
   user?: InputMaybe<UserRelationFilter>
+}
+
+export type TicketWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
 }
 
 export type UpdateBookingInput = {

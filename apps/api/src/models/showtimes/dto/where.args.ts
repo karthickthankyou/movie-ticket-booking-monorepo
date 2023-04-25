@@ -5,10 +5,9 @@ import { BookingListRelationFilter } from 'src/models/bookings/dto/where.args'
 import { MovieRelationFilter } from 'src/models/movies/dto/where.args'
 import { ScreenRelationFilter } from 'src/models/screens/dto/where.args'
 
+//implements Required<Prisma.ShowtimeWhereUniqueInput>
 @InputType()
-export class ShowtimeWhereUniqueInput
-  implements Required<Prisma.ShowtimeWhereUniqueInput>
-{
+export class ShowtimeWhereUniqueInput {
   @Field(() => Number, { nullable: true })
   id: number
 }

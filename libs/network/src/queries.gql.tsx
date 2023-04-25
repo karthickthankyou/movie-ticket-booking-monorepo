@@ -177,3 +177,27 @@ export const createBooking = gql`
     }
   }
 `
+
+export const tickets = gql`
+  query tickets(
+    $distinct: [TicketScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: TicketWhereUniqueInput
+    $orderBy: [TicketOrderByWithRelationInput!]
+    $where: TicketWhereInput
+  ) {
+    tickets(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      uid
+      qrCode
+      id
+    }
+  }
+`

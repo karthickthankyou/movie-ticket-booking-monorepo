@@ -521,6 +521,7 @@ export type Mutation = {
   removeScreen: Screen
   removeSeat: Seat
   removeShowtime: Showtime
+  removeTicket: Ticket
   removeUser: User
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
@@ -605,6 +606,10 @@ export type MutationRemoveShowtimeArgs = {
   where?: InputMaybe<ShowtimeWhereUniqueInput>
 }
 
+export type MutationRemoveTicketArgs = {
+  where?: InputMaybe<TicketWhereUniqueInput>
+}
+
 export type MutationRemoveUserArgs = {
   where?: InputMaybe<UserWhereUniqueInput>
 }
@@ -676,6 +681,8 @@ export type Query = {
   showtime: Showtime
   showtimes: Array<Showtime>
   showtimesInCinema: Array<GroupedShowtime>
+  ticket: Ticket
+  tickets: Array<Ticket>
   user: User
   users: Array<User>
 }
@@ -802,6 +809,19 @@ export type QueryShowtimesArgs = {
 export type QueryShowtimesInCinemaArgs = {
   cinemaId: Scalars['Int']
   movieId: Scalars['Int']
+}
+
+export type QueryTicketArgs = {
+  where?: InputMaybe<TicketWhereUniqueInput>
+}
+
+export type QueryTicketsArgs = {
+  cursor?: InputMaybe<TicketWhereUniqueInput>
+  distinct?: InputMaybe<Array<TicketScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<TicketOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<TicketWhereInput>
 }
 
 export type QueryUserArgs = {
@@ -1158,6 +1178,12 @@ export type TicketRelationFilter = {
   isNot?: InputMaybe<TicketWhereInput>
 }
 
+export enum TicketScalarFieldEnum {
+  Id = 'id',
+  QrCode = 'qrCode',
+  Uid = 'uid',
+}
+
 export type TicketWhereInput = {
   AND?: InputMaybe<Array<TicketWhereInput>>
   NOT?: InputMaybe<Array<TicketWhereInput>>
@@ -1167,6 +1193,10 @@ export type TicketWhereInput = {
   qrCode?: InputMaybe<StringFilter>
   uid?: InputMaybe<StringFilter>
   user?: InputMaybe<UserRelationFilter>
+}
+
+export type TicketWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
 }
 
 export type UpdateBookingInput = {
@@ -1469,6 +1499,27 @@ export type CreateBookingMutation = {
   createBooking: { __typename?: 'Ticket'; id: number }
 }
 
+export type TicketsQueryVariables = Exact<{
+  distinct?: InputMaybe<Array<TicketScalarFieldEnum> | TicketScalarFieldEnum>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<TicketWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<TicketOrderByWithRelationInput> | TicketOrderByWithRelationInput
+  >
+  where?: InputMaybe<TicketWhereInput>
+}>
+
+export type TicketsQuery = {
+  __typename?: 'Query'
+  tickets: Array<{
+    __typename?: 'Ticket'
+    uid: string
+    qrCode: string
+    id: number
+  }>
+}
+
 export const namedOperations = {
   Query: {
     findCinema: 'findCinema',
@@ -1477,6 +1528,7 @@ export const namedOperations = {
     moviesPerCinema: 'moviesPerCinema',
     showtimesInCinema: 'showtimesInCinema',
     showtime: 'showtime',
+    tickets: 'tickets',
   },
   Mutation: {
     createCinema: 'createCinema',
@@ -2210,4 +2262,76 @@ export type CreateBookingMutationResult =
 export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<
   CreateBookingMutation,
   CreateBookingMutationVariables
+>
+export const TicketsDocument = /*#__PURE__*/ gql`
+  query tickets(
+    $distinct: [TicketScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: TicketWhereUniqueInput
+    $orderBy: [TicketOrderByWithRelationInput!]
+    $where: TicketWhereInput
+  ) {
+    tickets(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      uid
+      qrCode
+      id
+    }
+  }
+`
+
+/**
+ * __useTicketsQuery__
+ *
+ * To run a query within a React component, call `useTicketsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTicketsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTicketsQuery({
+ *   variables: {
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useTicketsQuery(
+  baseOptions?: Apollo.QueryHookOptions<TicketsQuery, TicketsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<TicketsQuery, TicketsQueryVariables>(
+    TicketsDocument,
+    options,
+  )
+}
+export function useTicketsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TicketsQuery,
+    TicketsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<TicketsQuery, TicketsQueryVariables>(
+    TicketsDocument,
+    options,
+  )
+}
+export type TicketsQueryHookResult = ReturnType<typeof useTicketsQuery>
+export type TicketsLazyQueryHookResult = ReturnType<typeof useTicketsLazyQuery>
+export type TicketsQueryResult = Apollo.QueryResult<
+  TicketsQuery,
+  TicketsQueryVariables
 >

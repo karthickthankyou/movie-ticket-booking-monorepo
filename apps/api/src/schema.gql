@@ -236,6 +236,8 @@ type Query {
   showtime(where: ShowtimeWhereUniqueInput): Showtime!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   booking(where: BookingWhereUniqueInput): Booking!
+  tickets(where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int, distinct: [TicketScalarFieldEnum!]): [Ticket!]!
+  ticket(where: TicketWhereUniqueInput): Ticket!
 }
 
 input UserWhereInput {
@@ -789,6 +791,16 @@ enum BookingScalarFieldEnum {
   ticketId
 }
 
+input TicketWhereUniqueInput {
+  id: Int
+}
+
+enum TicketScalarFieldEnum {
+  id
+  uid
+  qrCode
+}
+
 type Mutation {
   login(credentials: LoginInput!): LoginOutput!
   register(credentials: RegisterInput!): RegisterOutput!
@@ -818,6 +830,7 @@ type Mutation {
   createBooking(createBookingInput: CreateBookingInput!): Ticket!
   updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
   removeBooking(where: BookingWhereUniqueInput): Booking!
+  removeTicket(where: TicketWhereUniqueInput): Ticket!
 }
 
 input LoginInput {

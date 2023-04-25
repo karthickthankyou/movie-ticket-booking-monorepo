@@ -16,6 +16,7 @@ import { ShowtimesModule } from './models/showtimes/showtimes.module'
 import { BookingsModule } from './models/bookings/bookings.module'
 import { AuthModule } from './common/auth/auth.module'
 import { FirebaseModule } from './common/firebase/firebase.module'
+import { TicketsModule } from './models/tickets/tickets.module'
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { FirebaseModule } from './common/firebase/firebase.module'
     MoviesModule,
     ShowtimesModule,
     BookingsModule,
+    TicketsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
