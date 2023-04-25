@@ -1149,6 +1149,7 @@ export type StringFilter = {
 
 export type Ticket = {
   __typename?: 'Ticket'
+  bookings: Array<Booking>
   id: Scalars['Int']
   qrCode: Scalars['String']
   uid: Scalars['String']

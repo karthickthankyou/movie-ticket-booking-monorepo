@@ -198,6 +198,27 @@ export const tickets = gql`
       uid
       qrCode
       id
+      bookings {
+        row
+        column
+        showtime {
+          screen {
+            seats {
+              row
+              column
+            }
+            number
+            cinema {
+              name
+            }
+          }
+          startTime
+          movie {
+            title
+            posterUrl
+          }
+        }
+      }
     }
   }
 `

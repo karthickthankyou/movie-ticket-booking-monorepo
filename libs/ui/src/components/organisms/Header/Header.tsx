@@ -18,7 +18,7 @@ import { IBrandProps } from '../../atoms/Brand/Brand'
 export type MenuItem = [string, string]
 const MENUITEMS: MenuItem[] = [
   ['Search', '/cinemas'],
-  ['tickets', '/tickets'],
+  ['Tickets', '/tickets'],
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,

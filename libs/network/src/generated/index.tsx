@@ -1150,6 +1150,7 @@ export type StringFilter = {
 
 export type Ticket = {
   __typename?: 'Ticket'
+  bookings: Array<Booking>
   id: Scalars['Int']
   qrCode: Scalars['String']
   uid: Scalars['String']
@@ -1517,6 +1518,22 @@ export type TicketsQuery = {
     uid: string
     qrCode: string
     id: number
+    bookings: Array<{
+      __typename?: 'Booking'
+      row: number
+      column: number
+      showtime: {
+        __typename?: 'Showtime'
+        startTime: any
+        screen: {
+          __typename?: 'Screen'
+          number: number
+          seats: Array<{ __typename?: 'Seat'; row: number; column: number }>
+          cinema: { __typename?: 'Cinema'; name: string }
+        }
+        movie: { __typename?: 'Movie'; title: string; posterUrl: string }
+      }
+    }>
   }>
 }
 
@@ -2283,6 +2300,27 @@ export const TicketsDocument = /*#__PURE__*/ gql`
       uid
       qrCode
       id
+      bookings {
+        row
+        column
+        showtime {
+          screen {
+            seats {
+              row
+              column
+            }
+            number
+            cinema {
+              name
+            }
+          }
+          startTime
+          movie {
+            title
+            posterUrl
+          }
+        }
+      }
     }
   }
 `

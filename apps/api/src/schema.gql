@@ -182,6 +182,7 @@ type Ticket {
   id: Int!
   uid: String!
   qrCode: String!
+  bookings: [Booking!]!
 }
 
 type LoginOutput {
