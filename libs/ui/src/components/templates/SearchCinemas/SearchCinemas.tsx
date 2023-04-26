@@ -121,7 +121,7 @@ export const SetCity = () => {
   const [open, setOpen] = useState(() => !selectedCityId)
   const dispatch = useAppDispatch()
 
-  useKeypress(['l'], () => setOpen(true))
+  useKeypress(['l'], () => setOpen((state) => !state))
 
   const { current: map } = useMap()
   return (
