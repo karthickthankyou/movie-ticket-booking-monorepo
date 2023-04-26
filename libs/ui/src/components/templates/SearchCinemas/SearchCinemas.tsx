@@ -40,7 +40,11 @@ import { notification$ } from '@showtime-org/util/subjects'
 import { CinemaSelectCard } from '../../organisms/CinemaSelectCard'
 import { ShowtimeSelectCard } from '../../organisms/ShowtimeSelectCard'
 import { format } from 'date-fns'
-import { IconArmchair, IconMapPinFilled } from '@tabler/icons-react'
+import {
+  IconArmchair,
+  IconKeyboard,
+  IconMapPinFilled,
+} from '@tabler/icons-react'
 import { useKeypress } from '@showtime-org/hooks'
 import { Loader, LoaderPanel } from '../../molecules/Loader'
 import { SeatNumber } from '../../molecules/SeatNumber'
@@ -71,18 +75,19 @@ export const cities = [
   { id: 1, name: 'சென்னை', englishName: 'Chennai', lat: 13.0827, lng: 80.2707 },
   {
     id: 2,
-    name: 'തിരുവനന്തപുരം',
-    englishName: 'Thiruvananthapuram',
-    lat: 8.5241,
-    lng: 76.9366,
-  },
-  {
-    id: 3,
     name: 'ಬೆಂಗಳೂರು',
     englishName: 'Bengaluru',
     lat: 12.9716,
     lng: 77.5946,
   },
+  {
+    id: 3,
+    name: 'തിരുവനന്തപുരം',
+    englishName: 'Trivandrum',
+    lat: 8.5241,
+    lng: 76.9366,
+  },
+
   {
     id: 4,
     name: 'అమరావతి',
@@ -121,8 +126,14 @@ export const SetCity = () => {
   const { current: map } = useMap()
   return (
     <div>
-      <button onClick={() => setOpen(true)}>
+      <button
+        className="flex flex-col items-center gap-1"
+        onClick={() => setOpen(true)}
+      >
         <IconMapPinFilled />
+        <div className="flex items-center justify-center w-4 h-4 border rounded shadow">
+          L
+        </div>
       </button>
       <Dialog open={open} setOpen={setOpen} title={'Select city'}>
         <div className="grid grid-cols-3 gap-4 ">
@@ -599,10 +610,9 @@ export const SelectSeats = () => {
 
   return (
     <div>
-      {loading ? <LoaderPanel /> : null}
-
       <div>
         <StaightMovieScreen />
+        {loading ? <LoaderPanel /> : null}
         <div className="flex justify-center overflow-x-auto ">
           <div>
             {Object.entries(rows).map(([rowNumber, seatsInRow]) => (
@@ -704,7 +714,7 @@ export const Success = () => {
   return (
     <div className="flex flex-col items-start justify-center py-2 ">
       <h2 className="mb-4 text-2xl font-bold ">
-        Congratulations! Your ticket is booked.
+        🎉🎉🎉 Congratulations! Your ticket is booked. 🎉🎉🎉
       </h2>
       <p className="text-lg text-gray-700">
         Check your{' '}

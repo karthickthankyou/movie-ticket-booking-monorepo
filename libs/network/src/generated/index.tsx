@@ -684,6 +684,7 @@ export type Query = {
   showtimesInCinema: Array<GroupedShowtime>
   ticket: Ticket
   tickets: Array<Ticket>
+  ticketsCount: AggregateCountOutput
   user: User
   users: Array<User>
 }
@@ -826,6 +827,10 @@ export type QueryTicketsArgs = {
   orderBy?: InputMaybe<Array<TicketOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<TicketWhereInput>
+}
+
+export type QueryTicketsCountArgs = {
   where?: InputMaybe<TicketWhereInput>
 }
 
@@ -1538,6 +1543,7 @@ export type TicketsQueryVariables = Exact<{
 
 export type TicketsQuery = {
   __typename?: 'Query'
+  ticketsCount: { __typename?: 'AggregateCountOutput'; count: number }
   tickets: Array<{
     __typename?: 'Ticket'
     uid: string
@@ -2374,6 +2380,9 @@ export const TicketsDocument = /*#__PURE__*/ gql`
     $orderBy: [TicketOrderByWithRelationInput!]
     $where: TicketWhereInput
   ) {
+    ticketsCount(where: $where) {
+      count
+    }
     tickets(
       distinct: $distinct
       skip: $skip

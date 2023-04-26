@@ -197,6 +197,9 @@ export const tickets = gql`
     $orderBy: [TicketOrderByWithRelationInput!]
     $where: TicketWhereInput
   ) {
+    ticketsCount(where: $where) {
+      count
+    }
     tickets(
       distinct: $distinct
       skip: $skip

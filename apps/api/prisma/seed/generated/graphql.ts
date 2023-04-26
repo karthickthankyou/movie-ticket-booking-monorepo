@@ -683,6 +683,7 @@ export type Query = {
   showtimesInCinema: Array<GroupedShowtime>
   ticket: Ticket
   tickets: Array<Ticket>
+  ticketsCount: AggregateCountOutput
   user: User
   users: Array<User>
 }
@@ -825,6 +826,10 @@ export type QueryTicketsArgs = {
   orderBy?: InputMaybe<Array<TicketOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<TicketWhereInput>
+}
+
+export type QueryTicketsCountArgs = {
   where?: InputMaybe<TicketWhereInput>
 }
 

@@ -19,9 +19,10 @@ export const Pagination = ({
     rowsPerPage={rowsPerPage}
     onRowsPerPageChange={onRowsPerPageChange}
     classes={{
-      root: 'mt-4',
+      root: 'mt-4 flex justify-center border-0  ',
       displayedRows: 'font-sans',
       selectLabel: 'font-sans',
+      toolbar: 'p-0',
     }}
     {...props}
   />

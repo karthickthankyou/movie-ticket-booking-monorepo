@@ -14,34 +14,49 @@ import {
   LoginMutation,
   LoginMutationVariables,
 } from '@showtime-org/network/src/generated'
+import { getAuth } from 'firebase/auth'
 
 export interface IApolloProviderProps {
   children: ReactNode
 }
 
+const getUpToDateToken = async (token?: string) => {
+  if (!token) {
+    return null
+  }
+  const decoded: any = jwtDecode(token)
+  const currentTime = Date.now() / 1000
+
+  // Refresh the token if it's expired or about to expire (e.g., 5 minutes before expiration)
+  if (decoded?.exp && decoded.exp - currentTime < 300) {
+    const auth = getAuth()
+    const user = auth.currentUser
+    return user ? user.getIdToken(true) : null
+  }
+
+  return token
+}
+
 export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   const user = useAppSelector(selectUser)
-  console.log('User: ', user)
+
   //   Create an http link
   const httpLink = createHttpLink({
     uri: 'http://localhost:3000/graphql',
   })
 
   const authLink = setContext(async (_, { headers }) => {
-    if (!user.token) {
+    const token: string | null = await getUpToDateToken(user?.token)
+    if (!token) {
       return {
         headers,
       }
     }
-    // return the headers to the context so httpLink can read them
-    const decoded: any = jwtDecode(user.token || '')
-
-    console.log('Auth running...', decoded, new Date(decoded?.exp * 1000))
 
     return {
       headers: {
         ...headers,
-        authorization: user.token ? `Bearer ${user.token}` : '',
+        authorization: user.token ? `Bearer ${token}` : '',
       },
     }
   })
@@ -55,41 +70,4 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   })
 
   return <Provider client={apolloClient}>{children}</Provider>
-}
-
-export async function createAuthenticatedClient() {
-  const apolloClient = new ApolloClient({
-    uri: 'http://localhost:3000/graphql',
-    cache: new InMemoryCache(),
-  })
-
-  const { data } = await apolloClient.mutate<
-    LoginMutation,
-    LoginMutationVariables
-  >({
-    mutation: LoginDocument,
-    variables: {
-      credentials: { email: 'admin@email.com', password: '123456' },
-    },
-  })
-
-  const idToken = data?.login.idToken
-
-  const authLink = setContext(async (_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: idToken ? `Bearer ${idToken}` : '',
-      },
-    }
-  })
-
-  const httpLink = createHttpLink({
-    uri: 'http://localhost:3000/graphql',
-  })
-
-  return new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
-  })
 }

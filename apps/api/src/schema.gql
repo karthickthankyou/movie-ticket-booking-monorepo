@@ -246,6 +246,7 @@ type Query {
   booking(where: BookingWhereUniqueInput): Booking!
   tickets(where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int, distinct: [TicketScalarFieldEnum!]): [Ticket!]!
   ticket(where: TicketWhereUniqueInput): Ticket!
+  ticketsCount(where: TicketWhereInput): AggregateCountOutput!
 }
 
 input UserWhereInput {

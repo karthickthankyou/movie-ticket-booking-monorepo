@@ -11,6 +11,8 @@ import { Ticket } from './entities/ticket.entity'
 import { FindManyTicketArgs, FindUniqueTicketArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Booking } from '../bookings/entities/booking.entity'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { TicketWhereInput } from './dto/where.args'
 
 @Resolver(() => Ticket)
 export class TicketsResolver {
@@ -37,5 +39,19 @@ export class TicketsResolver {
   @ResolveField(() => [Booking])
   bookings(@Parent() parent: Ticket) {
     return this.prisma.booking.findMany({ where: { ticketId: parent.id } })
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'ticketsCount',
+  })
+  async ticketsCount(
+    @Args('where', { nullable: true })
+    where: TicketWhereInput,
+  ) {
+    const tickets = await this.prisma.ticket.aggregate({
+      _count: { _all: true },
+      where,
+    })
+    return { count: tickets._count._all }
   }
 }

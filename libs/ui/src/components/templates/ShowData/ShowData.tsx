@@ -14,8 +14,9 @@ export interface IShowDataProps {
     setTake: (take: number) => void
   }
   children?: ReactNode
+  className?: string
 }
-export const NoCampaignResults = () => {
+export const NoResults = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 h-60 bg-gray-50">
       <IconBox className="w-10 h-10" />
@@ -35,17 +36,16 @@ export const ShowData = ({
     totalCount,
   },
   children,
+  className = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
 }: IShowDataProps) => {
   return (
     <div>
       {loading && <LoaderPanel />}
-      {!loading && resultCount === 0 && <NoCampaignResults />}
+      {!loading && resultCount === 0 && <NoResults />}
 
       {!loading && resultCount > 0 && (
         <div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {children}
-          </div>
+          <div className={className}>{children}</div>
           <Pagination
             count={totalCount || 0}
             page={(skip || 0) / (take || 12)}
