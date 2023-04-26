@@ -9,6 +9,7 @@ type SeatRowcolumn = {
 }
 
 export type MovieSliceType = {
+  selectedCityId?: number
   selectedCinemaId?: number
   selectedMovieId?: number
   selectedScreenId?: number
@@ -22,6 +23,12 @@ const moviesSlice = createSlice({
   name: 'movies',
   initialState,
   reducers: {
+    addCityId: (
+      state,
+      action: PayloadAction<MovieSliceType['selectedCityId']>,
+    ) => {
+      state.selectedCityId = action.payload
+    },
     addCinemaId: (
       state,
       action: PayloadAction<MovieSliceType['selectedCinemaId']>,
@@ -79,6 +86,7 @@ const moviesSlice = createSlice({
 })
 
 export const {
+  addCityId,
   addMovieId,
   addScreenId,
   addShowtimeId,

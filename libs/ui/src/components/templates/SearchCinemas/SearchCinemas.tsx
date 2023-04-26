@@ -1,12 +1,11 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { Map } from '../../organisms/Map'
 import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
-import { SearchBox, Square, CurvedScreen } from '../CreateCinema/CreateCinema'
+import { Square, CurvedScreen } from '../CreateCinema/CreateCinema'
 import { LngLatBounds, Marker, useMap } from 'react-map-gl'
 import {
   SearchCinemasQuery,
-  Showtime,
   namedOperations,
   useCreateBookingMutation,
   useMoviesPerCinemaLazyQuery,
@@ -19,6 +18,7 @@ import { BrandIcon } from '../../atoms/BrandIcon'
 import { Dialog } from '../../atoms/Dialog'
 import { useAppDispatch, useAppSelector } from '@showtime-org/store'
 import {
+  addCityId,
   addMovieId,
   addScreenId,
   addSeat,
@@ -31,8 +31,12 @@ import { selectUid } from '@showtime-org/store/user'
 import { notification$ } from '@showtime-org/util/subjects'
 import { CinemaSelectCard } from '../../organisms/CinemaSelectCard'
 import { ShowtimeSelectCard } from '../../organisms/ShowtimeSelectCard'
-import { ShowtimesInCinemaQuery } from '@showtime-org/network/src/generated'
 import { format } from 'date-fns'
+import {
+  IconLocation,
+  IconLocationBroken,
+  IconMapPinFilled,
+} from '@tabler/icons-react'
 
 export interface ISearchCinemasProps {}
 
@@ -46,13 +50,92 @@ export const SearchCinemas = ({}: ISearchCinemasProps) => {
       <DisplayAllKitchens />
 
       <Panel position="left-top">
-        <SearchBox
-          onChange={({ lat, lng }) => {
-            console.log(lat, lng)
-          }}
-        />
+        <SetCity />
       </Panel>
     </Map>
+  )
+}
+
+export const CityButton = ({ children }: { children: ReactNode }) => {
+  return <button className="p-3 rounded hover:shadow-2xl">{children}</button>
+}
+
+export const cities = [
+  { id: 1, name: 'சென்னை', englishName: 'Chennai', lat: 13.0827, lng: 80.2707 },
+  {
+    id: 2,
+    name: 'തിരുവനന്തപുരം',
+    englishName: 'Thiruvananthapuram',
+    lat: 8.5241,
+    lng: 76.9366,
+  },
+  {
+    id: 3,
+    name: 'ಬೆಂಗಳೂರು',
+    englishName: 'Bengaluru',
+    lat: 12.9716,
+    lng: 77.5946,
+  },
+  {
+    id: 4,
+    name: 'అమరావతి',
+    englishName: 'Amaravati',
+    lat: 16.5062,
+    lng: 80.648,
+  },
+  {
+    id: 5,
+    name: 'హైదరాబాద్',
+    englishName: 'Hyderabad',
+    lat: 17.385,
+    lng: 78.4867,
+  },
+  { id: 7, name: 'मुंबई', englishName: 'Mumbai', lat: 19.076, lng: 72.8777 },
+  { id: 8, name: 'पुणे', englishName: 'Pune', lat: 18.5204, lng: 73.8567 },
+  { id: 9, name: 'কলকাতা', englishName: 'Kolkata', lat: 22.5726, lng: 88.3639 },
+  {
+    id: 6,
+    name: 'नयी दिल्ली',
+    englishName: 'New Delhi',
+    lat: 28.6139,
+    lng: 77.209,
+  },
+
+  { id: 10, name: 'जयपुर', englishName: 'Jaipur', lat: 26.9124, lng: 75.7873 },
+]
+
+export const SetCity = () => {
+  const selectedCityId = useAppSelector((state) => state.movies.selectedCityId)
+  const [open, setOpen] = useState(() => !selectedCityId)
+  const dispatch = useAppDispatch()
+
+  const { current: map } = useMap()
+  return (
+    <div>
+      <button onClick={() => setOpen(true)}>
+        <IconMapPinFilled />
+      </button>
+      <Dialog open={open} setOpen={setOpen} title={'Select city'}>
+        <div className="grid grid-cols-3 gap-4 ">
+          {cities.map((city) => (
+            <button
+              onClick={() => {
+                dispatch(addCityId(city.id))
+                map?.flyTo({
+                  center: { lat: city.lat, lng: city.lng },
+                  essential: true,
+                })
+              }}
+              className="p-3 rounded hover:shadow-2xl"
+              key={city.id}
+            >
+              <div className="text-lg">{city.name}</div>{' '}
+              <div className="text-xs text-gray-600">{city.englishName}</div>{' '}
+            </button>
+          ))}
+        </div>
+      </Dialog>
+    </div>
   )
 }
 
