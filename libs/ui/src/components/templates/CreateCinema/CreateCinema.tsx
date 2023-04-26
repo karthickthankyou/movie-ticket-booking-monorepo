@@ -370,6 +370,14 @@ const MapMarker = () => {
   )
 }
 
+export const StaightMovieScreen = () => {
+  return (
+    <div className="mb-4">
+      <div className="h-4 bg-gradient-to-t from-transparent to-gray"></div>
+      <div className="text-xs text-center text-gray-500">Eyes this way</div>
+    </div>
+  )
+}
 export const CurvedScreen = ({ width = 300, height = 10 }) => {
   const curveOffset = height * 0.9 // Controls the curvature of the screen
 
