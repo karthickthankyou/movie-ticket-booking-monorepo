@@ -8,6 +8,7 @@ import { storage } from '@showtime-org/network/src/config/firebase'
 import { format } from 'date-fns'
 import { Dialog } from '../../atoms/Dialog'
 import { Button } from '../../atoms/Button'
+import { LoaderPanel } from '../../molecules/Loader'
 
 export interface ITicketsProps {}
 
@@ -23,15 +24,21 @@ async function getImageUrl(path: string): Promise<string> {
 
 export const Tickets = ({}: ITicketsProps) => {
   const uid = useAppSelector(selectUid)
-  const [getTickets, { data }] = useTicketsLazyQuery()
+  const [getTickets, { data, loading }] = useTicketsLazyQuery()
 
   useEffect(() => {
     if (uid) {
-      getTickets({ variables: { where: { uid: { equals: uid } } } })
+      getTickets({
+        variables: { where: { uid: { equals: uid } } },
+      })
     }
   }, [uid])
 
   const [open, setOpen] = useState(false)
+
+  if (loading) {
+    return <LoaderPanel />
+  }
 
   return (
     <div className="grid grid-cols-3 gap-6">
