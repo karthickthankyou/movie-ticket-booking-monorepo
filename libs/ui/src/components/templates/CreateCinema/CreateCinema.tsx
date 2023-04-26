@@ -373,7 +373,11 @@ const MapMarker = () => {
 export const StaightMovieScreen = () => {
   return (
     <div className="mb-4">
-      <div className="h-4 bg-gradient-to-t from-transparent to-gray"></div>
+      <div className="h-0.5 bg-gray rounded"></div>
+      <div className="flex ">
+        <div className="flex-1 h-4 bg-gradient-to-tr from-transparent via-transparent to-gray" />
+        <div className="flex-1 h-4 bg-gradient-to-tl from-transparent via-transparent to-gray" />
+      </div>
       <div className="text-xs text-center text-gray-500">Eyes this way</div>
     </div>
   )

@@ -41,7 +41,7 @@ export const Tickets = ({}: ITicketsProps) => {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
       {data?.tickets.map((ticket) => (
         <div key={ticket.id} className="max-w-md">
           <Dialog open={open} setOpen={setOpen} title={'QR Code'}>
@@ -104,15 +104,20 @@ export const Tickets = ({}: ITicketsProps) => {
 
 export const QRCode = ({ url }: { url: string }) => {
   const [picUrl, setPicUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     async function fetchImageUrl() {
+      setLoading(true)
       const imageUrl = await getImageUrl(url)
+      setLoading(false)
       setPicUrl(imageUrl)
     }
 
     fetchImageUrl()
   }, [url])
+
+  if (loading) return <LoaderPanel />
 
   return <Image width={200} height={200} src={picUrl || ''} alt={'ticket'} />
 }

@@ -603,32 +603,35 @@ export const SelectSeats = () => {
 
       <div>
         <StaightMovieScreen />
-
-        {Object.entries(rows).map(([rowNumber, seatsInRow]) => (
-          <div key={rowNumber} className="flex gap-1 mt-1">
-            {seatsInRow.map((seat) => (
-              <button
-                key={`${seat.row}-${seat.column}`}
-                disabled={Boolean(seat?.booked)}
-                onClick={() => {
-                  dispatch(addSeat({ column: seat.column, row: seat.row }))
-                }}
-              >
-                <Square
-                  key={`${seat.row}-${seat.column}`}
-                  booked={Boolean(seat?.booked)}
-                  selected={Boolean(
-                    selectedSeats?.find(
-                      (selectedSeat) =>
-                        seat.column === selectedSeat.column &&
-                        seat.row === selectedSeat.row,
-                    ),
-                  )}
-                />
-              </button>
+        <div className="flex justify-center overflow-x-auto ">
+          <div>
+            {Object.entries(rows).map(([rowNumber, seatsInRow]) => (
+              <div key={rowNumber} className="flex gap-1 mt-1">
+                {seatsInRow.map((seat) => (
+                  <button
+                    key={`${seat.row}-${seat.column}`}
+                    disabled={Boolean(seat?.booked)}
+                    onClick={() => {
+                      dispatch(addSeat({ column: seat.column, row: seat.row }))
+                    }}
+                  >
+                    <Square
+                      key={`${seat.row}-${seat.column}`}
+                      booked={Boolean(seat?.booked)}
+                      selected={Boolean(
+                        selectedSeats?.find(
+                          (selectedSeat) =>
+                            seat.column === selectedSeat.column &&
+                            seat.row === selectedSeat.row,
+                        ),
+                      )}
+                    />
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
-        ))}
+        </div>
       </div>
       <div className="py-4">
         {!bookingData?.createBooking ? (
@@ -705,7 +708,10 @@ export const Success = () => {
       </h2>
       <p className="text-lg text-gray-700">
         Check your{' '}
-        <Link href="/tickets" className="font-semibold">
+        <Link
+          href="/tickets"
+          className="font-semibold underline underline-offset-4"
+        >
           Tickets
         </Link>{' '}
         for more information.
