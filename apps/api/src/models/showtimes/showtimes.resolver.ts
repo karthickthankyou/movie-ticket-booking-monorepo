@@ -7,7 +7,11 @@ import {
   ResolveField,
 } from '@nestjs/graphql'
 import { ShowtimesService } from './showtimes.service'
-import { GroupedShowtime, Showtime } from './entities/showtime.entity'
+import {
+  GroupedShowtime,
+  RemainingSeats,
+  Showtime,
+} from './entities/showtime.entity'
 import { FindManyShowtimeArgs, FindUniqueShowtimeArgs } from './dto/find.args'
 import { CreateShowtimeInput } from './dto/create-showtime.input'
 import { UpdateShowtimeInput } from './dto/update-showtime.input'
@@ -95,7 +99,7 @@ export class ShowtimesResolver {
     GROUP BY DATE("startTime")
     ORDER BY DATE("startTime");
   `
-    console.log('shows', JSON.stringify(shows))
+
     return shows
   }
 
@@ -144,6 +148,22 @@ export class ShowtimesResolver {
   screen(@Parent() showtime: Showtime) {
     return this.prisma.screen.findUnique({ where: { id: showtime.screenId } })
   }
+
+  @Query(() => RemainingSeats)
+  async bookedSeatsInShowtime(@Args('showtimeId') showtimeId: number) {
+    const showtime = await this.prisma.showtime.findUnique({
+      where: { id: showtimeId },
+    })
+    const total = await this.prisma.seat.count({
+      where: { screenId: showtime.screenId },
+    })
+    const booked = await this.prisma.booking.count({
+      where: { showtimeId: showtimeId },
+    })
+    console.log(total, booked)
+    return { total, booked }
+  }
+
   @ResolveField(() => Movie)
   movie(@Parent() showtime: Showtime) {
     return this.prisma.movie.findUnique({ where: { id: showtime.movieId } })

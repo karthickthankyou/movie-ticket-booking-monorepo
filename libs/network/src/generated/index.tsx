@@ -662,6 +662,7 @@ export enum ProjectionType {
 
 export type Query = {
   __typename?: 'Query'
+  bookedSeatsInShowtime: RemainingSeats
   booking: Booking
   bookings: Array<Booking>
   cinema: Cinema
@@ -685,6 +686,10 @@ export type Query = {
   tickets: Array<Ticket>
   user: User
   users: Array<User>
+}
+
+export type QueryBookedSeatsInShowtimeArgs = {
+  showtimeId: Scalars['Int']
 }
 
 export type QueryBookingArgs = {
@@ -872,6 +877,12 @@ export type RegisterOutput = {
   kind: Scalars['String']
   localId: Scalars['String']
   refreshToken: Scalars['String']
+}
+
+export type RemainingSeats = {
+  __typename?: 'RemainingSeats'
+  booked: Scalars['Int']
+  total: Scalars['Int']
 }
 
 /** Enum for roles */
@@ -1092,6 +1103,7 @@ export type ShowtimeSimple = {
   __typename?: 'ShowtimeSimple'
   id: Scalars['Int']
   movieId: Scalars['Int']
+  remainingSeats: RemainingSeats
   screen: Screen
   startTime: Scalars['String']
 }
@@ -1444,6 +1456,19 @@ export type MoviesPerCinemaQuery = {
   }>
 }
 
+export type BookedSeatsInShowtimeQueryVariables = Exact<{
+  showtimeId: Scalars['Int']
+}>
+
+export type BookedSeatsInShowtimeQuery = {
+  __typename?: 'Query'
+  bookedSeatsInShowtime: {
+    __typename?: 'RemainingSeats'
+    booked: number
+    total: number
+  }
+}
+
 export type ShowtimesInCinemaQueryVariables = Exact<{
   cinemaId: Scalars['Int']
   movieId: Scalars['Int']
@@ -1543,6 +1568,7 @@ export const namedOperations = {
     SearchCinemas: 'SearchCinemas',
     movies: 'movies',
     moviesPerCinema: 'moviesPerCinema',
+    bookedSeatsInShowtime: 'bookedSeatsInShowtime',
     showtimesInCinema: 'showtimesInCinema',
     showtime: 'showtime',
     tickets: 'tickets',
@@ -2099,6 +2125,65 @@ export type MoviesPerCinemaLazyQueryHookResult = ReturnType<
 export type MoviesPerCinemaQueryResult = Apollo.QueryResult<
   MoviesPerCinemaQuery,
   MoviesPerCinemaQueryVariables
+>
+export const BookedSeatsInShowtimeDocument = /*#__PURE__*/ gql`
+  query bookedSeatsInShowtime($showtimeId: Int!) {
+    bookedSeatsInShowtime(showtimeId: $showtimeId) {
+      booked
+      total
+    }
+  }
+`
+
+/**
+ * __useBookedSeatsInShowtimeQuery__
+ *
+ * To run a query within a React component, call `useBookedSeatsInShowtimeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBookedSeatsInShowtimeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBookedSeatsInShowtimeQuery({
+ *   variables: {
+ *      showtimeId: // value for 'showtimeId'
+ *   },
+ * });
+ */
+export function useBookedSeatsInShowtimeQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    BookedSeatsInShowtimeQuery,
+    BookedSeatsInShowtimeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    BookedSeatsInShowtimeQuery,
+    BookedSeatsInShowtimeQueryVariables
+  >(BookedSeatsInShowtimeDocument, options)
+}
+export function useBookedSeatsInShowtimeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    BookedSeatsInShowtimeQuery,
+    BookedSeatsInShowtimeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    BookedSeatsInShowtimeQuery,
+    BookedSeatsInShowtimeQueryVariables
+  >(BookedSeatsInShowtimeDocument, options)
+}
+export type BookedSeatsInShowtimeQueryHookResult = ReturnType<
+  typeof useBookedSeatsInShowtimeQuery
+>
+export type BookedSeatsInShowtimeLazyQueryHookResult = ReturnType<
+  typeof useBookedSeatsInShowtimeLazyQuery
+>
+export type BookedSeatsInShowtimeQueryResult = Apollo.QueryResult<
+  BookedSeatsInShowtimeQuery,
+  BookedSeatsInShowtimeQueryVariables
 >
 export const ShowtimesInCinemaDocument = /*#__PURE__*/ gql`
   query showtimesInCinema($cinemaId: Int!, $movieId: Int!) {

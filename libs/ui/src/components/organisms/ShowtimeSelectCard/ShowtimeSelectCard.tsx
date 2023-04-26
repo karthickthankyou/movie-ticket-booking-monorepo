@@ -1,5 +1,6 @@
 import { ShowtimesInCinemaQuery } from '@showtime-org/network/src/generated'
 import { format } from 'date-fns'
+import { ShowRemainingSeats } from '../../templates/SearchCinemas/SearchCinemas'
 
 export interface IShowtimeSelectCardProps {
   showtime: ShowtimesInCinemaQuery['showtimesInCinema'][number]['showtimes'][number]
@@ -22,6 +23,7 @@ export const ShowtimeSelectCard = ({
       <div className="text-sm">Rs.{showtime.screen.price}</div>
       <div className="text-xs ">{showtime.screen.projectionType}</div>
       <div className="text-xs ">{showtime.screen.soundSystemType}</div>
+      <ShowRemainingSeats showtimeId={showtime.id} />
     </div>
   )
 }

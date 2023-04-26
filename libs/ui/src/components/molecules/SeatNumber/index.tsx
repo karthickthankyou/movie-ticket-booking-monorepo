@@ -1,0 +1,1 @@
+export { SeatNumber } from './SeatNumber'

@@ -137,6 +137,15 @@ export const moviesPerCinema = gql`
   }
 `
 
+export const bookedSeatsInShowtime = gql`
+  query bookedSeatsInShowtime($showtimeId: Int!) {
+    bookedSeatsInShowtime(showtimeId: $showtimeId) {
+      booked
+      total
+    }
+  }
+`
+
 export const showtimesInCinema = gql`
   query showtimesInCinema($cinemaId: Int!, $movieId: Int!) {
     showtimesInCinema(cinemaId: $cinemaId, movieId: $movieId) {
@@ -144,6 +153,7 @@ export const showtimesInCinema = gql`
       showtimes {
         id
         startTime
+
         screen {
           id
           price

@@ -661,6 +661,7 @@ export enum ProjectionType {
 
 export type Query = {
   __typename?: 'Query'
+  bookedSeatsInShowtime: RemainingSeats
   booking: Booking
   bookings: Array<Booking>
   cinema: Cinema
@@ -684,6 +685,10 @@ export type Query = {
   tickets: Array<Ticket>
   user: User
   users: Array<User>
+}
+
+export type QueryBookedSeatsInShowtimeArgs = {
+  showtimeId: Scalars['Int']
 }
 
 export type QueryBookingArgs = {
@@ -871,6 +876,12 @@ export type RegisterOutput = {
   kind: Scalars['String']
   localId: Scalars['String']
   refreshToken: Scalars['String']
+}
+
+export type RemainingSeats = {
+  __typename?: 'RemainingSeats'
+  booked: Scalars['Int']
+  total: Scalars['Int']
 }
 
 /** Enum for roles */
@@ -1091,6 +1102,7 @@ export type ShowtimeSimple = {
   __typename?: 'ShowtimeSimple'
   id: Scalars['Int']
   movieId: Scalars['Int']
+  remainingSeats: RemainingSeats
   screen: Screen
   startTime: Scalars['String']
 }

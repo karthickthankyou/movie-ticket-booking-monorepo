@@ -12,6 +12,7 @@ import {
   SearchCinemasQuery,
   Seat,
   namedOperations,
+  useBookedSeatsInShowtimeQuery,
   useCreateBookingMutation,
   useMoviesPerCinemaLazyQuery,
   useMoviesPerCinemaQuery,
@@ -22,6 +23,7 @@ import {
 import { BrandIcon } from '../../atoms/BrandIcon'
 import { Dialog } from '../../atoms/Dialog'
 import { useAppDispatch, useAppSelector } from '@showtime-org/store'
+import Link from 'next/link'
 import {
   addCityId,
   addMovieId,
@@ -38,9 +40,10 @@ import { notification$ } from '@showtime-org/util/subjects'
 import { CinemaSelectCard } from '../../organisms/CinemaSelectCard'
 import { ShowtimeSelectCard } from '../../organisms/ShowtimeSelectCard'
 import { format } from 'date-fns'
-import { IconMapPinFilled } from '@tabler/icons-react'
+import { IconArmchair, IconMapPinFilled } from '@tabler/icons-react'
 import { useKeypress } from '@showtime-org/hooks'
-import { LoaderPanel } from '../../molecules/Loader'
+import { Loader, LoaderPanel } from '../../molecules/Loader'
+import { SeatNumber } from '../../molecules/SeatNumber'
 
 export interface ISearchCinemasProps {}
 
@@ -279,6 +282,21 @@ export const SelectMovie = ({ cinemaId }: { cinemaId: number }) => {
   )
 }
 
+export const ShowRemainingSeats = ({ showtimeId }: { showtimeId: number }) => {
+  const { data, loading } = useBookedSeatsInShowtimeQuery({
+    variables: { showtimeId },
+  })
+  if (loading) return <Loader />
+  const totalSeats = data?.bookedSeatsInShowtime.total || 0
+  const bookedSeats = data?.bookedSeatsInShowtime.booked || 0
+  const remainingSeats = totalSeats - bookedSeats
+  return (
+    <div className="text-xs">
+      {remainingSeats} <IconArmchair className="inline w-4 h-4" />
+    </div>
+  )
+}
+
 export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
   const movieId = useAppSelector((state) => state.movies.selectedMovieId)
   const selectedShowtimeId = useAppSelector(
@@ -293,8 +311,6 @@ export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
   }, [cinemaId, movieId])
 
   const dispatch = useAppDispatch()
-
-  console.log('data ', data)
 
   if (!movieId) return null
 
@@ -522,7 +538,6 @@ function generateSeatComment({
     const cornerSeats = selectedSeats.filter(isCorner)
     const hasCornerSeats = cornerSeats.length > 0
     const areAdjacent = (seat1: PartialSeat, seat2: PartialSeat) => {
-      console.log('-----', seat1, seat2)
       if (!seat1 || !seat2) {
         return false
       }
@@ -577,11 +592,10 @@ export const SelectSeats = () => {
 
   const selectedSeats = useAppSelector((state) => state.movies.selectedSeats)
 
-  const [createBooking, { loading: createBookingLoading }] =
+  const [createBooking, { loading: createBookingLoading, data: bookingData }] =
     useCreateBookingMutation()
-  if (!selectedShowtimeId) return null
 
-  console.log('seats ', rows, selectedSeats)
+  if (!selectedShowtimeId) return null
 
   return (
     <div>
@@ -597,7 +611,6 @@ export const SelectSeats = () => {
                 key={`${seat.row}-${seat.column}`}
                 disabled={Boolean(seat?.booked)}
                 onClick={() => {
-                  console.log('Seat ', seat)
                   dispatch(addSeat({ column: seat.column, row: seat.row }))
                 }}
               >
@@ -618,17 +631,27 @@ export const SelectSeats = () => {
         ))}
       </div>
       <div className="py-4">
-        <div className="text-lg font-light">
-          {generateSeatComment({ allSeats: rows, selectedSeats })}
-        </div>
-        <div className="flex gap-2">
-          {selectedSeats.map((seat) => (
-            <div key={`${seat.row}-${seat.column}`}>
-              {seat.column}.{seat.row}
+        {!bookingData?.createBooking ? (
+          <div className="text-lg font-light">
+            {generateSeatComment({ allSeats: rows, selectedSeats })}
+          </div>
+        ) : null}
+        {selectedSeats.length ? (
+          <div className="my-4">
+            <div>Seats</div>
+            <div className="flex flex-wrap gap-2">
+              {selectedSeats.map(({ row, column }) => (
+                <SeatNumber
+                  key={`${row}-${column}`}
+                  row={row}
+                  column={column}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : null}
       </div>
+      {bookingData?.createBooking ? <Success /> : null}
       <div className="flex justify-between mt-4">
         <Button
           onClick={() => dispatch(resetMovies())}
@@ -641,7 +664,6 @@ export const SelectSeats = () => {
           <Button
             loading={createBookingLoading}
             onClick={async () => {
-              console.log('sclick', selectedScreenId, uid)
               if (!selectedScreenId) {
                 notification$.next({
                   message: 'Semething went wrong.',
@@ -671,6 +693,23 @@ export const SelectSeats = () => {
           </Button>
         ) : null}
       </div>
+    </div>
+  )
+}
+
+export const Success = () => {
+  return (
+    <div className="flex flex-col items-start justify-center py-2 ">
+      <h2 className="mb-4 text-2xl font-bold ">
+        Congratulations! Your ticket is booked.
+      </h2>
+      <p className="text-lg text-gray-700">
+        Check your{' '}
+        <Link href="/tickets" className="font-semibold">
+          Tickets
+        </Link>{' '}
+        for more information.
+      </p>
     </div>
   )
 }

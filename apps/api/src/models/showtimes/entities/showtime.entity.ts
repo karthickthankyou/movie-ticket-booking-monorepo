@@ -13,6 +13,13 @@ export class Showtime implements ShowtimeType {
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })
 }
+
+@ObjectType()
+export class RemainingSeats {
+  total: number
+  booked: number
+}
+
 @ObjectType()
 export class ShowtimeSimple {
   id: number
@@ -20,6 +27,9 @@ export class ShowtimeSimple {
   movieId: number
   @Field(() => Screen)
   screen: Screen
+
+  @Field(() => RemainingSeats)
+  remainingSeats: RemainingSeats
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })
 }
