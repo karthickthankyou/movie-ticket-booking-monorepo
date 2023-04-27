@@ -144,6 +144,7 @@ export const SetCity = () => {
                   zoom: 10,
                   essential: true,
                 })
+                setOpen(false)
               }}
               className="p-3 rounded hover:shadow-2xl"
               key={city.id}

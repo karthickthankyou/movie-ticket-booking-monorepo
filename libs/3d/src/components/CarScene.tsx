@@ -53,18 +53,12 @@ export const CarScene = () => {
 
       <Plane
         args={[800, 20]}
-        position={[-300, 0.01, 0]}
+        position={[-270, 0.01, 0]}
         rotation={[radians(-90), 0, 0]}
       >
         <meshBasicMaterial color="black" />
       </Plane>
-      <Text
-        scale={[2, 2, 2]}
-        position={[104, 1, 0]}
-        rotation={[radians(-90), radians(0), radians(90)]}
-      >
-        Got me!
-      </Text>
+
       <OrbitControls
         minPolarAngle={radians(0)}
         maxPolarAngle={radians(45)}
