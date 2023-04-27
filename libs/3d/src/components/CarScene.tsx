@@ -1,10 +1,17 @@
 import { Canvas } from '@react-three/fiber'
-import { Plane, OrbitControls, Float, Text } from '@react-three/drei'
+import {
+  Plane,
+  OrbitControls,
+  Float,
+  Text,
+  PerformanceMonitor,
+} from '@react-three/drei'
 import React, { useRef, useEffect, useState } from 'react'
 import { Car } from './Car'
 
 import * as THREE from 'three'
-import { PlaneSpawner } from './Spawner'
+import { Spawner } from './Spawner'
+import { BuildingSet } from './MovingPlane3'
 
 const carSpeed = 2 // Speed in units per second between positions
 const carPositions: [number, number][] = [
@@ -31,6 +38,8 @@ export const CarScene = () => {
     }
   }, [carRef])
 
+  const [dpr, setDpr] = useState(1.5)
+
   return (
     <Canvas
       style={{ height: 'calc(100vh - 4rem)', background: 'hsl(0, 0%, 5%)' }}
@@ -43,6 +52,11 @@ export const CarScene = () => {
         rotation: [0, 0, 0],
       }}
     >
+      <PerformanceMonitor
+        onIncline={() => setDpr(2)}
+        onDecline={() => setDpr(1)}
+      />
+
       {/* <Plane
         args={[400, 400]}
         position={[0, -0.2, 0]}
@@ -67,17 +81,41 @@ export const CarScene = () => {
         minDistance={45}
         maxDistance={100}
       />
-      <PlaneSpawner
+      <Spawner
         spawnInterval={3.4}
         startPosition={new THREE.Vector3(-250, 0.1, 40)}
-        endPosition={new THREE.Vector3(100, 0.1, 40)}
+        endPosition={new THREE.Vector3(150, 0.1, 40)}
         duration={20}
+        childrenFactory={() => <BuildingSet />}
       />
-      <PlaneSpawner
+      <Spawner
         spawnInterval={3.4}
         startPosition={new THREE.Vector3(-250, 0.1, -40)}
-        endPosition={new THREE.Vector3(100, 0.1, -40)}
+        endPosition={new THREE.Vector3(150, 0.1, -40)}
         duration={20}
+        childrenFactory={() => <BuildingSet />}
+      />
+
+      <Spawner
+        spawnInterval={1.8}
+        startPosition={new THREE.Vector3(-250, 0.1, -6)}
+        endPosition={new THREE.Vector3(150, 0.1, -6)}
+        duration={5}
+        childrenFactory={() => <Car />}
+      />
+      <Spawner
+        spawnInterval={4.3}
+        startPosition={new THREE.Vector3(-250, 0.1, -8)}
+        endPosition={new THREE.Vector3(150, 0.1, -8)}
+        duration={8}
+        childrenFactory={() => <Car />}
+      />
+      <Spawner
+        spawnInterval={10.3}
+        endPosition={new THREE.Vector3(-250, 0.1, -2)}
+        startPosition={new THREE.Vector3(150, 0.1, -2)}
+        duration={20}
+        childrenFactory={() => <Car />}
       />
       {/* <Float
         speed={1} // Animation speed, defaults to 1

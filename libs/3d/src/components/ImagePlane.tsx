@@ -16,11 +16,11 @@ export const ImagePlane = ({
 
   return (
     <>
-      <mesh position={position} rotation={[0, radians(-90), 0]}>
+      <mesh position={position} rotation={[0, radians(0), 0]}>
         <planeBufferGeometry args={[20, 20]} />
         <meshBasicMaterial map={texture} />
       </mesh>
-      <mesh position={backPosition} rotation={[0, radians(-90), 0]}>
+      <mesh position={backPosition} rotation={[0, radians(0), 0]}>
         <planeBufferGeometry args={[20, 20]} />
         <meshBasicMaterial color="black" side={BackSide} />
       </mesh>
