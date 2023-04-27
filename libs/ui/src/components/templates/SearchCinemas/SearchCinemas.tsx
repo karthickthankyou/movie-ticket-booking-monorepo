@@ -112,8 +112,6 @@ export const cities = [
     lat: 28.6139,
     lng: 77.209,
   },
-
-  { id: 10, name: 'जयपुर', englishName: 'Jaipur', lat: 26.9124, lng: 75.7873 },
 ]
 
 export const SetCity = () => {

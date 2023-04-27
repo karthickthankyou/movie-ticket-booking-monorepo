@@ -1,0 +1,14 @@
+{
+  "name": "@showtime-org/3d",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@react-three/drei": "^9.64.0",
+    "@react-three/fiber": "^8.12.0",
+    "three": "^0.151.3"
+  },
+  "devDependencies": {
+    "@types/three": "^0.150.1"
+  }
+}

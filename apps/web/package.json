@@ -10,6 +10,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
+    "@showtime-org/3d": "*",
     "@showtime-org/network": "*",
     "@showtime-org/store": "*",
     "@showtime-org/ui": "*",

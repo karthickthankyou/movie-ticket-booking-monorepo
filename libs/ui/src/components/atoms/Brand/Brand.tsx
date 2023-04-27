@@ -16,11 +16,11 @@ export const Brand = ({
       <div className="text-xl ">
         {shortForm ? (
           <div className="flex gap-1">
-            <BrandIcon className="mb-1 stroke-2 text-primary " /> S.
+            <BrandIcon className="mb-1 stroke-2 text-primary " /> S!
           </div>
         ) : (
           <div className="flex items-center gap-1 tracking-tighter font-playfair">
-            <BrandIcon className="stroke-2 text-primary" /> Showtime.
+            <BrandIcon className="stroke-2 text-primary" /> Showtime!
             <span className="text-xs">{type}</span>
           </div>
         )}
