@@ -61,38 +61,40 @@ const square = [
     rotation: new THREE.Euler(radians(0), radians(180), 0),
   },
 ]
+const octagonSide1 = 17
+const octagonSide2 = 24
 
 const octagon = [
   {
-    position: new THREE.Vector3(18, 0, -18),
+    position: new THREE.Vector3(octagonSide1, 0, -octagonSide1),
     rotation: new THREE.Euler(0, radians(-225), 0),
   },
   {
-    position: new THREE.Vector3(0, 0, -24),
+    position: new THREE.Vector3(0, 0, -octagonSide2),
     rotation: new THREE.Euler(0, radians(-180), 0),
   },
   {
-    position: new THREE.Vector3(-18, 0, -18),
+    position: new THREE.Vector3(-octagonSide1, 0, -octagonSide1),
     rotation: new THREE.Euler(0, radians(-135), 0),
   },
   {
-    position: new THREE.Vector3(-24, 0, 0),
+    position: new THREE.Vector3(-octagonSide2, 0, 0),
     rotation: new THREE.Euler(0, radians(-90), 0),
   },
   {
-    position: new THREE.Vector3(-18, 0, 18),
+    position: new THREE.Vector3(-octagonSide1, 0, octagonSide1),
     rotation: new THREE.Euler(0, radians(-45), 0),
   },
   {
-    position: new THREE.Vector3(0, 0, 24),
+    position: new THREE.Vector3(0, 0, octagonSide2),
     rotation: new THREE.Euler(0, radians(0), 0),
   },
   {
-    position: new THREE.Vector3(18, 0, 18),
+    position: new THREE.Vector3(octagonSide1, 0, octagonSide1),
     rotation: new THREE.Euler(0, radians(45), 0),
   },
   {
-    position: new THREE.Vector3(24, 0, 0),
+    position: new THREE.Vector3(octagonSide2, 0, 0),
     rotation: new THREE.Euler(0, radians(90), 0),
   },
 ]
@@ -148,7 +150,6 @@ const MoveCubeRunners = ({
 }) => {
   return (
     <mesh position={position} rotation={rotation}>
-      {' '}
       {square.map(({ position, rotation }) => (
         <mesh position={position} rotation={rotation}>
           <Spawner
@@ -256,29 +257,30 @@ export const MovieReels = () => {
         startPosition={new Vector3(0, -150, 0)}
         endPosition={new Vector3(0, 150, 0)}
         duration={22}
-        position={new Vector3(60, 0, 0)}
+        position={new Vector3(76, 0, 0)}
       />
       <MoveCubeRunners
         spawnInterval={1.6}
         startPosition={new Vector3(0, -150, 0)}
         endPosition={new Vector3(0, 150, 0)}
         duration={22}
-        position={new Vector3(-60, 0, 0)}
+        position={new Vector3(-76, 0, 0)}
       />
       <MoveCubeRunners
         spawnInterval={1.6}
         startPosition={new Vector3(0, -150, 0)}
         endPosition={new Vector3(0, 150, 0)}
         duration={22}
-        position={new Vector3(0, 0, 60)}
+        position={new Vector3(0, 0, 76)}
       />
       <MoveCubeRunners
         spawnInterval={1.6}
         startPosition={new Vector3(0, -150, 0)}
         endPosition={new Vector3(0, 150, 0)}
         duration={22}
-        position={new Vector3(0, 0, -60)}
+        position={new Vector3(0, 0, -76)}
       />
+
       <MoveOCTORunners
         spawnInterval={1.6}
         startPosition={new Vector3(0, 150, 0)}
@@ -286,6 +288,7 @@ export const MovieReels = () => {
         duration={22}
         position={new Vector3(0, 0, 0)}
       />
+
       {/* <Rotator
         progress={-8}
         initialRotation={new Vector3(0, 0, 0)}

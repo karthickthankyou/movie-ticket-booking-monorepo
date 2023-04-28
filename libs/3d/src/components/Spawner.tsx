@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -45,6 +45,8 @@ export const Mover: React.FC<MoverProps> = ({
   )
 }
 
+type SpawnedElement = { id: number; progress: number }
+
 interface SpawnerProps {
   spawnInterval: number
   startPosition: THREE.Vector3
@@ -52,9 +54,8 @@ interface SpawnerProps {
   initialRotation?: THREE.Vector3
   finalRotation?: THREE.Vector3
   duration: number
-  childrenFactory: (id: string) => JSX.Element
+  childrenFactory: (id: number) => JSX.Element
 }
-
 export const Spawner: React.FC<SpawnerProps> = ({
   spawnInterval,
   startPosition,
@@ -64,22 +65,22 @@ export const Spawner: React.FC<SpawnerProps> = ({
   duration,
   childrenFactory,
 }) => {
-  const [elements, setElements] = useState<
-    Array<{ id: string; progress: number }>
-  >([])
-  const [nextSpawnTime, setNextSpawnTime] = useState<number>(spawnInterval)
+  // State to hold spawned elements
+  const [elements, setElements] = useState<Array<SpawnedElement>>([])
+
+  // Store last spawn time.
+  const lastSpawnTime = useRef<number>(Date.now())
 
   useFrame((_, delta) => {
-    setNextSpawnTime((prevTime) => prevTime - delta)
+    // Check if it's time to spawn a new element
+    if (Date.now() - lastSpawnTime.current >= spawnInterval * 1000) {
+      const id = Date.now()
 
-    if (nextSpawnTime <= 0) {
-      setElements((prevElements) => [
-        ...prevElements,
-        { id: `${Date.now()}`, progress: 0 },
-      ])
-      setNextSpawnTime(spawnInterval)
+      lastSpawnTime.current = id
+      setElements((prevElements) => [...prevElements, { id, progress: 0 }])
     }
 
+    // Update the progress of each element and remove elements that have completed their movement
     setElements((prevElements) =>
       prevElements
         .map((elem) => {
@@ -89,13 +90,9 @@ export const Spawner: React.FC<SpawnerProps> = ({
           }
           return { ...elem, progress }
         })
-        .filter(
-          (elem): elem is { id: string; progress: number } => elem !== null,
-        ),
+        .filter((elem): elem is SpawnedElement => elem !== null),
     )
   })
-
-  console.log('elements ', elements.length)
 
   return (
     <>
