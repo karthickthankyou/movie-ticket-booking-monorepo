@@ -6,6 +6,8 @@
   "dependencies": {
     "@react-three/drei": "^9.64.0",
     "@react-three/fiber": "^8.12.0",
+    "@react-three/postprocessing": "^2.8.3",
+    "glslify": "^7.1.1",
     "three": "^0.151.3"
   },
   "devDependencies": {

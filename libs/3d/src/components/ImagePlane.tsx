@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import { radians } from './Camera'
 import { Vector3, BackSide } from 'three'
+import { randInt } from 'three/src/math/MathUtils'
+import { moviePosters } from './MovieReelsScene/MovieReels'
+
+export const RandomImagePlane = () => {
+  const src = useMemo(
+    () => moviePosters[randInt(0, moviePosters.length - 1)],
+    [],
+  )
+  return <ImagePlane src={src} />
+}
 
 export const ImagePlane = ({
   src,

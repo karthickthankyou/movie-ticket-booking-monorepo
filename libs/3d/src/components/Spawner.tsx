@@ -5,13 +5,26 @@ import * as THREE from 'three'
 interface MoverProps {
   startPosition: THREE.Vector3
   endPosition: THREE.Vector3
+  initialRotation: THREE.Vector3
+  finalRotation: THREE.Vector3
   progress: number
   children: ReactNode
 }
 
+export const Rotator: React.FC<
+  Omit<MoverProps, 'startPosition' | 'endPosition'>
+> = ({ initialRotation, finalRotation, progress, children }) => {
+  const rotation = new THREE.Euler().setFromVector3(
+    new THREE.Vector3().lerpVectors(initialRotation, finalRotation, progress),
+  )
+
+  return <group rotation={rotation}>{children}</group>
+}
 export const Mover: React.FC<MoverProps> = ({
   startPosition,
   endPosition,
+  initialRotation,
+  finalRotation,
   progress,
   children,
 }) => {
@@ -21,21 +34,33 @@ export const Mover: React.FC<MoverProps> = ({
     progress,
   )
 
-  return <group position={position}>{children}</group>
+  const rotation = new THREE.Euler().setFromVector3(
+    new THREE.Vector3().lerpVectors(initialRotation, finalRotation, progress),
+  )
+
+  return (
+    <group position={position} rotation={rotation}>
+      {children}
+    </group>
+  )
 }
 
 interface SpawnerProps {
   spawnInterval: number
   startPosition: THREE.Vector3
   endPosition: THREE.Vector3
+  initialRotation?: THREE.Vector3
+  finalRotation?: THREE.Vector3
   duration: number
-  childrenFactory: () => JSX.Element
+  childrenFactory: (id: string) => JSX.Element
 }
 
 export const Spawner: React.FC<SpawnerProps> = ({
   spawnInterval,
   startPosition,
   endPosition,
+  initialRotation = new THREE.Vector3(0, 0, 0),
+  finalRotation = new THREE.Vector3(0, 0, 0),
   duration,
   childrenFactory,
 }) => {
@@ -79,9 +104,11 @@ export const Spawner: React.FC<SpawnerProps> = ({
           key={elem.id}
           startPosition={startPosition}
           endPosition={endPosition}
+          initialRotation={initialRotation}
+          finalRotation={finalRotation}
           progress={elem.progress}
         >
-          {childrenFactory()}
+          {childrenFactory(elem.id)}
         </Mover>
       ))}
     </>
