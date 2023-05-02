@@ -23,7 +23,6 @@ const MENUITEMS: MenuItem[] = [
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,
   ['About', '/about'],
-  ['How it works', '/how-it-works'],
   ['Contact', '/contact'],
   ['FAQs', '/faqs'],
 ]
@@ -146,7 +145,7 @@ export const Header = ({
               <button
                 type="button"
                 onClick={() => setOpen((state) => !state)}
-                className="p-2 lg:hidden"
+                className="p-2 "
                 aria-label="Open main menu"
               >
                 <IconMenu2 className="w-5 h-5" />

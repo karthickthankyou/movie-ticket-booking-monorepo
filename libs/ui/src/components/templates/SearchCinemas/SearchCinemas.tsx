@@ -367,11 +367,11 @@ export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
           <>
             <div className="text-lg font-semibold ">Today</div>
             <div className="flex flex-col items-center justify-center w-full text-gray-800 rounded h-36 bg-gray-50">
-              <div className="flex text-lg font-semibold">
+              <div className="flex items-center gap-1 text-lg font-semibold">
                 <IconBox />
                 <div>No shows.</div>
               </div>
-              <div className="max-w-xs text-center">
+              <div className="max-w-xs text-sm text-center">
                 {random(noShowsMessages)}
               </div>
             </div>
