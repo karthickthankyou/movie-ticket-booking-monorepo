@@ -152,6 +152,9 @@ export const cinemas = gql`
         }
       }
     }
+    cinemasCount(where: $where) {
+      count
+    }
   }
 `
 

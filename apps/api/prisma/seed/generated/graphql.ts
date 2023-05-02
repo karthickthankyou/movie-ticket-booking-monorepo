@@ -682,6 +682,7 @@ export type Query = {
   cinema: Cinema
   cinemaByManager: Cinema
   cinemas: Array<Cinema>
+  cinemasCount: AggregateCountOutput
   manager: Manager
   managers: Array<Manager>
   movie: Movie
@@ -734,6 +735,10 @@ export type QueryCinemasArgs = {
   orderBy?: InputMaybe<Array<CinemaOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<CinemaWhereInput>
+}
+
+export type QueryCinemasCountArgs = {
   where?: InputMaybe<CinemaWhereInput>
 }
 

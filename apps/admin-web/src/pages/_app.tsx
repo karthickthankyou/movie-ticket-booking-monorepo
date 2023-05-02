@@ -9,19 +9,23 @@ import { AppLevelListeners } from '@showtime-org/ui/src/components/atoms/AppLeve
 import { Notifications } from '@showtime-org/ui/src/components/organisms/Notifications'
 import { Header } from '@showtime-org/ui/src/components/organisms/Header'
 
+const menuitems: [string, string][] = [
+  ['Movies', '/'],
+  ['Cinemas', '/cinemas'],
+]
+
+const subMenuItems: [string, string][] = [
+  ...menuitems,
+  ['Create cinema', '/createCinema'],
+]
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ReduxProvider>
       <ApolloProvider>
         <Header
-          menuItems={[
-            ['Create cinema', '/createCinema'],
-            ['Settings', '/settings'],
-          ]}
-          sideMenuItems={[
-            ['Create cinema', '/createCinema'],
-            ['Settings', '/settings'],
-          ]}
+          menuItems={menuitems}
+          sideMenuItems={subMenuItems}
           type="admin"
         />
         <AppLevelListeners />

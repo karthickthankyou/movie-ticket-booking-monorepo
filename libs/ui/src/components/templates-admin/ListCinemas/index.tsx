@@ -1,0 +1,1 @@
+export { ListCinemas } from './ListCinemas'

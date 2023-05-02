@@ -22,7 +22,11 @@ import {
 import { GetUserType } from '@showtime-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { AuthService } from 'src/common/auth/auth.service'
-import { LocationFilterInput } from 'src/common/dtos/common.input'
+import {
+  AggregateCountOutput,
+  LocationFilterInput,
+} from 'src/common/dtos/common.input'
+import { CinemaWhereInput } from './dto/where.args'
 
 @Resolver(() => Cinema)
 export class CinemasResolver {
@@ -108,6 +112,20 @@ export class CinemasResolver {
   @ResolveField(() => [Screen])
   screens(@Parent() cinema: Cinema) {
     return this.prisma.screen.findMany({ where: { cinemaId: cinema.id } })
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'cinemasCount',
+  })
+  async cinemasCount(
+    @Args('where', { nullable: true })
+    where: CinemaWhereInput,
+  ) {
+    const cinemas = await this.prisma.cinema.aggregate({
+      _count: { _all: true },
+      where,
+    })
+    return { count: cinemas._count._all }
   }
 
   @Query(() => [Cinema], { name: 'searchCinemas' })
