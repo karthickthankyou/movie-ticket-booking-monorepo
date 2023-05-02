@@ -45,6 +45,24 @@ export const Mover: React.FC<MoverProps> = ({
   )
 }
 
+export const useTabVisible = () => {
+  const [isTabVisible, setIsTabVisible] = useState(true)
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsTabVisible(document.visibilityState === 'visible')
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+
+  return { isTabVisible }
+}
+
 type SpawnedElement = { id: number; progress: number }
 
 interface SpawnerProps {
@@ -67,13 +85,17 @@ export const Spawner: React.FC<SpawnerProps> = ({
 }) => {
   // State to hold spawned elements
   const [elements, setElements] = useState<Array<SpawnedElement>>([])
+  const isTabVisible = useTabVisible()
 
   // Store last spawn time.
   const lastSpawnTime = useRef<number>(Date.now())
 
   useFrame((_, delta) => {
-    // Check if it's time to spawn a new element
+    if (!isTabVisible) {
+      return
+    }
     if (Date.now() - lastSpawnTime.current >= spawnInterval * 1000) {
+      // Check if it's time to spawn a new element
       const id = Date.now()
 
       lastSpawnTime.current = id

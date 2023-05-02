@@ -161,6 +161,16 @@ export type Cinema = {
   updatedAt: Scalars['DateTime']
 }
 
+export type CinemaListRelationFilter = {
+  every?: InputMaybe<CinemaWhereInput>
+  none?: InputMaybe<CinemaWhereInput>
+  some?: InputMaybe<CinemaWhereInput>
+}
+
+export type CinemaOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
 export type CinemaOrderByWithRelationInput = {
   address?: InputMaybe<AddressOrderByWithRelationInput>
   createdAt?: InputMaybe<SortOrder>
@@ -300,6 +310,13 @@ export type EnumProjectionTypeFilter = {
   notIn?: InputMaybe<Array<ProjectionType>>
 }
 
+export type EnumShowtimeStatusFilter = {
+  equals?: InputMaybe<ShowtimeStatus>
+  in?: InputMaybe<Array<ShowtimeStatus>>
+  not?: InputMaybe<ShowtimeStatus>
+  notIn?: InputMaybe<Array<ShowtimeStatus>>
+}
+
 export type EnumSoundSystemTypeFilter = {
   equals?: InputMaybe<SoundSystemType>
   in?: InputMaybe<Array<SoundSystemType>>
@@ -404,8 +421,7 @@ export type ManagerOrderByRelationAggregateInput = {
 }
 
 export type ManagerOrderByWithRelationInput = {
-  cinema?: InputMaybe<CinemaOrderByWithRelationInput>
-  cinemaId?: InputMaybe<SortOrder>
+  cinema?: InputMaybe<CinemaOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
   uid?: InputMaybe<SortOrder>
@@ -413,7 +429,6 @@ export type ManagerOrderByWithRelationInput = {
 }
 
 export enum ManagerScalarFieldEnum {
-  CinemaId = 'cinemaId',
   CreatedAt = 'createdAt',
   Name = 'name',
   Uid = 'uid',
@@ -424,8 +439,7 @@ export type ManagerWhereInput = {
   AND?: InputMaybe<Array<ManagerWhereInput>>
   NOT?: InputMaybe<Array<ManagerWhereInput>>
   OR?: InputMaybe<Array<ManagerWhereInput>>
-  cinema?: InputMaybe<CinemaRelationFilter>
-  cinemaId?: InputMaybe<IntFilter>
+  cinema?: InputMaybe<CinemaListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   name?: InputMaybe<StringFilter>
   uid?: InputMaybe<StringFilter>
@@ -522,6 +536,7 @@ export type Mutation = {
   removeShowtime: Showtime
   removeTicket: Ticket
   removeUser: User
+  runScheduler: Array<Showtime>
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
   updateBooking: Booking
@@ -911,6 +926,7 @@ export type Screen = {
   projectionType: ProjectionType
   seats: Array<Seat>
   seatsCount: Scalars['Int']
+  /** This returns all current and future shows. */
   showtimes: Array<Showtime>
   soundSystemType: SoundSystemType
   updatedAt: Scalars['DateTime']
@@ -1064,6 +1080,7 @@ export type Showtime = {
   screen: Screen
   screenId: Scalars['Int']
   startTime: Scalars['DateTime']
+  status: ShowtimeStatus
   updatedAt: Scalars['DateTime']
 }
 
@@ -1086,6 +1103,7 @@ export type ShowtimeOrderByWithRelationInput = {
   screen?: InputMaybe<ScreenOrderByWithRelationInput>
   screenId?: InputMaybe<SortOrder>
   startTime?: InputMaybe<SortOrder>
+  status?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
 
@@ -1100,6 +1118,7 @@ export enum ShowtimeScalarFieldEnum {
   MovieId = 'movieId',
   ScreenId = 'screenId',
   StartTime = 'startTime',
+  Status = 'status',
   UpdatedAt = 'updatedAt',
 }
 
@@ -1110,6 +1129,12 @@ export type ShowtimeSimple = {
   remainingSeats: RemainingSeats
   screen: Screen
   startTime: Scalars['String']
+}
+
+/** Enum for showtime statuses */
+export enum ShowtimeStatus {
+  Cancelled = 'CANCELLED',
+  Postponed = 'POSTPONED',
 }
 
 export type ShowtimeWhereInput = {
@@ -1124,6 +1149,7 @@ export type ShowtimeWhereInput = {
   screen?: InputMaybe<ScreenRelationFilter>
   screenId?: InputMaybe<IntFilter>
   startTime?: InputMaybe<DateTimeFilter>
+  status?: InputMaybe<EnumShowtimeStatusFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
@@ -1261,9 +1287,8 @@ export type UpdateScreenInput = {
 
 export type UpdateShowtimeInput = {
   id: Scalars['Int']
-  movieId?: InputMaybe<Scalars['Int']>
-  screenId?: InputMaybe<Scalars['Int']>
-  showtimes?: InputMaybe<Array<Scalars['String']>>
+  startTime?: InputMaybe<Scalars['DateTime']>
+  status?: InputMaybe<ShowtimeStatus>
 }
 
 export type UpdateUserInput = {

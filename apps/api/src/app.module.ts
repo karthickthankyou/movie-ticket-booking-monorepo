@@ -17,6 +17,8 @@ import { BookingsModule } from './models/bookings/bookings.module'
 import { AuthModule } from './common/auth/auth.module'
 import { FirebaseModule } from './common/firebase/firebase.module'
 import { TicketsModule } from './models/tickets/tickets.module'
+import { SchedulerModule } from './scheduler/scheduler.module'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
@@ -29,10 +31,12 @@ import { TicketsModule } from './models/tickets/tickets.module'
         numberScalarMode: 'integer',
       },
     }),
+    ScheduleModule.forRoot(),
 
     PrismaModule,
     AuthModule,
     FirebaseModule,
+    SchedulerModule,
 
     UsersModule,
     ManagersModule,

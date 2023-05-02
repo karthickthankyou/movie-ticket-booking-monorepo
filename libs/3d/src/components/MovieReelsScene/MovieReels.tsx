@@ -40,7 +40,6 @@ export const moviePosters = [
   'https://upload.wikimedia.org/wikipedia/en/thumb/7/77/Ratsasan_poster.jpg/220px-Ratsasan_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/thumb/a/a1/Super_Deluxe_film_poster.jpg/220px-Super_Deluxe_film_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/0/01/Visaranai_film_release_poster.jpg',
-  'https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/Thani_Oruvan.jpg/220px-Thani_Oruvan.jpg',
 ]
 
 const square = [

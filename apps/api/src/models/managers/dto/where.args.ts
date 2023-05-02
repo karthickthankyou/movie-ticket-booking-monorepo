@@ -5,7 +5,10 @@ import {
   IntFilter,
   StringFilter,
 } from 'src/common/dtos/common.input'
-import { CinemaRelationFilter } from 'src/models/cinemas/dto/where.args'
+import {
+  CinemaListRelationFilter,
+  CinemaRelationFilter,
+} from 'src/models/cinemas/dto/where.args'
 
 @InputType()
 export class ManagerWhereUniqueInput
@@ -17,6 +20,8 @@ export class ManagerWhereUniqueInput
 
 @InputType()
 export class ManagerWhereInput implements Required<Prisma.ManagerWhereInput> {
+  @Field(() => CinemaListRelationFilter, { nullable: true })
+  cinema: CinemaListRelationFilter
   @Field(() => StringFilter, { nullable: true })
   uid: StringFilter
   @Field(() => DateTimeFilter, { nullable: true })
@@ -25,10 +30,6 @@ export class ManagerWhereInput implements Required<Prisma.ManagerWhereInput> {
   updatedAt: DateTimeFilter
   @Field(() => StringFilter, { nullable: true })
   name: StringFilter
-  @Field(() => IntFilter, { nullable: true })
-  cinemaId: IntFilter
-  @Field(() => CinemaRelationFilter, { nullable: true })
-  cinema: CinemaRelationFilter
 
   @Field(() => [ManagerWhereInput], { nullable: true })
   AND: ManagerWhereInput[]

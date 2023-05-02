@@ -1,9 +1,16 @@
-import { Field, ObjectType } from '@nestjs/graphql'
-import { Showtime as ShowtimeType } from '@prisma/client'
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { ShowtimeStatus, Showtime as ShowtimeType } from '@prisma/client'
 import { Screen } from '../../screens/entities/screen.entity'
+
+registerEnumType(ShowtimeStatus, {
+  name: 'ShowtimeStatus',
+  description: 'Enum for showtime statuses',
+})
 
 @ObjectType()
 export class Showtime implements ShowtimeType {
+  @Field(() => ShowtimeStatus, { nullable: true })
+  status: ShowtimeStatus
   id: number
   createdAt: Date
   updatedAt: Date

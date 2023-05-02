@@ -162,6 +162,16 @@ export type Cinema = {
   updatedAt: Scalars['DateTime']
 }
 
+export type CinemaListRelationFilter = {
+  every?: InputMaybe<CinemaWhereInput>
+  none?: InputMaybe<CinemaWhereInput>
+  some?: InputMaybe<CinemaWhereInput>
+}
+
+export type CinemaOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
 export type CinemaOrderByWithRelationInput = {
   address?: InputMaybe<AddressOrderByWithRelationInput>
   createdAt?: InputMaybe<SortOrder>
@@ -301,6 +311,13 @@ export type EnumProjectionTypeFilter = {
   notIn?: InputMaybe<Array<ProjectionType>>
 }
 
+export type EnumShowtimeStatusFilter = {
+  equals?: InputMaybe<ShowtimeStatus>
+  in?: InputMaybe<Array<ShowtimeStatus>>
+  not?: InputMaybe<ShowtimeStatus>
+  notIn?: InputMaybe<Array<ShowtimeStatus>>
+}
+
 export type EnumSoundSystemTypeFilter = {
   equals?: InputMaybe<SoundSystemType>
   in?: InputMaybe<Array<SoundSystemType>>
@@ -405,8 +422,7 @@ export type ManagerOrderByRelationAggregateInput = {
 }
 
 export type ManagerOrderByWithRelationInput = {
-  cinema?: InputMaybe<CinemaOrderByWithRelationInput>
-  cinemaId?: InputMaybe<SortOrder>
+  cinema?: InputMaybe<CinemaOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
   uid?: InputMaybe<SortOrder>
@@ -414,7 +430,6 @@ export type ManagerOrderByWithRelationInput = {
 }
 
 export enum ManagerScalarFieldEnum {
-  CinemaId = 'cinemaId',
   CreatedAt = 'createdAt',
   Name = 'name',
   Uid = 'uid',
@@ -425,8 +440,7 @@ export type ManagerWhereInput = {
   AND?: InputMaybe<Array<ManagerWhereInput>>
   NOT?: InputMaybe<Array<ManagerWhereInput>>
   OR?: InputMaybe<Array<ManagerWhereInput>>
-  cinema?: InputMaybe<CinemaRelationFilter>
-  cinemaId?: InputMaybe<IntFilter>
+  cinema?: InputMaybe<CinemaListRelationFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   name?: InputMaybe<StringFilter>
   uid?: InputMaybe<StringFilter>
@@ -523,6 +537,7 @@ export type Mutation = {
   removeShowtime: Showtime
   removeTicket: Ticket
   removeUser: User
+  runScheduler: Array<Showtime>
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
   updateBooking: Booking
@@ -912,6 +927,7 @@ export type Screen = {
   projectionType: ProjectionType
   seats: Array<Seat>
   seatsCount: Scalars['Int']
+  /** This returns all current and future shows. */
   showtimes: Array<Showtime>
   soundSystemType: SoundSystemType
   updatedAt: Scalars['DateTime']
@@ -1065,6 +1081,7 @@ export type Showtime = {
   screen: Screen
   screenId: Scalars['Int']
   startTime: Scalars['DateTime']
+  status: ShowtimeStatus
   updatedAt: Scalars['DateTime']
 }
 
@@ -1087,6 +1104,7 @@ export type ShowtimeOrderByWithRelationInput = {
   screen?: InputMaybe<ScreenOrderByWithRelationInput>
   screenId?: InputMaybe<SortOrder>
   startTime?: InputMaybe<SortOrder>
+  status?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
 
@@ -1101,6 +1119,7 @@ export enum ShowtimeScalarFieldEnum {
   MovieId = 'movieId',
   ScreenId = 'screenId',
   StartTime = 'startTime',
+  Status = 'status',
   UpdatedAt = 'updatedAt',
 }
 
@@ -1111,6 +1130,12 @@ export type ShowtimeSimple = {
   remainingSeats: RemainingSeats
   screen: Screen
   startTime: Scalars['String']
+}
+
+/** Enum for showtime statuses */
+export enum ShowtimeStatus {
+  Cancelled = 'CANCELLED',
+  Postponed = 'POSTPONED',
 }
 
 export type ShowtimeWhereInput = {
@@ -1125,6 +1150,7 @@ export type ShowtimeWhereInput = {
   screen?: InputMaybe<ScreenRelationFilter>
   screenId?: InputMaybe<IntFilter>
   startTime?: InputMaybe<DateTimeFilter>
+  status?: InputMaybe<EnumShowtimeStatusFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
@@ -1262,9 +1288,8 @@ export type UpdateScreenInput = {
 
 export type UpdateShowtimeInput = {
   id: Scalars['Int']
-  movieId?: InputMaybe<Scalars['Int']>
-  screenId?: InputMaybe<Scalars['Int']>
-  showtimes?: InputMaybe<Array<Scalars['String']>>
+  startTime?: InputMaybe<Scalars['DateTime']>
+  status?: InputMaybe<ShowtimeStatus>
 }
 
 export type UpdateUserInput = {
@@ -1437,6 +1462,39 @@ export type MoviesQuery = {
   moviesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
+export type CinemasQueryVariables = Exact<{
+  where?: InputMaybe<CinemaWhereInput>
+  orderBy?: InputMaybe<
+    Array<CinemaOrderByWithRelationInput> | CinemaOrderByWithRelationInput
+  >
+  cursor?: InputMaybe<CinemaWhereUniqueInput>
+  take?: InputMaybe<Scalars['Int']>
+  skip?: InputMaybe<Scalars['Int']>
+  distinct?: InputMaybe<Array<CinemaScalarFieldEnum> | CinemaScalarFieldEnum>
+}>
+
+export type CinemasQuery = {
+  __typename?: 'Query'
+  cinemas: Array<{
+    __typename?: 'Cinema'
+    id: number
+    name: string
+    screens: Array<{
+      __typename?: 'Screen'
+      id: number
+      number: number
+      seatsCount: number
+      showtimes: Array<{
+        __typename?: 'Showtime'
+        id: number
+        startTime: any
+        status: ShowtimeStatus
+        movie: { __typename?: 'Movie'; title: string; posterUrl: string }
+      }>
+    }>
+  }>
+}
+
 export type CreateShowtimeMutationVariables = Exact<{
   createShowtimeInput: CreateShowtimeInput
 }>
@@ -1568,11 +1626,21 @@ export type TicketsQuery = {
   }>
 }
 
+export type UpdateShowtimeMutationVariables = Exact<{
+  updateShowtimeInput: UpdateShowtimeInput
+}>
+
+export type UpdateShowtimeMutation = {
+  __typename?: 'Mutation'
+  updateShowtime: { __typename?: 'Showtime'; id: number }
+}
+
 export const namedOperations = {
   Query: {
     findCinema: 'findCinema',
     SearchCinemas: 'SearchCinemas',
     movies: 'movies',
+    cinemas: 'cinemas',
     moviesPerCinema: 'moviesPerCinema',
     bookedSeatsInShowtime: 'bookedSeatsInShowtime',
     showtimesInCinema: 'showtimesInCinema',
@@ -1586,6 +1654,7 @@ export const namedOperations = {
     Login: 'Login',
     createShowtime: 'createShowtime',
     createBooking: 'createBooking',
+    updateShowtime: 'updateShowtime',
   },
 }
 
@@ -2020,6 +2089,91 @@ export type MoviesLazyQueryHookResult = ReturnType<typeof useMoviesLazyQuery>
 export type MoviesQueryResult = Apollo.QueryResult<
   MoviesQuery,
   MoviesQueryVariables
+>
+export const CinemasDocument = /*#__PURE__*/ gql`
+  query cinemas(
+    $where: CinemaWhereInput
+    $orderBy: [CinemaOrderByWithRelationInput!]
+    $cursor: CinemaWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [CinemaScalarFieldEnum!]
+  ) {
+    cinemas(
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      id
+      name
+      screens {
+        id
+        number
+        seatsCount
+        showtimes {
+          id
+          startTime
+          status
+          movie {
+            title
+            posterUrl
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useCinemasQuery__
+ *
+ * To run a query within a React component, call `useCinemasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCinemasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCinemasQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      cursor: // value for 'cursor'
+ *      take: // value for 'take'
+ *      skip: // value for 'skip'
+ *      distinct: // value for 'distinct'
+ *   },
+ * });
+ */
+export function useCinemasQuery(
+  baseOptions?: Apollo.QueryHookOptions<CinemasQuery, CinemasQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CinemasQuery, CinemasQueryVariables>(
+    CinemasDocument,
+    options,
+  )
+}
+export function useCinemasLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CinemasQuery,
+    CinemasQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CinemasQuery, CinemasQueryVariables>(
+    CinemasDocument,
+    options,
+  )
+}
+export type CinemasQueryHookResult = ReturnType<typeof useCinemasQuery>
+export type CinemasLazyQueryHookResult = ReturnType<typeof useCinemasLazyQuery>
+export type CinemasQueryResult = Apollo.QueryResult<
+  CinemasQuery,
+  CinemasQueryVariables
 >
 export const CreateShowtimeDocument = /*#__PURE__*/ gql`
   mutation createShowtime($createShowtimeInput: CreateShowtimeInput!) {
@@ -2466,4 +2620,54 @@ export type TicketsLazyQueryHookResult = ReturnType<typeof useTicketsLazyQuery>
 export type TicketsQueryResult = Apollo.QueryResult<
   TicketsQuery,
   TicketsQueryVariables
+>
+export const UpdateShowtimeDocument = /*#__PURE__*/ gql`
+  mutation updateShowtime($updateShowtimeInput: UpdateShowtimeInput!) {
+    updateShowtime(updateShowtimeInput: $updateShowtimeInput) {
+      id
+    }
+  }
+`
+export type UpdateShowtimeMutationFn = Apollo.MutationFunction<
+  UpdateShowtimeMutation,
+  UpdateShowtimeMutationVariables
+>
+
+/**
+ * __useUpdateShowtimeMutation__
+ *
+ * To run a mutation, you first call `useUpdateShowtimeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateShowtimeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateShowtimeMutation, { data, loading, error }] = useUpdateShowtimeMutation({
+ *   variables: {
+ *      updateShowtimeInput: // value for 'updateShowtimeInput'
+ *   },
+ * });
+ */
+export function useUpdateShowtimeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateShowtimeMutation,
+    UpdateShowtimeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UpdateShowtimeMutation,
+    UpdateShowtimeMutationVariables
+  >(UpdateShowtimeDocument, options)
+}
+export type UpdateShowtimeMutationHookResult = ReturnType<
+  typeof useUpdateShowtimeMutation
+>
+export type UpdateShowtimeMutationResult =
+  Apollo.MutationResult<UpdateShowtimeMutation>
+export type UpdateShowtimeMutationOptions = Apollo.BaseMutationOptions<
+  UpdateShowtimeMutation,
+  UpdateShowtimeMutationVariables
 >

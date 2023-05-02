@@ -19,10 +19,10 @@ export const Accordion = ({
     {({ open }) => (
       <>
         <Disclosure.Button
-          className={`flex justify-between w-full py-2 font-medium ${className}`}
+          className={`flex justify-between w-full py-2 group font-medium ${className}`}
         >
           <span
-            className={`text-left ${
+            className={`text-left group-hover:underline underline-offset-4 ${
               open ? 'text-primary-600' : 'text-gray-600'
             }`}
           >
@@ -34,7 +34,7 @@ export const Accordion = ({
             } w-5 h-5 `}
           />
         </Disclosure.Button>
-        <Disclosure.Panel className="w-full px-6 pb-3 text-gray-600">
+        <Disclosure.Panel className="w-full pb-4 text-gray-600">
           {children}
         </Disclosure.Panel>
       </>

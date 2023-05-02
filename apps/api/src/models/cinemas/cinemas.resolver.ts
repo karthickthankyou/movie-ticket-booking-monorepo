@@ -100,7 +100,9 @@ export class CinemasResolver {
 
   @ResolveField(() => [Manager])
   managers(@Parent() cinema: Cinema) {
-    return this.prisma.manager.findMany({ where: { cinemaId: cinema.id } })
+    return this.prisma.manager.findMany({
+      where: { cinema: { some: { id: cinema.id } } },
+    })
   }
 
   @ResolveField(() => [Screen])

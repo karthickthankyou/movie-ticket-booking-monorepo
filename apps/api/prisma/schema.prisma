@@ -24,8 +24,7 @@ model Manager {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
-    cinemaId  Int?
-    cinema    Cinema?  @relation(fields: [cinemaId], references: [id])
+    cinema    Cinema[]
 }
 
 model Cinema {
@@ -100,6 +99,8 @@ model Showtime {
     screenId  Int
     screen    Screen    @relation(fields: [screenId], references: [id])
     bookings  Booking[]
+
+    status ShowtimeStatus?
 
     @@unique([startTime, screenId])
 }
@@ -181,4 +182,9 @@ enum Genre {
     THRILLER
     WAR
     WESTERN
+}
+
+enum ShowtimeStatus {
+    POSTPONED
+    CANCELLED
 }

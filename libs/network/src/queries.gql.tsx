@@ -118,6 +118,43 @@ export const movies = gql`
   }
 `
 
+export const cinemas = gql`
+  query cinemas(
+    $where: CinemaWhereInput
+    $orderBy: [CinemaOrderByWithRelationInput!]
+    $cursor: CinemaWhereUniqueInput
+    $take: Int
+    $skip: Int
+    $distinct: [CinemaScalarFieldEnum!]
+  ) {
+    cinemas(
+      where: $where
+      orderBy: $orderBy
+      cursor: $cursor
+      take: $take
+      skip: $skip
+      distinct: $distinct
+    ) {
+      id
+      name
+      screens {
+        id
+        number
+        seatsCount
+        showtimes {
+          id
+          startTime
+          status
+          movie {
+            title
+            posterUrl
+          }
+        }
+      }
+    }
+  }
+`
+
 export const createShowtime = gql`
   mutation createShowtime($createShowtimeInput: CreateShowtimeInput!) {
     createShowtime(createShowtimeInput: $createShowtimeInput) {
@@ -232,6 +269,14 @@ export const tickets = gql`
           }
         }
       }
+    }
+  }
+`
+
+export const updateShowtime = gql`
+  mutation updateShowtime($updateShowtimeInput: UpdateShowtimeInput!) {
+    updateShowtime(updateShowtimeInput: $updateShowtimeInput) {
+      id
     }
   }
 `

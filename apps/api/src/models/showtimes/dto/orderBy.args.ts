@@ -9,6 +9,8 @@ export class ShowtimeOrderByWithRelationInput
   implements Required<Prisma.ShowtimeOrderByWithRelationInput>
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
+  status: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   createdAt: Prisma.SortOrder

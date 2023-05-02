@@ -74,15 +74,6 @@ export class ShowtimesResolver {
     @Args('cinemaId') cinemaId: number,
     @Args('movieId') movieId: number,
   ) {
-    // const shows = await this.prisma.showtime.findMany({
-    //   cursor,
-    //   distinct,
-    //   orderBy,
-    //   skip,
-    //   take,
-    //   where: { ...where, movieId, screen: { cinemaId } },
-    // })
-
     const shows = await this.prisma.$queryRaw`
     SELECT
       DATE("startTime") AS date,
@@ -114,13 +105,15 @@ export class ShowtimesResolver {
     @Args('updateShowtimeInput') args: UpdateShowtimeInput,
     @GetUser() user: GetUserType,
   ) {
-    const screen = await this.prisma.screen.findUnique({
-      where: { id: args.screenId },
-      include: { cinema: { include: { managers: true } } },
+    const showtime = await this.prisma.showtime.findUnique({
+      where: { id: args.id },
+      include: {
+        screen: { include: { cinema: { include: { managers: true } } } },
+      },
     })
     checkRowLevelPermission(
       user,
-      screen.cinema.managers.map((m) => m.uid),
+      showtime.screen.cinema.managers.map((m) => m.uid),
     )
     return this.showtimesService.update(args)
   }

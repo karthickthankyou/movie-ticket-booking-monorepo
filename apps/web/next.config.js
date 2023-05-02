@@ -5,7 +5,7 @@ const nextConfig = {
     externalDir: true,
   },
   images: {
-    domains: ['firebasestorage.googleapis.com'],
+    domains: ['firebasestorage.googleapis.com', 'upload.wikimedia.org'],
   },
 }
 

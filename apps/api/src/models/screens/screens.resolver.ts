@@ -103,8 +103,12 @@ export class ScreensResolver {
     })
     return count
   }
-  @ResolveField(() => [Showtime])
+  @ResolveField(() => [Showtime], {
+    description: 'This returns all current and future shows.',
+  })
   showtimes(@Parent() screen: Screen) {
-    return this.prisma.showtime.findMany({ where: { screenId: screen.id } })
+    return this.prisma.showtime.findMany({
+      where: { screenId: screen.id, startTime: { gt: new Date() } },
+    })
   }
 }

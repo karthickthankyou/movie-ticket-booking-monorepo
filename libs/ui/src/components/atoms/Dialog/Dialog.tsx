@@ -49,7 +49,7 @@ export const Dialog = ({ open, setOpen, children, title }: IMyDialogProps) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <HeadlessUIDialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform border border-white rounded shadow-xl bg-white/80">
+              <HeadlessUIDialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white border border-white rounded shadow-xl">
                 <button
                   type="button"
                   className="absolute top-0 right-0 flex items-center justify-center w-8 h-8 hover:bg-black/10"

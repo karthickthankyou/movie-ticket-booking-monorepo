@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Prisma } from '@prisma/client'
+import { Prisma, ShowtimeStatus } from '@prisma/client'
 import { DateTimeFilter, IntFilter } from 'src/common/dtos/common.input'
 import { BookingListRelationFilter } from 'src/models/bookings/dto/where.args'
 import { MovieRelationFilter } from 'src/models/movies/dto/where.args'
@@ -11,9 +11,22 @@ export class ShowtimeWhereUniqueInput {
   @Field(() => Number, { nullable: true })
   id: number
 }
+@InputType()
+export class EnumShowtimeStatusFilter {
+  @Field(() => ShowtimeStatus, { nullable: true })
+  equals: ShowtimeStatus;
+  @Field(() => [ShowtimeStatus], { nullable: true })
+  in: ShowtimeStatus[]
+  @Field(() => [ShowtimeStatus], { nullable: true })
+  notIn: ShowtimeStatus[]
+  @Field(() => ShowtimeStatus, { nullable: true })
+  not: ShowtimeStatus
+}
 
 @InputType()
 export class ShowtimeWhereInput implements Required<Prisma.ShowtimeWhereInput> {
+  @Field(() => EnumShowtimeStatusFilter, { nullable: true })
+  status: EnumShowtimeStatusFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

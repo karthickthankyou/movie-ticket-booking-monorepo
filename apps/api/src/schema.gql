@@ -79,6 +79,8 @@ type Screen {
   cinema: Cinema!
   seats: [Seat!]!
   seatsCount: Int!
+
+  """This returns all current and future shows."""
   showtimes: [Showtime!]!
 }
 
@@ -117,6 +119,7 @@ type Seat {
 }
 
 type Showtime {
+  status: ShowtimeStatus
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -126,6 +129,12 @@ type Showtime {
   screen: Screen!
   movie: Movie!
   Booking: [Booking!]!
+}
+
+"""Enum for showtime statuses"""
+enum ShowtimeStatus {
+  POSTPONED
+  CANCELLED
 }
 
 type RemainingSeats {
@@ -360,6 +369,7 @@ input ShowtimeRelationFilter {
 }
 
 input ShowtimeWhereInput {
+  status: EnumShowtimeStatusFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -372,6 +382,13 @@ input ShowtimeWhereInput {
   AND: [ShowtimeWhereInput!]
   OR: [ShowtimeWhereInput!]
   NOT: [ShowtimeWhereInput!]
+}
+
+input EnumShowtimeStatusFilter {
+  equals: ShowtimeStatus
+  in: [ShowtimeStatus!]
+  notIn: [ShowtimeStatus!]
+  not: ShowtimeStatus
 }
 
 input MovieRelationFilter {
@@ -486,15 +503,20 @@ input ManagerListRelationFilter {
 }
 
 input ManagerWhereInput {
+  cinema: CinemaListRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   name: StringFilter
-  cinemaId: IntFilter
-  cinema: CinemaRelationFilter
   AND: [ManagerWhereInput!]
   OR: [ManagerWhereInput!]
   NOT: [ManagerWhereInput!]
+}
+
+input CinemaListRelationFilter {
+  every: CinemaWhereInput
+  some: CinemaWhereInput
+  none: CinemaWhereInput
 }
 
 input AddressRelationFilter {
@@ -575,12 +597,26 @@ enum UserScalarFieldEnum {
 }
 
 input ManagerOrderByWithRelationInput {
+  cinema: CinemaOrderByRelationAggregateInput
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   name: SortOrder
-  cinemaId: SortOrder
-  cinema: CinemaOrderByWithRelationInput
+}
+
+input CinemaOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ManagerWhereUniqueInput {
+  uid: String
+}
+
+enum ManagerScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+  name
 }
 
 input CinemaOrderByWithRelationInput {
@@ -610,18 +646,6 @@ input AddressOrderByWithRelationInput {
   lat: SortOrder
   lng: SortOrder
   cinema: CinemaOrderByWithRelationInput
-}
-
-input ManagerWhereUniqueInput {
-  uid: String
-}
-
-enum ManagerScalarFieldEnum {
-  uid
-  createdAt
-  updatedAt
-  name
-  cinemaId
 }
 
 input CinemaWhereUniqueInput {
@@ -736,6 +760,7 @@ enum MovieScalarFieldEnum {
 }
 
 input ShowtimeOrderByWithRelationInput {
+  status: SortOrder
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -758,6 +783,7 @@ enum ShowtimeScalarFieldEnum {
   startTime
   movieId
   screenId
+  status
 }
 
 input BookingOrderByWithRelationInput {
@@ -816,6 +842,7 @@ type Mutation {
   refreshToken(refreshTokenInput: RefreshTokenInput!): RefreshTokenOutput!
   setRole(setRoleInput: SetRoleInput!): Boolean!
   setAdmin(uid: String!): Boolean!
+  runScheduler: [Showtime!]!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
@@ -978,10 +1005,9 @@ input CreateShowtimeInput {
 }
 
 input UpdateShowtimeInput {
-  movieId: Int
-  screenId: Int
-  showtimes: [String!]
   id: Int!
+  status: ShowtimeStatus
+  startTime: DateTime
 }
 
 input CreateBookingInput {
