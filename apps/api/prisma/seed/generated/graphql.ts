@@ -1080,7 +1080,7 @@ export type Showtime = {
   screen: Screen
   screenId: Scalars['Int']
   startTime: Scalars['DateTime']
-  status: ShowtimeStatus
+  status?: Maybe<ShowtimeStatus>
   updatedAt: Scalars['DateTime']
 }
 

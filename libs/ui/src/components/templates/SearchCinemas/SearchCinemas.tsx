@@ -39,9 +39,10 @@ import { selectUid } from '@showtime-org/store/user'
 import { notification$ } from '@showtime-org/util/subjects'
 import { CinemaSelectCard } from '../../organisms/CinemaSelectCard'
 import { ShowtimeSelectCard } from '../../organisms/ShowtimeSelectCard'
-import { format } from 'date-fns'
+import { format, isSameDay, isToday, isTomorrow } from 'date-fns'
 import {
   IconArmchair,
+  IconBox,
   IconKeyboard,
   IconMapPinFilled,
 } from '@tabler/icons-react'
@@ -58,7 +59,7 @@ export const SearchCinemas = ({}: ISearchCinemasProps) => {
         <DefaultZoomControls />
       </Panel>
 
-      <DisplayAllKitchens />
+      <DisplayAllCinemas />
 
       <Panel position="left-top">
         <SetCity />
@@ -159,7 +160,7 @@ export const SetCity = () => {
   )
 }
 
-export const DisplayAllKitchens = () => {
+export const DisplayAllCinemas = () => {
   const { current: map } = useMap()
 
   const [bounds, setBounds] = useState<LngLatBounds>()
@@ -229,14 +230,14 @@ export const MarkerWithPopup = ({
         }}
       >
         <BrandIcon className="cursor-pointer" />
-        <MarkerText>{marker.name}</MarkerText>
+        <MarkerText>{marker.name.split(' ').slice(0, 2).join(' ')}</MarkerText>
       </Marker>
     </div>
   )
 }
 
 export const MarkerText = ({ children }: { children: ReactNode }) => (
-  <div className="absolute -translate-x-1/2 left-1/2">
+  <div className="absolute max-w-xs -translate-x-1/2 left-1/2">
     <div className="mt-1 leading-4 text-center min-w-max px-0.5 rounded backdrop-blur-sm bg-white/50">
       {children}
     </div>
@@ -307,6 +308,30 @@ export const ShowRemainingSeats = ({ showtimeId }: { showtimeId: number }) => {
   )
 }
 
+const formatDate = (dateString: string) => {
+  const date = new Date(+dateString)
+  if (isToday(date)) {
+    return 'Today'
+  } else if (isTomorrow(date)) {
+    return 'Tomorrow'
+  } else {
+    return format(date, 'PPPP')
+  }
+}
+
+export const noShowsMessages = [
+  'This movie is taking a short vacation! Check back soon for showtimes.',
+  'Our screen is having a siesta from this film. Stay tuned for more shows.',
+  "This movie is playing hide-and-seek, and it's winning! Check back later for showtimes.",
+  "It's the film's day out, but don't worry, it'll be back soon!",
+  "The projector has chosen a different lineup today. Stay tuned for this movie's return.",
+  'This movie is nowhere to be scene today, but keep an eye out for future showtimes.',
+  'A bit of movie mischief today means this film is taking a break. Check back soon!',
+  'The popcorn party is paused for this movie. Stay tuned for future showtimes.',
+  'Taking a break from this flick for a fiesta of other films! Check back later.',
+  "It's time for some reel relaxation. This movie will return soon!",
+]
+
 export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
   const movieId = useAppSelector((state) => state.movies.selectedMovieId)
   const selectedShowtimeId = useAppSelector(
@@ -322,6 +347,14 @@ export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
 
   const dispatch = useAppDispatch()
 
+  const containsTodaysDate = () => {
+    const today = new Date()
+    return data?.showtimesInCinema.some((dateItem) => {
+      const date = new Date(+dateItem.date)
+      return isSameDay(date, today)
+    })
+  }
+
   if (!movieId) return null
 
   return (
@@ -329,28 +362,44 @@ export const SelectShowtimes = ({ cinemaId }: { cinemaId: number }) => {
       <div>Select showtime</div>
       {loading ? <LoaderPanel /> : null}
 
-      <div className="flex flex-col items-start gap-4">
-        {data?.showtimesInCinema.map((date) => (
-          <div key={date.date}>
-            <div className="mb-2 text-xs font-semibold">
-              {format(new Date(+date.date), 'PPPP')}
+      <div className="flex flex-col gap-4 ">
+        {!containsTodaysDate() ? (
+          <>
+            <div className="text-lg font-semibold ">Today</div>
+            <div className="flex flex-col items-center justify-center w-full text-gray-800 rounded h-36 bg-gray-50">
+              <div className="flex text-lg font-semibold">
+                <IconBox />
+                <div>No shows.</div>
+              </div>
+              <div className="max-w-xs text-center">
+                {random(noShowsMessages)}
+              </div>
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              {date.showtimes.map((showtime) => (
-                <button
-                  key={showtime.id}
-                  onClick={() => {
-                    dispatch(addShowtimeId(showtime.id))
-                    dispatch(addScreenId(showtime.screen.id))
-                  }}
-                >
-                  <ShowtimeSelectCard
-                    selected={showtime.id === selectedShowtimeId}
+          </>
+        ) : null}
+        {data?.showtimesInCinema.map((date) => (
+          <div key={date.date} className="w-full">
+            <div className="mb-2 text-lg font-semibold">
+              {formatDate(date.date)}
+            </div>
+            <div className="grid grid-cols-3 gap-2 ">
+              {[...date.showtimes]
+                .sort((a, b) => a.startTime.localeCompare(b.startTime))
+                .map((showtime) => (
+                  <button
                     key={showtime.id}
-                    showtime={showtime}
-                  />
-                </button>
-              ))}
+                    onClick={() => {
+                      dispatch(addShowtimeId(showtime.id))
+                      dispatch(addScreenId(showtime.screen.id))
+                    }}
+                  >
+                    <ShowtimeSelectCard
+                      selected={showtime.id === selectedShowtimeId}
+                      key={showtime.id}
+                      showtime={showtime}
+                    />
+                  </button>
+                ))}
             </div>
           </div>
         ))}

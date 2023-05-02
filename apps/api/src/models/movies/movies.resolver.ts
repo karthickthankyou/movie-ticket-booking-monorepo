@@ -40,14 +40,26 @@ export class MoviesResolver {
     @Args() { cursor, distinct, orderBy, skip, take, where }: FindManyMovieArgs,
     @Args('cinemaId') cinemaId: number,
   ) {
-    return this.prisma.movie.findMany({
-      cursor,
-      distinct,
-      orderBy,
-      skip,
-      take,
-      where: { ...where, showtimes: { some: { screen: { cinemaId } } } },
-    })
+    return this.prisma.movie
+      .findMany({
+        cursor,
+        distinct,
+        orderBy,
+        skip,
+        take,
+        where,
+        include: {
+          showtimes: {
+            where: {
+              startTime: { gt: new Date() },
+              screen: {
+                cinemaId,
+              },
+            },
+          },
+        },
+      })
+      .then((movies) => movies.filter((movie) => movie.showtimes.length > 0))
   }
 
   @Query(() => AggregateCountOutput, {

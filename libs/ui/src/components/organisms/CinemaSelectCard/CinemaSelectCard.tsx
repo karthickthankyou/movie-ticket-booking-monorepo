@@ -21,7 +21,7 @@ export const CinemaSelectCard = ({
           selected ? 'shadow-xl border-primary' : 'shadow-sm border-white'
         }`}
       />
-      <div className="text-sm truncate">{movie.title}</div>
+      <div className="text-sm text-left">{movie.title}</div>
     </div>
   )
 }

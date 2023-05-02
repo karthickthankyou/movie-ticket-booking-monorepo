@@ -190,7 +190,6 @@ export const showtimesInCinema = gql`
       showtimes {
         id
         startTime
-
         screen {
           id
           price

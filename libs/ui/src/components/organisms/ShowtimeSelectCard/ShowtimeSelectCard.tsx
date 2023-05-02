@@ -11,6 +11,7 @@ export const ShowtimeSelectCard = ({
   showtime,
   selected = false,
 }: IShowtimeSelectCardProps) => {
+  console.log('Start time ', showtime.startTime)
   return (
     <div
       className={`flex border p-1 rounded flex-col items-start ${
@@ -18,7 +19,7 @@ export const ShowtimeSelectCard = ({
       }`}
     >
       <div className="text-sm font-bold">
-        {format(new Date(showtime.startTime), 'p')}
+        {format(new Date(+showtime.startTime), 'p')}
       </div>
       <div className="text-sm">Rs.{showtime.screen.price}</div>
       <div className="text-xs ">{showtime.screen.projectionType}</div>

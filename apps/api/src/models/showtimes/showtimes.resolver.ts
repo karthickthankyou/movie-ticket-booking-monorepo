@@ -74,22 +74,22 @@ export class ShowtimesResolver {
     @Args('cinemaId') cinemaId: number,
     @Args('movieId') movieId: number,
   ) {
-    const shows = await this.prisma.$queryRaw`
-    SELECT
-      DATE("startTime") AS date,
-     ARRAY_AGG(
-        json_build_object(
-          'id', "Showtime"."id",
-          'startTime', "startTime",
-          'screen', "Screen"
-        )
-      ) AS showtimes
-    FROM "Showtime"
-    JOIN "Screen" ON "Showtime"."screenId" = "Screen"."id"
-    WHERE "Showtime"."movieId" = ${movieId} AND "Screen"."cinemaId" = ${cinemaId}
-    GROUP BY DATE("startTime")
-    ORDER BY DATE("startTime");
-  `
+    const shows: any[] = await this.prisma.$queryRaw`
+        SELECT
+        DATE("startTime") AS date,
+        ARRAY_AGG(
+            json_build_object(
+            'id', "Showtime"."id",
+            'startTime', EXTRACT(EPOCH FROM "startTime") * 1000,
+            'screen', "Screen"
+            )
+        ) AS showtimes
+        FROM "Showtime"
+        JOIN "Screen" ON "Showtime"."screenId" = "Screen"."id"
+        WHERE "Showtime"."movieId" = ${movieId} AND "Screen"."cinemaId" = ${cinemaId} AND "Showtime"."startTime" > NOW()
+        GROUP BY DATE("startTime")
+        ORDER BY DATE("startTime");
+`
 
     return shows
   }

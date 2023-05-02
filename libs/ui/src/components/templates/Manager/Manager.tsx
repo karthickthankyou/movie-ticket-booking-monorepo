@@ -21,6 +21,7 @@ import { Menu } from '@headlessui/react'
 import { Button } from '../../atoms/Button'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
+import { ConsoleLog } from '../../molecules/ConsoleLog'
 
 export interface IManagerProps {}
 
@@ -134,6 +135,19 @@ export const ShowCinema = ({
                             />
                             <div>
                               <div className="font-bold">
+                                <ConsoleLog
+                                  message={[
+                                    'showtime.startTime ',
+                                    showtime.startTime,
+                                  ]}
+                                />
+                                {(() => {
+                                  console.log(
+                                    'showtime.startTime ',
+                                    showtime.startTime,
+                                  )
+                                  return null
+                                })()}
                                 {format(new Date(showtime.startTime), 'p')}
                               </div>
                               <div>{showtime.movie.title}</div>
@@ -165,7 +179,7 @@ export const ShowShowtime = ({ showtimeId }: { showtimeId: number }) => {
   if (loading) return <Loader />
 
   return (
-    <div>
+    <div className="text-xs">
       {data?.bookedSeatsInShowtime.booked} of{' '}
       {data?.bookedSeatsInShowtime.total} seats booked.
     </div>

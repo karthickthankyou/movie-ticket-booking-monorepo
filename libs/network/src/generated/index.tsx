@@ -1081,7 +1081,7 @@ export type Showtime = {
   screen: Screen
   screenId: Scalars['Int']
   startTime: Scalars['DateTime']
-  status: ShowtimeStatus
+  status?: Maybe<ShowtimeStatus>
   updatedAt: Scalars['DateTime']
 }
 
@@ -1488,7 +1488,7 @@ export type CinemasQuery = {
         __typename?: 'Showtime'
         id: number
         startTime: any
-        status: ShowtimeStatus
+        status?: ShowtimeStatus | null
         movie: { __typename?: 'Movie'; title: string; posterUrl: string }
       }>
     }>
