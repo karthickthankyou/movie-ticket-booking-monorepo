@@ -19,6 +19,8 @@ import { FirebaseModule } from './common/firebase/firebase.module'
 import { TicketsModule } from './models/tickets/tickets.module'
 import { SchedulerModule } from './scheduler/scheduler.module'
 import { ScheduleModule } from '@nestjs/schedule'
+import { AdminsModule } from './models/admins/admins.module'
+import { StripeModule } from './common/stripe/stripe.module'
 
 @Module({
   imports: [
@@ -37,7 +39,9 @@ import { ScheduleModule } from '@nestjs/schedule'
     AuthModule,
     FirebaseModule,
     SchedulerModule,
+    StripeModule,
 
+    AdminsModule,
     UsersModule,
     ManagersModule,
     CinemasModule,

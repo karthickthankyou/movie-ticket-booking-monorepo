@@ -52,6 +52,14 @@ export class ManagersResolver {
   }
 
   @AllowAuthenticated()
+  @Query(() => Manager, { name: 'managerMe' })
+  managerMe(@GetUser() user: GetUserType) {
+    return this.managersService.findOne({
+      where: { uid: user.uid },
+    })
+  }
+
+  @AllowAuthenticated()
   @Mutation(() => Manager)
   updateManager(
     @Args('updateManagerInput') args: UpdateManagerInput,

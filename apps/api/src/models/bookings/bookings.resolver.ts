@@ -26,48 +26,23 @@ import { Prisma } from '@prisma/client'
 import * as bwipjs from 'bwip-js'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
 import { Ticket } from '../tickets/entities/ticket.entity'
+import { UsersService } from '../users/users.service'
 @Resolver(() => Booking)
 export class BookingsResolver {
   constructor(
     private readonly bookingsService: BookingsService,
     private readonly prisma: PrismaService,
+    private readonly userService: UsersService,
     private readonly firebase: FirebaseService,
   ) {}
 
-  @AllowAuthenticated()
+  @AllowAuthenticated('admin')
   @Mutation(() => Ticket)
   async createBooking(
     @Args('createBookingInput') args: CreateBookingInput,
     @GetUser() user: GetUserType,
   ) {
-    checkRowLevelPermission(user, args.userId)
-    const bookingsData: Prisma.BookingCreateManyInput[] = args.seats.map(
-      (seat) => ({
-        row: seat.row,
-        column: seat.column,
-        screenId: args.screenId,
-        showtimeId: args.showtimeId,
-        userId: user.uid,
-      }),
-    )
-
-    const ticket = await this.prisma.ticket.create({
-      data: { uid: user.uid, bookings: { create: bookingsData } },
-    })
-
-    const png = await bwipjs.toBuffer({
-      bcid: 'qrcode', // Barcode type
-      text: JSON.stringify(ticket), // Text to encode
-      textxalign: 'center', // Align the text to the center
-    })
-
-    const qrCode = await this.firebase.uploadFile2(png, user.uid, ticket.id)
-    const updatedTicket = await this.prisma.ticket.update({
-      where: { id: ticket.id },
-      data: { qrCode },
-    })
-
-    return updatedTicket
+    return this.bookingsService.create(args, user)
   }
 
   @AllowAuthenticated('admin')

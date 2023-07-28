@@ -64,6 +64,14 @@ export type AddressWhereInput = {
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
+export type Admin = {
+  __typename?: 'Admin'
+  createdAt: Scalars['DateTime']
+  name: Scalars['String']
+  uid: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
 export type AggregateCountOutput = {
   __typename?: 'AggregateCountOutput'
   count: Scalars['Int']
@@ -283,7 +291,7 @@ export type CreateShowtimeInput = {
 }
 
 export type CreateUserInput = {
-  name: Scalars['String']
+  name?: InputMaybe<Scalars['String']>
   uid: Scalars['String']
 }
 
@@ -677,6 +685,7 @@ export enum ProjectionType {
 
 export type Query = {
   __typename?: 'Query'
+  adminMe: Admin
   bookedSeatsInShowtime: RemainingSeats
   booking: Booking
   bookings: Array<Booking>
@@ -685,6 +694,7 @@ export type Query = {
   cinemas: Array<Cinema>
   cinemasCount: AggregateCountOutput
   manager: Manager
+  managerMe: Manager
   managers: Array<Manager>
   movie: Movie
   movies: Array<Movie>
@@ -1306,7 +1316,7 @@ export type User = {
   __typename?: 'User'
   bookings: Array<Booking>
   createdAt: Scalars['DateTime']
-  name: Scalars['String']
+  name?: Maybe<Scalars['String']>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -1364,6 +1374,15 @@ export type CreateMovieMutationVariables = Exact<{
 export type CreateMovieMutation = {
   __typename?: 'Mutation'
   createMovie: { __typename?: 'Movie'; id: number }
+}
+
+export type CreateManagerMutationVariables = Exact<{
+  createManagerInput: CreateManagerInput
+}>
+
+export type CreateManagerMutation = {
+  __typename?: 'Mutation'
+  createManager: { __typename?: 'Manager'; uid: string }
 }
 
 export type FindCinemaQueryVariables = Exact<{
@@ -1575,6 +1594,7 @@ export type ShowtimeQuery = {
     __typename?: 'Showtime'
     screen: {
       __typename?: 'Screen'
+      price: number
       seats: Array<{
         __typename?: 'Seat'
         row: number
@@ -1641,6 +1661,20 @@ export type UpdateShowtimeMutation = {
   updateShowtime: { __typename?: 'Showtime'; id: number }
 }
 
+export type ManagerMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type ManagerMeQuery = {
+  __typename?: 'Query'
+  managerMe: { __typename?: 'Manager'; uid: string }
+}
+
+export type AdminMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type AdminMeQuery = {
+  __typename?: 'Query'
+  adminMe: { __typename?: 'Admin'; uid: string }
+}
+
 export const namedOperations = {
   Query: {
     findCinema: 'findCinema',
@@ -1652,10 +1686,13 @@ export const namedOperations = {
     showtimesInCinema: 'showtimesInCinema',
     showtime: 'showtime',
     tickets: 'tickets',
+    managerMe: 'managerMe',
+    adminMe: 'adminMe',
   },
   Mutation: {
     createCinema: 'createCinema',
     createMovie: 'createMovie',
+    createManager: 'createManager',
     createScreen: 'createScreen',
     Login: 'Login',
     createShowtime: 'createShowtime',
@@ -1763,6 +1800,56 @@ export type CreateMovieMutationResult =
 export type CreateMovieMutationOptions = Apollo.BaseMutationOptions<
   CreateMovieMutation,
   CreateMovieMutationVariables
+>
+export const CreateManagerDocument = /*#__PURE__*/ gql`
+  mutation createManager($createManagerInput: CreateManagerInput!) {
+    createManager(createManagerInput: $createManagerInput) {
+      uid
+    }
+  }
+`
+export type CreateManagerMutationFn = Apollo.MutationFunction<
+  CreateManagerMutation,
+  CreateManagerMutationVariables
+>
+
+/**
+ * __useCreateManagerMutation__
+ *
+ * To run a mutation, you first call `useCreateManagerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateManagerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createManagerMutation, { data, loading, error }] = useCreateManagerMutation({
+ *   variables: {
+ *      createManagerInput: // value for 'createManagerInput'
+ *   },
+ * });
+ */
+export function useCreateManagerMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateManagerMutation,
+    CreateManagerMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateManagerMutation,
+    CreateManagerMutationVariables
+  >(CreateManagerDocument, options)
+}
+export type CreateManagerMutationHookResult = ReturnType<
+  typeof useCreateManagerMutation
+>
+export type CreateManagerMutationResult =
+  Apollo.MutationResult<CreateManagerMutation>
+export type CreateManagerMutationOptions = Apollo.BaseMutationOptions<
+  CreateManagerMutation,
+  CreateManagerMutationVariables
 >
 export const FindCinemaDocument = /*#__PURE__*/ gql`
   query findCinema($uid: String!) {
@@ -2428,6 +2515,7 @@ export const ShowtimeDocument = /*#__PURE__*/ gql`
   query showtime($where: ShowtimeWhereUniqueInput, $showtimeId: Int!) {
     showtime(where: $where) {
       screen {
+        price
         seats {
           row
           column
@@ -2679,4 +2767,109 @@ export type UpdateShowtimeMutationResult =
 export type UpdateShowtimeMutationOptions = Apollo.BaseMutationOptions<
   UpdateShowtimeMutation,
   UpdateShowtimeMutationVariables
+>
+export const ManagerMeDocument = /*#__PURE__*/ gql`
+  query managerMe {
+    managerMe {
+      uid
+    }
+  }
+`
+
+/**
+ * __useManagerMeQuery__
+ *
+ * To run a query within a React component, call `useManagerMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useManagerMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useManagerMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useManagerMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ManagerMeQuery,
+    ManagerMeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ManagerMeQuery, ManagerMeQueryVariables>(
+    ManagerMeDocument,
+    options,
+  )
+}
+export function useManagerMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ManagerMeQuery,
+    ManagerMeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ManagerMeQuery, ManagerMeQueryVariables>(
+    ManagerMeDocument,
+    options,
+  )
+}
+export type ManagerMeQueryHookResult = ReturnType<typeof useManagerMeQuery>
+export type ManagerMeLazyQueryHookResult = ReturnType<
+  typeof useManagerMeLazyQuery
+>
+export type ManagerMeQueryResult = Apollo.QueryResult<
+  ManagerMeQuery,
+  ManagerMeQueryVariables
+>
+export const AdminMeDocument = /*#__PURE__*/ gql`
+  query adminMe {
+    adminMe {
+      uid
+    }
+  }
+`
+
+/**
+ * __useAdminMeQuery__
+ *
+ * To run a query within a React component, call `useAdminMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<AdminMeQuery, AdminMeQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AdminMeQuery, AdminMeQueryVariables>(
+    AdminMeDocument,
+    options,
+  )
+}
+export function useAdminMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AdminMeQuery,
+    AdminMeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AdminMeQuery, AdminMeQueryVariables>(
+    AdminMeDocument,
+    options,
+  )
+}
+export type AdminMeQueryHookResult = ReturnType<typeof useAdminMeQuery>
+export type AdminMeLazyQueryHookResult = ReturnType<typeof useAdminMeLazyQuery>
+export type AdminMeQueryResult = Apollo.QueryResult<
+  AdminMeQuery,
+  AdminMeQueryVariables
 >

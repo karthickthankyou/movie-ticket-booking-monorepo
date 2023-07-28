@@ -1,0 +1,1 @@
+export { IsManager } from './IsManager'

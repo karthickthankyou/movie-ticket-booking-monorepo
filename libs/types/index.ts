@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react'
 export type Role = 'admin' | 'manager'
 
+export type MenuItem = { label: string; href: string; loggedIn?: boolean }
+
 export type GetUserType = {
   uid: string
   displayName: string
@@ -49,4 +51,10 @@ export type Viewport = {
   latitude: number
   longitude: number
   zoom: number
+}
+
+export type StripeItemType = {
+  screenId: number
+  showtimeId: number
+  seats: { column: number; row: number; price: number }[]
 }

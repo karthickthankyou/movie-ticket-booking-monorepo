@@ -16,7 +16,12 @@ export const BrandIcon = ({
   height = 24,
 }: IBrandIconProps) => {
   return (
-    <IconDeviceLaptop className={`${className}`} />
+    <div style={{ perspective: '20px' }}>
+      <IconDeviceLaptop
+        className={`${className}`}
+        style={{ transform: 'rotateX(22deg' }}
+      />
+    </div>
     // <svg
     //   className="w-8 h-6 "
     //   viewBox="0 0 200 100"

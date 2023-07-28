@@ -14,7 +14,7 @@ model User {
     uid       String    @id
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
-    name      String
+    name      String?
     bookings  Booking[]
     tickets   Ticket[]
 }
@@ -23,8 +23,15 @@ model Manager {
     uid       String   @id
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    name      String
+    name      String?
     cinema    Cinema[]
+}
+
+model Admin {
+    uid       String   @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String?
 }
 
 model Cinema {

@@ -8,7 +8,7 @@ export interface IAuthLayoutProps {
 
 export const AuthLayout = ({ title, children }: IAuthLayoutProps) => {
   return (
-    <div className="flex flex-col items-center h-screen bg-food-pattern">
+    <div className="flex flex-col items-center min-h-[calc(100vh-4rem)] bg-gray-50">
       <div className="w-full max-w-lg p-4 mx-auto mt-36">
         <h1 className="flex items-end gap-2 mb-2 ml-4 text-2xl">
           {' '}

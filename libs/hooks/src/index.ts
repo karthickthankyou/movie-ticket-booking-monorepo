@@ -3,6 +3,8 @@ import { selectUid } from '@showtime-org/store/user'
 import { notification$ } from '@showtime-org/util/subjects'
 import { useRouter } from 'next/router'
 import { RefObject, useEffect, useRef, useState } from 'react'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { storage } from '@showtime-org/network/src/config/firebase'
 
 export const useRedirectLoggedInUsers = () => {
   const uid = useAppSelector(selectUid)
@@ -81,4 +83,56 @@ export const useKeypress = (keys: string[], action?: Function) => {
     window.addEventListener('keyup', onKeyup)
     return () => window.removeEventListener('keyup', onKeyup)
   }, [action, keys])
+}
+
+export const useImageUpload = () => {
+  const [uploading, setUploading] = useState(false)
+  const [percent, setPercent] = useState(0)
+
+  const handleUpload = async (files: any): Promise<string[]> => {
+    if (!files?.length) {
+      notification$.next({
+        message: 'Images empty.',
+        type: 'error',
+      })
+      return []
+    }
+
+    setUploading(true)
+
+    const uploadTasks = Array.from(files).map((file: any) => {
+      console.log('file name ', file.name, file)
+      const storageRef = ref(storage, `/files/${file.name}`)
+      const uploadTask = uploadBytesResumable(storageRef, file)
+
+      return new Promise<string>((resolve, reject) => {
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const percent = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+            )
+            setPercent(percent)
+          },
+          reject,
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
+          },
+        )
+      })
+    })
+
+    try {
+      const imageUrls = await Promise.all(uploadTasks)
+      notification$.next({ message: `Image uploaded.` })
+      setUploading(false)
+      return imageUrls
+    } catch (err) {
+      console.log(err)
+      setUploading(false)
+      return []
+    }
+  }
+
+  return [{ uploading, percent }, handleUpload] as const
 }

@@ -3,10 +3,10 @@
 # ------------------------------------------------------
 
 type User {
+  name: String
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  name: String!
   bookings: [Booking!]!
 }
 
@@ -230,11 +230,20 @@ type RefreshTokenOutput {
   project_id: String!
 }
 
+type Admin {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+}
+
 type Query {
+  adminMe: Admin!
   users(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   user(where: UserWhereUniqueInput): User!
   managers(where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int, distinct: [ManagerScalarFieldEnum!]): [Manager!]!
   manager(where: ManagerWhereUniqueInput): Manager!
+  managerMe: Manager!
   cinemas(where: CinemaWhereInput, orderBy: [CinemaOrderByWithRelationInput!], cursor: CinemaWhereUniqueInput, take: Int, skip: Int, distinct: [CinemaScalarFieldEnum!]): [Cinema!]!
   cinema(where: CinemaWhereUniqueInput): Cinema!
   cinemaByManager(uid: String!): Cinema!
@@ -897,13 +906,13 @@ enum RoleEnum {
 }
 
 input CreateUserInput {
+  name: String
   uid: String!
-  name: String!
 }
 
 input UpdateUserInput {
-  uid: String!
   name: String
+  uid: String!
 }
 
 input CreateManagerInput {

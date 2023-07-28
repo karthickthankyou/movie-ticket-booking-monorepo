@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { IconDoorExit, IconMenu2, IconUser } from '@tabler/icons-react'
+import { IconDoorExit, IconMenu2 } from '@tabler/icons-react'
 
 import { Sidebar } from '../Sidebar'
 
@@ -10,22 +10,11 @@ import { Brand } from '../../atoms/Brand'
 
 import { Button } from '../../atoms/Button'
 import { Container } from '../../atoms/Container'
-import { useAppSelector, useAppDispatch } from '@showtime-org/store'
+import { useAppSelector } from '@showtime-org/store'
 import { selectUser } from '@showtime-org/store/user'
 import { signOut } from '@showtime-org/network/src/auth'
 import { IBrandProps } from '../../atoms/Brand/Brand'
-
-export type MenuItem = [string, string]
-const MENUITEMS: MenuItem[] = [
-  ['Search', '/cinemas'],
-  ['Tickets', '/tickets'],
-]
-const SUBMENUITEMS: MenuItem[] = [
-  ...MENUITEMS,
-  ['About', '/about'],
-  ['Contact', '/contact'],
-  ['FAQs', '/faqs'],
-]
+import { MenuItem } from '@showtime-org/types'
 
 export const NavLink = ({ label, href }: { label: string; href: string }) => (
   <Link
@@ -44,7 +33,7 @@ export const NavSidebar = ({
 }: {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  menuItems: [string, string][]
+  menuItems: MenuItem[]
 }) => {
   const user = useAppSelector(selectUser)
 
@@ -55,7 +44,7 @@ export const NavSidebar = ({
       </Sidebar.Header>
       <Sidebar.Body>
         <div className="flex flex-col items-start space-y-1">
-          {menuItems.map(([label, href]) => (
+          {menuItems.map(({ label, href, loggedIn }) => (
             <Link key={label} href={href}>
               {label}
             </Link>
@@ -101,16 +90,12 @@ export const NavSidebar = ({
 }
 
 export type IHeaderProps = {
-  menuItems?: [string, string][]
-  sideMenuItems?: [string, string][]
+  menuItems: MenuItem[]
+  sideMenuItems: MenuItem[]
   type?: IBrandProps['type']
 }
 
-export const Header = ({
-  menuItems = MENUITEMS,
-  sideMenuItems = SUBMENUITEMS,
-  type,
-}: IHeaderProps) => {
+export const Header = ({ menuItems, sideMenuItems, type }: IHeaderProps) => {
   const [open, setOpen] = useState(false)
   const user = useAppSelector(selectUser)
 
@@ -125,7 +110,7 @@ export const Header = ({
               <Brand shortForm className="block sm:hidden" type={type} />
             </Link>
             <div className="items-center hidden ml-auto lg:flex lg:gap-10">
-              {menuItems.map(([label, href]) => (
+              {menuItems.map(({ label, href, loggedIn }) => (
                 <NavLink label={label} href={href} key={label} />
               ))}
             </div>

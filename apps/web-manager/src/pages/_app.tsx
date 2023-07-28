@@ -7,20 +7,21 @@ import { Header } from '@showtime-org/ui/src/components/organisms/Header'
 import { AppLevelListeners } from '@showtime-org/ui/src/components/atoms/AppLevelListeners'
 import { Notifications } from '@showtime-org/ui/src/components/organisms/Notifications'
 
+const menuItems = [
+  { href: '/createShowtime', label: 'Create Showtime' },
+  { href: '/createCinema', label: 'Create cinema' },
+  { href: '/settings', label: 'Settings' },
+]
+
+const sideMenuItems = [...menuItems]
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ReduxProvider>
       <ApolloProvider>
         <Header
-          menuItems={[
-            ['Create Showtime', '/createShowtime'],
-            ['Create cinema', '/createCinema'],
-            ['Settings', '/settings'],
-          ]}
-          sideMenuItems={[
-            ['Create cinema', '/createCinema'],
-            ['Settings', '/settings'],
-          ]}
+          menuItems={menuItems}
+          sideMenuItems={sideMenuItems}
           type="manager"
         />
         <AppLevelListeners />

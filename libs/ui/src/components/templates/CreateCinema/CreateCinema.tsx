@@ -26,11 +26,12 @@ import {
 } from '../../organisms/Map/ZoomControls/ZoomControls'
 import { useMap } from 'react-map-gl'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
-import { SetStateAction, useEffect, useState } from 'react'
-import { IconDeviceLaptop, IconPlus } from '@tabler/icons-react'
+import { useEffect, useState } from 'react'
+import { IconPlus } from '@tabler/icons-react'
 import { Accordion } from '../../molecules/Accordion'
 import { HtmlSelect } from '../../atoms/HtmlSelect'
 import { Dialog } from '../../atoms/Dialog'
+import { BrandIcon } from '../../atoms/BrandIcon'
 export interface ICreateCinemaProps {}
 
 export const CreateCinema = () => (
@@ -51,7 +52,7 @@ export const CreateCinemaContent = ({}: ICreateCinemaProps) => {
     useFindCinemaLazyQuery()
 
   useEffect(() => {
-    if (uid) findCinema()
+    if (uid) findCinema({ variables: { uid } })
   }, [uid])
 
   if (existingCinema?.cinema) {
@@ -365,7 +366,7 @@ const MapMarker = () => {
         setValue('address.lng', lng || 0)
       }}
     >
-      <IconDeviceLaptop />
+      <BrandIcon />
     </Marker>
   )
 }

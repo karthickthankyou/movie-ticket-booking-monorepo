@@ -20,8 +20,18 @@ export const Brand = ({
           </div>
         ) : (
           <div className="flex items-center gap-1 tracking-tighter font-playfair">
-            <BrandIcon className="stroke-2 text-primary" /> Showtime!
-            <span className="text-xs">{type}</span>
+            <div style={{ perspective: '50px' }}>
+              <div
+                className="flex gap-2 font-medium leading-5 tracking-widest uppercase"
+                style={{ transform: 'rotateX(22deg)' }}
+              >
+                {/* <BrandIcon className="stroke-2 text-primary" /> */}
+                <div>Showtime!</div>
+                <span className="text-xs">{type}</span>
+              </div>
+
+              <div className="text-xs text-gray">Karthick Ragavendran</div>
+            </div>
           </div>
         )}
       </div>

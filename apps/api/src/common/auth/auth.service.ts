@@ -75,7 +75,11 @@ export class AuthService {
       return false
     }
 
-    const updatedRoles = [...existingRoles, role]
+    const customClaims = (
+      await this.firebaseService.getAuth().getUser(user.uid)
+    ).customClaims
+    console.log('customClaims', customClaims)
+    const updatedRoles = [role]
 
     await this.firebaseService
       .getAuth()

@@ -20,7 +20,6 @@ export const ListMovies = ({}: IListMoviesProps) => {
           skip,
           take,
           resultCount: data?.movies.length || 0,
-          totalCount: data?.moviesCount.count || 0,
           setSkip,
           setTake,
         }}

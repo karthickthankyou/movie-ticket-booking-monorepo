@@ -116,7 +116,6 @@ export const Tickets = ({}: ITicketsProps) => {
         skip,
         take,
         resultCount: data?.tickets.length || 0,
-        totalCount: data?.ticketsCount.count || 0,
         setSkip,
         setTake,
       }}

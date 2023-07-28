@@ -16,6 +16,14 @@ export const createMovie = gql`
   }
 `
 
+export const createManager = gql`
+  mutation createManager($createManagerInput: CreateManagerInput!) {
+    createManager(createManagerInput: $createManagerInput) {
+      uid
+    }
+  }
+`
+
 export const findCinema = gql`
   query findCinema($uid: String!) {
     cinema: cinemaByManager(uid: $uid) {
@@ -209,6 +217,7 @@ export const showtime = gql`
   query showtime($where: ShowtimeWhereUniqueInput, $showtimeId: Int!) {
     showtime(where: $where) {
       screen {
+        price
         seats {
           row
           column
@@ -279,6 +288,22 @@ export const updateShowtime = gql`
   mutation updateShowtime($updateShowtimeInput: UpdateShowtimeInput!) {
     updateShowtime(updateShowtimeInput: $updateShowtimeInput) {
       id
+    }
+  }
+`
+
+export const managerMe = gql`
+  query managerMe {
+    managerMe {
+      uid
+    }
+  }
+`
+
+export const adminMe = gql`
+  query adminMe {
+    adminMe {
+      uid
     }
   }
 `

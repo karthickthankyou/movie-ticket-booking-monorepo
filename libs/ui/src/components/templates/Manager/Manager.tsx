@@ -1,18 +1,12 @@
-import { useAppSelector } from '@showtime-org/store'
 import {
   CinemasQuery,
   ShowtimeStatus,
   namedOperations,
   useBookedSeatsInShowtimeQuery,
-  useCinemasLazyQuery,
-  useFindCinemaLazyQuery,
   useUpdateShowtimeMutation,
 } from '@showtime-org/network/src/generated'
-import { useEffect, useState } from 'react'
-import { selectUid } from '@showtime-org/store/user'
-import { CreateCinema } from '../CreateCinema'
-import { Loader, LoaderPanel } from '../../molecules/Loader'
-import Link from 'next/link'
+import { useState } from 'react'
+import { Loader } from '../../molecules/Loader'
 import { CreateScreen } from '../CreateScreen'
 import { format } from 'date-fns'
 import { Accordion } from '../../molecules/Accordion'
@@ -22,41 +16,17 @@ import { Button } from '../../atoms/Button'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { ConsoleLog } from '../../molecules/ConsoleLog'
+import { CreateShowtime } from '../CreateShowtime'
+import { FormProviderCreateShowtime } from '@showtime-org/forms/src/createShowtime'
 
-export interface IManagerProps {}
+export interface IManagerProps {
+  cinemas: CinemasQuery['cinemas']
+}
 
-export const Manager = ({}: IManagerProps) => {
-  const uid = useAppSelector(selectUid)
-  const [getCinemas, { data, loading }] = useCinemasLazyQuery()
-
-  useEffect(() => {
-    if (uid)
-      getCinemas({
-        variables: {
-          where: {
-            managers: { some: { uid: { equals: uid } } },
-          },
-        },
-      })
-  }, [getCinemas, uid])
-
-  if (loading) return <LoaderPanel />
-  if (!uid) return <Link href="/login">Login</Link>
-  if (!data?.cinemas.length)
-    return (
-      <div className="flex items-center justify-center">
-        <div className="p-4 space-y-2 shadow-sm">
-          <div>You dont have any cinemas associated with you.</div>
-          <Link className="underline underline-offset-4" href={'/createCinema'}>
-            Create cinema
-          </Link>
-        </div>
-      </div>
-    )
-
+export const Manager = ({ cinemas }: IManagerProps) => {
   return (
     <div className="space-y-8">
-      {data.cinemas.map((cinema) => (
+      {cinemas.map((cinema) => (
         <ShowCinema cinema={cinema} />
       ))}
     </div>
@@ -106,6 +76,7 @@ export const ShowCinema = ({
   cinema: CinemasQuery['cinemas'][number]
 }) => {
   const [open, setOpen] = useState(false)
+  console.log('cinema.screens', cinema.screens)
 
   if (!cinema.screens) {
     return <CreateScreen />
@@ -116,57 +87,66 @@ export const ShowCinema = ({
       <div>
         {cinema.screens.map((screen) => (
           <Accordion title={'Screen ' + screen.number}>
-            <div className="space-y-6">
-              {Object.entries(groupByDate(screen.showtimes)).map(
-                ([date, showtimes]) => (
-                  <div key={date}>
-                    <div className="mb-2">{format(new Date(date), 'PP')}</div>
-                    <div className="grid grid-cols-4 gap-2">
-                      {showtimes
-                        .sort((a, b) => a.startTime.localeCompare(b.startTime))
-                        .map((showtime) => (
-                          <div
-                            key={showtime.id}
-                            className="relative flex gap-2"
-                          >
-                            <img
-                              src={showtime.movie.posterUrl}
-                              className="object-cover w-12 h-full"
-                            />
-                            <div>
-                              <div className="font-bold">
-                                <ConsoleLog
-                                  message={[
-                                    'showtime.startTime ',
-                                    showtime.startTime,
-                                  ]}
-                                />
-                                {(() => {
-                                  console.log(
-                                    'showtime.startTime ',
-                                    showtime.startTime,
-                                  )
-                                  return null
-                                })()}
-                                {format(new Date(showtime.startTime), 'p')}
-                              </div>
-                              <div>{showtime.movie.title}</div>
-                              <ShowShowtime showtimeId={showtime.id} />
-                              {showtime.status ? (
-                                <div className="text-xs">{showtime.status}</div>
-                              ) : null}
-                            </div>
-                            <MenuShowtimeOptions showtime={showtime} />
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
+            <ShowScreen screen={screen} />
           </Accordion>
         ))}
       </div>
+    </div>
+  )
+}
+
+export const ShowScreen = ({
+  screen,
+}: {
+  screen: CinemasQuery['cinemas'][number]['screens'][number]
+}) => {
+  if (!screen.showtimes.length) {
+    return (
+      <div>
+        <div>No shows.</div>
+        <FormProviderCreateShowtime>
+          <CreateShowtime />
+        </FormProviderCreateShowtime>
+      </div>
+    )
+  }
+  console.log('screen.showtimes', screen.showtimes)
+  return (
+    <div className="space-y-6">
+      {Object.entries(groupByDate(screen.showtimes)).map(
+        ([date, showtimes]) => (
+          <div key={date}>
+            <div className="mb-2">{format(new Date(date), 'PP')}</div>
+            <div className="grid grid-cols-4 gap-2">
+              {showtimes
+                .sort((a, b) => a.startTime.localeCompare(b.startTime))
+                .map((showtime) => (
+                  <div key={showtime.id} className="relative flex gap-2">
+                    <img
+                      src={showtime.movie.posterUrl}
+                      className="object-cover w-12 h-full"
+                    />
+                    <div>
+                      <div className="font-bold">
+                        {(() => {
+                          console.log('showtime.startTime ', showtime.startTime)
+                          return null
+                        })()}
+                        {format(new Date(showtime.startTime), 'p')}
+                      </div>
+                      <div>{showtime.movie.title}</div>
+                      <ShowShowtime showtimeId={showtime.id} />
+                      {showtime.status ? (
+                        <div className="text-xs">{showtime.status}</div>
+                      ) : null}
+                    </div>
+                    <MenuShowtimeOptions showtime={showtime} />
+                  </div>
+                ))}
+            </div>
+          </div>
+        ),
+      )}
     </div>
   )
 }

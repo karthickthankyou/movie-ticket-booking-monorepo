@@ -8,16 +8,11 @@ import { ApolloProvider } from '@showtime-org/network/src/config/apollo'
 import { AppLevelListeners } from '@showtime-org/ui/src/components/atoms/AppLevelListeners'
 import { Notifications } from '@showtime-org/ui/src/components/organisms/Notifications'
 import { Header } from '@showtime-org/ui/src/components/organisms/Header'
+import { MenuItem } from '@showtime-org/types'
 
-const menuitems: [string, string][] = [
-  ['Movies', '/'],
-  ['Cinemas', '/cinemas'],
-]
+const menuitems: MenuItem[] = [{ href: '/', label: 'Movies', loggedIn: true }]
 
-const subMenuItems: [string, string][] = [
-  ...menuitems,
-  ['Create cinema', '/createCinema'],
-]
+const subMenuItems: MenuItem[] = [...menuitems]
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

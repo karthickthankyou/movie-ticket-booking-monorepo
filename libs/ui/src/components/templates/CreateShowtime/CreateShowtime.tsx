@@ -2,6 +2,7 @@ import {
   FindCinemaQuery,
   MoviesQuery,
   QueryMode,
+  namedOperations,
   useCreateShowtimeMutation,
   useFindCinemaLazyQuery,
   useMoviesLazyQuery,
@@ -52,6 +53,8 @@ export const CreateShowtime = ({}: ICreateShowtimeProps) => {
                   showtimes: showtimes.map((time) => time.time),
                 },
               },
+              awaitRefetchQueries: true,
+              refetchQueries: [namedOperations.Query.cinemas],
             })
           } catch (error) {
             console.log('Error', error)

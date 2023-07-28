@@ -28,13 +28,12 @@ export const ListCinemas = ({}: IListMoviesProps) => {
           skip,
           take,
           resultCount: data?.cinemas.length || 0,
-          totalCount: data?.cinemasCount.count || 0,
           setSkip,
           setTake,
         }}
       >
         {data?.cinemas.map((cinema) => (
-          <CinemaInfo cinema={cinema} />
+          <CinemaInfo key={cinema.id} cinema={cinema} />
         ))}
       </ShowData>
     </div>

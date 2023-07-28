@@ -10,7 +10,7 @@ export const formSchemacreateMovie = z.object({
   director: z.string().min(1, { message: 'Director name is required' }),
   duration: z.number({ invalid_type_error: 'Duration is required.' }),
   releaseDate: z.string(),
-  posterUrl: z.string(),
+  posterUrl: z.any(),
 })
 
 export type FormTypeCreateMovie = z.infer<typeof formSchemacreateMovie>

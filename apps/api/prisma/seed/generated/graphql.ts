@@ -63,6 +63,14 @@ export type AddressWhereInput = {
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
+export type Admin = {
+  __typename?: 'Admin'
+  createdAt: Scalars['DateTime']
+  name: Scalars['String']
+  uid: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
 export type AggregateCountOutput = {
   __typename?: 'AggregateCountOutput'
   count: Scalars['Int']
@@ -282,7 +290,7 @@ export type CreateShowtimeInput = {
 }
 
 export type CreateUserInput = {
-  name: Scalars['String']
+  name?: InputMaybe<Scalars['String']>
   uid: Scalars['String']
 }
 
@@ -676,6 +684,7 @@ export enum ProjectionType {
 
 export type Query = {
   __typename?: 'Query'
+  adminMe: Admin
   bookedSeatsInShowtime: RemainingSeats
   booking: Booking
   bookings: Array<Booking>
@@ -684,6 +693,7 @@ export type Query = {
   cinemas: Array<Cinema>
   cinemasCount: AggregateCountOutput
   manager: Manager
+  managerMe: Manager
   managers: Array<Manager>
   movie: Movie
   movies: Array<Movie>
@@ -1305,7 +1315,7 @@ export type User = {
   __typename?: 'User'
   bookings: Array<Booking>
   createdAt: Scalars['DateTime']
-  name: Scalars['String']
+  name?: Maybe<Scalars['String']>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -1365,7 +1375,7 @@ export type CreateUserMutation = {
   createUser: {
     __typename?: 'User'
     uid: string
-    name: string
+    name?: string | null
     createdAt: any
     updatedAt: any
   }

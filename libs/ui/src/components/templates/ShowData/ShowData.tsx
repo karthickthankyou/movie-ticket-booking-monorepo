@@ -1,18 +1,12 @@
 import { ReactNode } from 'react'
-import { Pagination } from '../../molecules/Pagination'
+import { SimplePagination } from '../../organisms/SimplePagination'
 import { LoaderPanel } from '../../molecules/Loader'
 import { IconBox } from '@tabler/icons-react'
+import { SimplePaginationProps } from '../../organisms/SimplePagination/SimplePagination'
 
 export interface IShowDataProps {
   loading: boolean
-  pagination: {
-    skip?: number
-    take?: number
-    resultCount: number
-    totalCount: number
-    setSkip: (skip: number) => void
-    setTake: (take: number) => void
-  }
+  pagination: SimplePaginationProps
   children?: ReactNode
   className?: string
 }
@@ -27,14 +21,7 @@ export const NoResults = () => {
 
 export const ShowData = ({
   loading,
-  pagination: {
-    resultCount,
-    setSkip,
-    setTake,
-    skip = 0,
-    take = 12,
-    totalCount,
-  },
+  pagination: { resultCount, setSkip, setTake, skip = 0, take = 12 },
   children,
   className = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
 }: IShowDataProps) => {
@@ -46,15 +33,12 @@ export const ShowData = ({
       {!loading && resultCount > 0 && (
         <div>
           <div className={className}>{children}</div>
-          <Pagination
-            count={totalCount || 0}
-            page={(skip || 0) / (take || 12)}
-            rowsPerPage={take || 0}
-            rowsPerPageOptions={[2, 4, 12, 24, 36, 48]}
-            onPageChange={(v, c) => setSkip(c * (take || 12))}
-            onRowsPerPageChange={(v) => {
-              setTake(+v.target.value)
-            }}
+          <SimplePagination
+            setSkip={setSkip}
+            setTake={setTake}
+            skip={skip}
+            take={take}
+            resultCount={resultCount}
           />
         </div>
       )}

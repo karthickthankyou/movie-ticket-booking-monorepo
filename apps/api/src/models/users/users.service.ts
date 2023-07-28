@@ -7,7 +7,13 @@ import { UpdateUserInput } from './dto/update-user.input'
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createUserInput: CreateUserInput) {
+  async create(createUserInput: CreateUserInput) {
+    const user = await this.prisma.user.findUnique({
+      where: { uid: createUserInput.uid },
+    })
+    if (user?.uid) {
+      return user
+    }
     return this.prisma.user.create({
       data: createUserInput,
     })

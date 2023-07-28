@@ -12,18 +12,8 @@ import { IconPlus } from '@tabler/icons-react'
 export interface IAdminProps {}
 
 export const Admin = ({}: IAdminProps) => {
-  const { uid, roles } = useAppSelector(selectUser)
   const [open, setOpen] = useState(false)
-  if (!uid) {
-    return (
-      <div className="w-full max-w-lg mx-auto mt-12">
-        <LoginForm linkToRegister={false} />
-      </div>
-    )
-  }
-  if (!roles?.includes('admin')) {
-    return <Container>Hey, you dont have admin privileges. Come on!</Container>
-  }
+
   return (
     <Container>
       <Dialog title="Create movie" open={open} setOpen={setOpen}>

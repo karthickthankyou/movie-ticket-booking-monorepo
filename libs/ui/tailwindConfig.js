@@ -97,6 +97,8 @@ module.exports.animationConfig = {
   wiggle: 'wiggle 1s ease-in-out infinite',
   'wiggle-fade': 'wiggle-fade 1s ease-in-out infinite',
   slide: 'slide 1s ease-in-out infinite',
+  perspective: 'perspective 5s ease-in-out infinite',
+  'perspective-reverse': 'perspective-reverse 5s ease-in-out infinite',
   'slide-left': 'slide-left 1s ease-in-out infinite',
   'park-car': 'park-car 5s ease-in-out infinite',
   'slide-right': 'slide-right 1s linear infinite',
@@ -116,6 +118,14 @@ module.exports.keyframesConfig = {
   wiggle: {
     '0%, 100%': { transform: 'rotate(-3deg)' },
     '50%': { transform: 'rotate(3deg)' },
+  },
+  perspective: {
+    '0%, 100%': { perspective: '30px' },
+    '50%': { perspective: '100px' },
+  },
+  'perspective-reverse': {
+    '0%, 100%': { perspective: '100px' },
+    '50%': { perspective: '30px' },
   },
   'wiggle-fade': {
     '0%, 100%': { transform: 'rotate(-3deg)', opacity: 0.4 },

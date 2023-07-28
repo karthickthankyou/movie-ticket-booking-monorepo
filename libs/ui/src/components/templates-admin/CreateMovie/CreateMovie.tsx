@@ -8,11 +8,13 @@ import {
   namedOperations,
   useCreateMovieMutation,
 } from '@showtime-org/network/src/generated'
-import { useImageUpload } from '@showtime-org/util'
+
 import { ProgressBar } from '../../atoms/ProgressBar'
 import { Button } from '../../atoms/Button'
 import { useState } from 'react'
 import { Dialog } from '../../atoms/Dialog'
+import { useImageUpload } from '@showtime-org/hooks'
+import { Controller } from 'react-hook-form'
 
 export interface ICreateMovieProps {}
 
@@ -22,12 +24,14 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
     setValue,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useFormCreateMovie()
-  const [{ percent }, uploadImages] = useImageUpload()
 
   const [createMovie, { loading, data }] = useCreateMovieMutation()
   const [open, setOpen] = useState(false)
+  const [{ percent, uploading }, uploadImages] = useImageUpload()
+
   return (
     <div>
       <Dialog open={open} setOpen={setOpen} title="Success">
@@ -43,13 +47,15 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
             releaseDate,
             title,
           }) => {
+            const uploadedImages = await uploadImages(posterUrl)
+
             await createMovie({
               variables: {
                 createMovieInput: {
                   director,
                   duration,
                   genre,
-                  posterUrl,
+                  posterUrl: uploadedImages[0],
                   releaseDate,
                   title,
                 },
@@ -89,17 +95,18 @@ export const CreateMovie = ({}: ICreateMovieProps) => {
             ))}
           </HtmlSelect>
         </HtmlLabel>
-        <HtmlLabel title="Images" error={errors.posterUrl?.message}>
-          <HtmlInput
-            multiple={false}
-            type="file"
-            placeholder="Upload images"
-            accept="image/*"
-            onChange={(e) => {
-              uploadImages(e, (images: string[]) => {
-                if (images) setValue('posterUrl', images[0])
-              })
-            }}
+        <HtmlLabel title="Images" error={errors.posterUrl?.message?.toString()}>
+          <Controller
+            control={control}
+            name={`posterUrl`}
+            render={({ field }) => (
+              <HtmlInput
+                type="file"
+                accept="image/*"
+                multiple={false}
+                onChange={(e) => field.onChange(e?.target?.files)}
+              />
+            )}
           />
           {percent > 0 ? (
             <ProgressBar variant="determinate" value={percent} />
