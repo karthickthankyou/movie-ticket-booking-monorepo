@@ -34,11 +34,13 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/schedule": "^2.2.1",
     "@prisma/client": "4.13.0",
+    "axios": "^1.4.0",
     "bwip-js": "^3.4.0",
     "change-case": "^4.1.2",
     "date-fns": "^2.30.0",
     "firebase-admin": "^11.7.0",
     "graphql": "^16.6.0",
+    "graphql-request": "^6.1.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "stripe": "^12.16.0"
