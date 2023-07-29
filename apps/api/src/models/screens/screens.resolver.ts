@@ -20,7 +20,7 @@ import {
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { GetUserType } from '@showtime-org/types'
+import { GetUserType } from 'src/common/types'
 
 @Resolver(() => Screen)
 export class ScreensResolver {

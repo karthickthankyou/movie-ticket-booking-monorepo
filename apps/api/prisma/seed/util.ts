@@ -1,5 +1,5 @@
-import { Role } from '@showtime-org/types'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
+import { Role } from 'src/common/types'
 
 export const setFirebaseRole = async ({
   firebaseService,

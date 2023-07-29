@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { Role } from '@showtime-org/types'
+import { Role } from 'src/common/types'
 
 @InputType()
 export class LoginInput {

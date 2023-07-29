@@ -1,8 +1,6 @@
 import React, { ReactNode } from 'react'
 export type Role = 'admin' | 'manager'
 
-export type MenuItem = { label: string; href: string; loggedIn?: boolean }
-
 export type GetUserType = {
   uid: string
   displayName: string
@@ -12,6 +10,7 @@ export type GetUserType = {
   roles: Role[]
 }
 
+export type MenuItem = { label: string; href: string; loggedIn?: boolean }
 export type NotificationType = {
   id: string
   message: ReactNode

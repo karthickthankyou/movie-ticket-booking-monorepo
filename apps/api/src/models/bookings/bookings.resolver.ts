@@ -20,10 +20,9 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@showtime-org/types'
+import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { Prisma } from '@prisma/client'
-import * as bwipjs from 'bwip-js'
+
 import { FirebaseService } from 'src/common/firebase/firebase.service'
 import { Ticket } from '../tickets/entities/ticket.entity'
 import { UsersService } from '../users/users.service'

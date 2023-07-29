@@ -6,7 +6,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@showtime-org/types'
+import { GetUserType } from 'src/common/types'
 
 @Resolver(() => Admin)
 export class AdminsResolver {

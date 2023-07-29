@@ -1,4 +1,4 @@
-import { GetUserType, Role } from '@showtime-org/types'
+import { GetUserType, Role } from 'src/common/types'
 import { Injectable } from '@nestjs/common'
 import * as admin from 'firebase-admin'
 import { createReadStream } from 'fs'

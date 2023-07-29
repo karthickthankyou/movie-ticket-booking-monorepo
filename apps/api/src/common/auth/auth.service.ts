@@ -11,7 +11,7 @@ import {
   RegisterOutput,
 } from './dto/auth.input'
 
-import { GetUserType, Role } from '@showtime-org/types'
+import { GetUserType, Role } from 'src/common/types'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
 
 @Injectable()
