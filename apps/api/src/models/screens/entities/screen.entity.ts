@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql'
 import {
   ProjectionType,
   Screen as ScreenType,
@@ -16,6 +16,7 @@ registerEnumType(SoundSystemType, {
 
 @ObjectType()
 export class Screen implements ScreenType {
+  @Field(() => Float)
   price: number
   @Field(() => ProjectionType)
   projectionType: ProjectionType

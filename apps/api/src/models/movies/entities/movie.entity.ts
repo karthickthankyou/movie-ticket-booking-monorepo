@@ -12,5 +12,6 @@ export class Movie implements MovieType {
   genre: Genre
   duration: number
   releaseDate: Date
+  @Field({ nullable: true })
   posterUrl: string
 }

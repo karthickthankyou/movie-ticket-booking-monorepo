@@ -98,7 +98,14 @@ export class BookingsResolver {
       where: { id: booking.showtimeId },
     })
   }
-  @ResolveField(() => Seat)
+
+  @ResolveField(() => Ticket, { nullable: true })
+  ticket(@Parent() booking: Booking) {
+    return this.prisma.ticket.findUnique({
+      where: { id: booking.ticketId },
+    })
+  }
+  @ResolveField(() => Seat, { nullable: true })
   seat(@Parent() { column, row, screenId }: Booking) {
     return this.prisma.seat.findUnique({
       where: {

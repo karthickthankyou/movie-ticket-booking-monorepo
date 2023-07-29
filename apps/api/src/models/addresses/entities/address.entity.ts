@@ -6,11 +6,12 @@ export class Address implements AddressType {
   id: number
   createdAt: Date
   updatedAt: Date
+  @Field({ nullable: true })
   cinemaId: number
   address: string
-  @Field(() => Float, { nullable: true })
+  @Field(() => Float)
   lat: number
-  @Field(() => Float, { nullable: true })
+  @Field(() => Float)
   lng: number
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })

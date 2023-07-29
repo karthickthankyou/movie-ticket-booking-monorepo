@@ -97,7 +97,7 @@ export class CinemasResolver {
     return this.cinemasService.remove(args)
   }
 
-  @ResolveField(() => Address)
+  @ResolveField(() => Address, { nullable: true })
   address(@Parent() cinema: Cinema) {
     return this.prisma.address.findUnique({ where: { cinemaId: cinema.id } })
   }
