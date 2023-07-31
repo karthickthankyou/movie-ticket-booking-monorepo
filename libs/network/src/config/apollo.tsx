@@ -9,11 +9,6 @@ import { useAppSelector } from '@showtime-org/store'
 import { selectUser } from '@showtime-org/store/user'
 import { ReactNode } from 'react'
 import jwtDecode from 'jwt-decode'
-import {
-  LoginDocument,
-  LoginMutation,
-  LoginMutationVariables,
-} from '@showtime-org/network/src/generated'
 import { getAuth } from 'firebase/auth'
 
 export interface IApolloProviderProps {
@@ -42,7 +37,7 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
 
   //   Create an http link
   const httpLink = createHttpLink({
-    uri: 'http://localhost:3000/graphql',
+    uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
   })
 
   const authLink = setContext(async (_, { headers }) => {
@@ -63,7 +58,6 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
 
   // Create an Apollo Client instance
   const apolloClient = new ApolloClient({
-    uri: 'http://localhost:3000/graphql',
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
     connectToDevTools: true,

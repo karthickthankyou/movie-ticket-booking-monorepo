@@ -43,7 +43,7 @@ export const signOut = async () => await firebaseSignOut(auth)
 export const resetPassword = (email: string) => {
   const redirectUrl =
     process.env.NEXT_PUBLIC_RESET_PASSWORD_REDIRECT_URL ||
-    'http://localhost:3000/login'
+    process.env.NEXT_PUBLIC_API_URL + '/login'
   return sendPasswordResetEmail(auth, email, { url: redirectUrl })
 }
 
