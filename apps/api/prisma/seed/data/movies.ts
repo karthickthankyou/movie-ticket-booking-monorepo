@@ -152,16 +152,6 @@ export const movies: CreateMovieInput[] = [
   },
   {
     director: 'Mari Selvaraj',
-    duration: 159,
-    genre: Genre.ACTION,
-    posterUrl:
-      'https://upload.wikimedia.org/wikipedia/en/6/62/Karnan_2021_poster.jpg',
-
-    releaseDate: new Date('9 April 2021'),
-    title: 'Karnan',
-  },
-  {
-    director: 'Mari Selvaraj',
     duration: 154,
     genre: Genre.ACTION,
     posterUrl:
@@ -288,6 +278,15 @@ export const movies: CreateMovieInput[] = [
     releaseDate: new Date('5 February 2016'),
     title: 'Visaranai',
   },
+  {
+    director: 'Vignesh Raja',
+    duration: 146,
+    genre: Genre.THRILLER,
+    posterUrl: 'https://upload.wikimedia.org/wikipedia/en/5/58/Por_Thozhil.jpg',
+
+    releaseDate: new Date('9 June 2023'),
+    title: 'Por Thozhil',
+  },
 ]
 
 export const moviePosters = [
@@ -309,7 +308,6 @@ export const moviePosters = [
   'https://upload.wikimedia.org/wikipedia/en/c/c4/%2796_film_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/6/6a/Iruvar_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/7/78/Asuran_2019_poster.jpg',
-  'https://upload.wikimedia.org/wikipedia/en/6/62/Karnan_2021_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/thumb/3/35/Pariyerum_Perumal.jpg/220px-Pariyerum_Perumal.jpg',
   'https://upload.wikimedia.org/wikipedia/en/f/f5/Aaranyakaandam.jpg',
   'https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Kadaisi_Vivasayi.jpg/220px-Kadaisi_Vivasayi.jpg',
@@ -324,4 +322,5 @@ export const moviePosters = [
   'https://upload.wikimedia.org/wikipedia/en/thumb/7/77/Ratsasan_poster.jpg/220px-Ratsasan_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/thumb/a/a1/Super_Deluxe_film_poster.jpg/220px-Super_Deluxe_film_poster.jpg',
   'https://upload.wikimedia.org/wikipedia/en/0/01/Visaranai_film_release_poster.jpg',
+  'https://upload.wikimedia.org/wikipedia/en/5/58/Por_Thozhil.jpg',
 ]
