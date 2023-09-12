@@ -10,7 +10,7 @@ export class RowColumn {
 @InputType()
 export class CreateBookingInput extends PickType(
   Booking,
-  ['screenId', 'showtimeId', 'userId'],
+  ['showtimeId', 'userId'],
   InputType,
 ) {
   @Field(() => [RowColumn])

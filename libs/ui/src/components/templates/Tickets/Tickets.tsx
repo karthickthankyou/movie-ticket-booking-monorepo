@@ -36,14 +36,14 @@ export const TicketMovie = ({
   return (
     <div key={ticket.id} className="max-w-md">
       <Dialog open={open} setOpen={setOpen} title={'QR Code'}>
-        <QRCode url={ticket.qrCode} />
+        <QRCode url={ticket.qrCode || ''} />
       </Dialog>
       <div className="flex gap-6">
         <Image
           width={200}
           height={200}
           className="rounded"
-          src={ticket.bookings[0].showtime.movie.posterUrl}
+          src={ticket.bookings[0].showtime.movie.posterUrl || ''}
           alt={ticket.bookings[0].showtime.movie.title}
         />
         <div>

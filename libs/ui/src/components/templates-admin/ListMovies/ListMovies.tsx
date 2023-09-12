@@ -39,7 +39,10 @@ export const MovieInfo = ({
 }) => {
   return (
     <div key={movie.id} className="flex gap-2">
-      <img src={movie.posterUrl} className="object-cover w-12 h-24 rounded" />
+      <img
+        src={movie.posterUrl || ''}
+        className="object-cover w-12 h-24 rounded"
+      />
       <div>
         <div className="text-lg font-semibold">{movie.title}</div>
         <div className="text-sm text-gray-600">{movie.director}</div>

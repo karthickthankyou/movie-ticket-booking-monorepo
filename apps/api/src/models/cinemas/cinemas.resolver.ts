@@ -45,7 +45,7 @@ export class CinemasResolver {
     console.log('user', user, args)
     checkRowLevelPermission(user, args.manager.uid)
     if (!(user.roles || []).includes('manager'))
-      this.auth.setRole(user, 'manager')
+      this.auth.setRole(user.uid, 'manager')
     return this.cinemasService.create(args)
   }
 
@@ -129,7 +129,7 @@ export class CinemasResolver {
   }
 
   @Query(() => [Cinema], { name: 'searchCinemas' })
-  async searchKitchens(
+  async searchCinemas(
     @Args('locationFilter') locationFilter: LocationFilterInput,
     @Args({ nullable: true })
     { cursor, distinct, orderBy, skip, take, where }: FindManyCinemaArgs,
@@ -144,7 +144,6 @@ export class CinemasResolver {
       take,
       where: {
         ...where,
-        // open: { equals: true },
         address: {
           lat: { lte: ne_lat, gte: sw_lat },
           lng: { lte: ne_lng, gte: sw_lng },

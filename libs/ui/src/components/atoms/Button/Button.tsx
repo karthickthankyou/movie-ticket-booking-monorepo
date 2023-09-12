@@ -1,4 +1,4 @@
-import { IconRefresh } from '@tabler/icons-react'
+import { IconLoader, IconRefresh } from '@tabler/icons-react'
 
 type ButtonSizes = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 
@@ -76,7 +76,7 @@ export const Button = ({
       {loading ? (
         <>
           <div className="absolute inset-0 flex items-center justify-center">
-            <IconRefresh className="w-5 h-5 animate-spin-reverse" />
+            <IconLoader className="w-5 h-5 animate-spin" />
           </div>
           <div className="opacity-10">{children}</div>
         </>

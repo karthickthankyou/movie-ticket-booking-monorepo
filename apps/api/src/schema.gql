@@ -265,6 +265,7 @@ type Query {
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   booking(where: BookingWhereUniqueInput): Booking!
   tickets(where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int, distinct: [TicketScalarFieldEnum!]): [Ticket!]!
+  myTickets(where: TicketWhereInput, orderBy: [TicketOrderByWithRelationInput!], cursor: TicketWhereUniqueInput, take: Int, skip: Int, distinct: [TicketScalarFieldEnum!]): [Ticket!]!
   ticket(where: TicketWhereUniqueInput): Ticket!
   ticketsCount(where: TicketWhereInput): AggregateCountOutput!
 }
@@ -854,6 +855,7 @@ type Mutation {
   setRole(setRoleInput: SetRoleInput!): Boolean!
   setAdmin(uid: String!): Boolean!
   runScheduler: [Showtime!]!
+  createAdmin(uid: String!, accessKey: String!): Admin!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(where: UserWhereUniqueInput): User!
@@ -950,7 +952,6 @@ input CreateScreenInputWithoutCinemaId {
   price: Float!
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
-  number: Int!
   rows: Int!
   columns: Int!
 }
@@ -967,7 +968,6 @@ input CreateScreenInput {
   price: Float!
   projectionType: ProjectionType!
   soundSystemType: SoundSystemType!
-  number: Int!
   cinemaId: Int!
   rows: Int!
   columns: Int!
@@ -977,7 +977,6 @@ input UpdateScreenInput {
   price: Float
   projectionType: ProjectionType
   soundSystemType: SoundSystemType
-  number: Int
   cinemaId: Int
   rows: Int
   columns: Int
@@ -1022,7 +1021,6 @@ input UpdateShowtimeInput {
 }
 
 input CreateBookingInput {
-  screenId: Int!
   userId: String!
   showtimeId: Int!
   seats: [RowColumn!]!
@@ -1034,7 +1032,6 @@ input RowColumn {
 }
 
 input UpdateBookingInput {
-  screenId: Int
   userId: String
   showtimeId: Int
   seats: [RowColumn!]

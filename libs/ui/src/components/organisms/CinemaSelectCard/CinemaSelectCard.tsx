@@ -16,7 +16,7 @@ export const CinemaSelectCard = ({
         width={200}
         height={300}
         alt={movie.title}
-        src={movie.posterUrl}
+        src={movie.posterUrl || ''}
         className={`object-cover w-full h-48 border-2  rounded  ${
           selected ? 'shadow-xl border-primary' : 'shadow-sm border-white'
         }`}

@@ -25,11 +25,11 @@ export type Scalars = {
 export type Address = {
   __typename?: 'Address'
   address: Scalars['String']
-  cinemaId: Scalars['Int']
+  cinemaId?: Maybe<Scalars['Int']>
   createdAt: Scalars['DateTime']
   id: Scalars['Int']
-  lat?: Maybe<Scalars['Float']>
-  lng?: Maybe<Scalars['Float']>
+  lat: Scalars['Float']
+  lng: Scalars['Float']
   updatedAt: Scalars['DateTime']
 }
 
@@ -66,7 +66,7 @@ export type AddressWhereInput = {
 export type Admin = {
   __typename?: 'Admin'
   createdAt: Scalars['DateTime']
-  name: Scalars['String']
+  name?: Maybe<Scalars['String']>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -88,10 +88,11 @@ export type Booking = {
   id: Scalars['Int']
   row: Scalars['Int']
   screenId: Scalars['Int']
-  seat: Seat
+  seat?: Maybe<Seat>
   showtime: Showtime
   showtimeId: Scalars['Int']
-  ticketId: Scalars['Int']
+  ticket?: Maybe<Ticket>
+  ticketId?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
   user: User
   userId: Scalars['String']
@@ -160,7 +161,7 @@ export type BookingWhereUniqueInput = {
 
 export type Cinema = {
   __typename?: 'Cinema'
-  address: Address
+  address?: Maybe<Address>
   createdAt: Scalars['DateTime']
   id: Scalars['Int']
   managers: Array<Manager>
@@ -220,12 +221,11 @@ export type CinemaWhereUniqueInput = {
 
 export type CreateAddressInputWithoutCinemaId = {
   address: Scalars['String']
-  lat?: InputMaybe<Scalars['Float']>
-  lng?: InputMaybe<Scalars['Float']>
+  lat: Scalars['Float']
+  lng: Scalars['Float']
 }
 
 export type CreateBookingInput = {
-  screenId: Scalars['Int']
   seats: Array<RowColumn>
   showtimeId: Scalars['Int']
   userId: Scalars['String']
@@ -240,12 +240,12 @@ export type CreateCinemaInput = {
 
 export type CreateManagerInput = {
   cinemaId: Scalars['Int']
-  name: Scalars['String']
+  name?: InputMaybe<Scalars['String']>
   uid: Scalars['String']
 }
 
 export type CreateManagerInputWithoutCinemaId = {
-  name: Scalars['String']
+  name?: InputMaybe<Scalars['String']>
   uid: Scalars['String']
 }
 
@@ -253,7 +253,7 @@ export type CreateMovieInput = {
   director: Scalars['String']
   duration: Scalars['Int']
   genre: Genre
-  posterUrl: Scalars['String']
+  posterUrl?: InputMaybe<Scalars['String']>
   releaseDate: Scalars['DateTime']
   title: Scalars['String']
 }
@@ -261,8 +261,7 @@ export type CreateMovieInput = {
 export type CreateScreenInput = {
   cinemaId: Scalars['Int']
   columns: Scalars['Int']
-  number: Scalars['Int']
-  price: Scalars['Int']
+  price: Scalars['Float']
   projectionType: ProjectionType
   rows: Scalars['Int']
   soundSystemType: SoundSystemType
@@ -270,8 +269,7 @@ export type CreateScreenInput = {
 
 export type CreateScreenInputWithoutCinemaId = {
   columns: Scalars['Int']
-  number: Scalars['Int']
-  price: Scalars['Int']
+  price: Scalars['Float']
   projectionType: ProjectionType
   rows: Scalars['Int']
   soundSystemType: SoundSystemType
@@ -413,7 +411,7 @@ export type Manager = {
   cinema: Cinema
   cinemaId: Scalars['Int']
   createdAt: Scalars['DateTime']
-  name: Scalars['String']
+  name?: Maybe<Scalars['String']>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
 }
@@ -465,7 +463,7 @@ export type Movie = {
   duration: Scalars['Int']
   genre: Genre
   id: Scalars['Int']
-  posterUrl: Scalars['String']
+  posterUrl?: Maybe<Scalars['String']>
   releaseDate: Scalars['DateTime']
   showtimes: Array<Showtime>
   title: Scalars['String']
@@ -524,6 +522,7 @@ export type MovieWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  createAdmin: Admin
   createBooking: Ticket
   createCinema: Cinema
   createManager: Manager
@@ -554,6 +553,11 @@ export type Mutation = {
   updateScreen: Screen
   updateShowtime: Showtime
   updateUser: User
+}
+
+export type MutationCreateAdminArgs = {
+  accessKey: Scalars['String']
+  uid: Scalars['String']
 }
 
 export type MutationCreateBookingArgs = {
@@ -699,6 +703,7 @@ export type Query = {
   movies: Array<Movie>
   moviesCount: AggregateCountOutput
   moviesPerCinema: Array<Movie>
+  myTickets: Array<Ticket>
   screen: Screen
   screens: Array<Screen>
   searchCinemas: Array<Cinema>
@@ -790,6 +795,15 @@ export type QueryMoviesPerCinemaArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<MovieWhereInput>
+}
+
+export type QueryMyTicketsArgs = {
+  cursor?: InputMaybe<TicketWhereUniqueInput>
+  distinct?: InputMaybe<Array<TicketScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<TicketOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<TicketWhereInput>
 }
 
 export type QueryScreenArgs = {
@@ -937,7 +951,7 @@ export type Screen = {
   createdAt: Scalars['DateTime']
   id: Scalars['Int']
   number: Scalars['Int']
-  price: Scalars['Int']
+  price: Scalars['Float']
   projectionType: ProjectionType
   seats: Array<Seat>
   seatsCount: Scalars['Int']
@@ -1209,7 +1223,7 @@ export type Ticket = {
   __typename?: 'Ticket'
   bookings: Array<Booking>
   id: Scalars['Int']
-  qrCode: Scalars['String']
+  qrCode?: Maybe<Scalars['String']>
   uid: Scalars['String']
 }
 
@@ -1259,7 +1273,6 @@ export type TicketWhereUniqueInput = {
 
 export type UpdateBookingInput = {
   id: Scalars['Int']
-  screenId?: InputMaybe<Scalars['Int']>
   seats?: InputMaybe<Array<RowColumn>>
   showtimeId?: InputMaybe<Scalars['Int']>
   userId?: InputMaybe<Scalars['String']>
@@ -1293,8 +1306,7 @@ export type UpdateScreenInput = {
   cinemaId?: InputMaybe<Scalars['Int']>
   columns?: InputMaybe<Scalars['Int']>
   id: Scalars['Int']
-  number?: InputMaybe<Scalars['Int']>
-  price?: InputMaybe<Scalars['Int']>
+  price?: InputMaybe<Scalars['Float']>
   projectionType?: InputMaybe<ProjectionType>
   rows?: InputMaybe<Scalars['Int']>
   soundSystemType?: InputMaybe<SoundSystemType>

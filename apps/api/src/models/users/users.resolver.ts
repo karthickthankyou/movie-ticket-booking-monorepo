@@ -34,7 +34,7 @@ export class UsersResolver {
     @GetUser() user: GetUserType,
   ) {
     checkRowLevelPermission(user, args.uid)
-    return this.usersService.create(args)
+    return this.usersService.createIfNotFound(args)
   }
 
   @AllowAuthenticated('admin')

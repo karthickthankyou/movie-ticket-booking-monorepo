@@ -25,7 +25,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { Prisma, ShowtimeStatus } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { BatchPayload } from 'src/common/dtos/common.input'
 
 @Resolver(() => Showtime)

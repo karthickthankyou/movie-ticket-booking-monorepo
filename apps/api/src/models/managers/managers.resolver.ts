@@ -36,7 +36,7 @@ export class ManagersResolver {
     @GetUser() user: GetUserType,
   ) {
     checkRowLevelPermission(user, args.uid)
-    if (!user.roles.includes('manager')) this.auth.setRole(user, 'manager')
+    if (!user.roles.includes('manager')) this.auth.setRole(user.uid, 'manager')
     return this.managersService.create(args)
   }
 

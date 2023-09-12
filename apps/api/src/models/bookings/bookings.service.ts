@@ -4,8 +4,7 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateBookingInput } from './dto/create-booking.input'
 import { UpdateBookingInput } from './dto/update-booking.input'
 import { UsersService } from '../users/users.service'
-import { GetUserType } from 'src/common/types'
-import { checkRowLevelPermission } from 'src/common/guards'
+
 import { Prisma } from '@prisma/client'
 import * as bwipjs from 'bwip-js'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
@@ -18,24 +17,28 @@ export class BookingsService {
     private readonly firebase: FirebaseService,
   ) {}
 
-  async create(args: CreateBookingInput, user: GetUserType) {
-    const bookingUser = await this.userService.create({
-      name: user.displayName,
-      uid: user.uid,
+  async create(args: CreateBookingInput) {
+    const bookingUser = await this.userService.createIfNotFound({
+      // todo: Auth needs to be synded during registration. We create user with no display if user ends up here with no user entry.
+      name: '',
+      uid: args.userId,
     })
-    checkRowLevelPermission(user, args.userId)
+
+    const showtime = await this.prisma.showtime.findUnique({
+      where: { id: args.showtimeId },
+    })
     const bookingsData: Prisma.BookingCreateManyInput[] = args.seats.map(
       (seat) => ({
         row: seat.row,
         column: seat.column,
-        screenId: args.screenId,
+        screenId: showtime.screenId,
         showtimeId: args.showtimeId,
-        userId: user.uid,
+        userId: args.userId,
       }),
     )
 
     const ticket = await this.prisma.ticket.create({
-      data: { uid: user.uid, bookings: { create: bookingsData } },
+      data: { uid: args.userId, bookings: { create: bookingsData } },
     })
 
     const png = await bwipjs.toBuffer({
@@ -44,7 +47,7 @@ export class BookingsService {
       textxalign: 'center', // Align the text to the center
     })
 
-    const qrCode = await this.firebase.uploadFile2(png, user.uid, ticket.id)
+    const qrCode = await this.firebase.uploadFile2(png, args.userId, ticket.id)
     const updatedTicket = await this.prisma.ticket.update({
       where: { id: ticket.id },
       data: { qrCode },

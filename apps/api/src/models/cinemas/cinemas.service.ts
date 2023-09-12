@@ -14,22 +14,22 @@ export class CinemasService {
     screens,
     ...createCinemaInput
   }: CreateCinemaInput) {
-    const screensWithSeats: Prisma.ScreenCreateWithoutCinemaInput[] =
-      screens.map((screen) => {
-        const { rows, columns, ...screenData } = screen
-        const seats = []
+    const screensWithSeats = screens.map((screen, index) => {
+      const { rows, columns, ...screenData } = screen
+      const seats = []
 
-        for (let row = 1; row <= rows; row++) {
-          for (let column = 1; column <= columns; column++) {
-            seats.push({ row, column })
-          }
+      for (let row = 1; row <= rows; row++) {
+        for (let column = 1; column <= columns; column++) {
+          seats.push({ row, column })
         }
+      }
 
-        return {
-          ...screenData,
-          seats: { create: seats },
-        }
-      })
+      return {
+        ...screenData,
+        seats: { create: seats },
+        number: index,
+      }
+    })
 
     const existingManager = await this.prisma.manager.findUnique({
       where: { uid: manager.uid },

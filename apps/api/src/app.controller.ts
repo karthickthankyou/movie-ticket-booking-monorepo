@@ -30,17 +30,7 @@ export class AppController {
     if (!uid) {
       throw new BadRequestException('Uid is missing in the body.')
     }
-    const updated = await this.authService.setRole(
-      {
-        uid,
-        roles: [],
-        displayName: '',
-        email: '',
-        emailVerified: true,
-        phoneNumber: '0',
-      },
-      'admin',
-    )
+    const updated = await this.authService.setRole(uid, 'admin')
 
     return { message: 'Admin role set to ' + uid }
   }

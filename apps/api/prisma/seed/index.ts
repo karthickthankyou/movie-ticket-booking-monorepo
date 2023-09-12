@@ -92,7 +92,7 @@ const seedMovies = async () => {
 }
 
 const main = async () => {
-  //   await deleteAll()
+  await deleteAll()
   //   await seedUsers()
   //   await seedCinemas()
   // //   await deleteShowtimes()

@@ -37,11 +37,8 @@ export class BookingsResolver {
 
   @AllowAuthenticated('admin')
   @Mutation(() => Ticket)
-  async createBooking(
-    @Args('createBookingInput') args: CreateBookingInput,
-    @GetUser() user: GetUserType,
-  ) {
-    return this.bookingsService.create(args, user)
+  async createBooking(@Args('createBookingInput') args: CreateBookingInput) {
+    return this.bookingsService.create(args)
   }
 
   @AllowAuthenticated('admin')

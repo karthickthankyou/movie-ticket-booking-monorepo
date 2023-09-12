@@ -50,13 +50,13 @@ export class AuthResolver {
       )
     }
     checkRowLevelPermission(user, uid)
-    return this.authService.setRole(user, role as Role)
+    return this.authService.setRole(user.uid, role as Role)
   }
 
   @Mutation(() => Boolean)
   @AllowAuthenticated('admin')
   setAdmin(@Args('uid') uid: string, @GetUser() user: GetUserType) {
     checkRowLevelPermission(user, uid)
-    return this.authService.setRole(user, 'admin')
+    return this.authService.setRole(user.uid, 'admin')
   }
 }

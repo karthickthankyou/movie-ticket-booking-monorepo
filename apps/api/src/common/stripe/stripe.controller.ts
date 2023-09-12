@@ -34,22 +34,11 @@ export class StripeController {
     const { screenId, seats, showtimeId } = JSON.parse(bookingInfo)
     console.log('screenId, seats, showtimeId', screenId, seats, showtimeId)
 
-    const booking = await this.bookingsService.create(
-      {
-        screenId: +screenId,
-        seats: seats,
-        showtimeId: +showtimeId,
-        userId: uid,
-      },
-      {
-        displayName: '',
-        email: '',
-        emailVerified: false,
-        phoneNumber: '',
-        roles: [],
-        uid: uid,
-      },
-    )
+    const booking = await this.bookingsService.create({
+      seats: seats,
+      showtimeId: +showtimeId,
+      userId: uid,
+    })
 
     console.log(
       'process.env.PAYMENT_SUCCESS_REDIRECT_URL',

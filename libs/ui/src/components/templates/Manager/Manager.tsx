@@ -123,7 +123,7 @@ export const ShowScreen = ({
                 .map((showtime) => (
                   <div key={showtime.id} className="relative flex gap-2">
                     <img
-                      src={showtime.movie.posterUrl}
+                      src={showtime.movie.posterUrl || ''}
                       className="object-cover w-12 h-full"
                     />
                     <div>

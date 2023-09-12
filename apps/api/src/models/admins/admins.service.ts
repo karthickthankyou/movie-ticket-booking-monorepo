@@ -8,4 +8,8 @@ export class AdminsService {
   findOne(uid: string) {
     return this.prisma.admin.findUnique({ where: { uid: uid } })
   }
+
+  create(uid: string) {
+    return this.prisma.admin.create({ data: { uid } })
+  }
 }
