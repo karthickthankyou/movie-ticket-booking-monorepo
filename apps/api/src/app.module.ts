@@ -32,6 +32,7 @@ import { StripeModule } from './common/stripe/stripe.module'
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
+      introspection: true,
     }),
     ScheduleModule.forRoot(),
 
