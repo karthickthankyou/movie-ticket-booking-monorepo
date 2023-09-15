@@ -20,6 +20,7 @@ const deleteAll = async () => {
   await prisma.address.deleteMany()
   await prisma.cinema.deleteMany()
   //   Users
+  await prisma.admin.deleteMany()
   await prisma.manager.deleteMany()
   await prisma.user.deleteMany()
 }

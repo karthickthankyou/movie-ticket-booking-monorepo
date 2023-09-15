@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Link from 'next/link'
 
 import {
   namedOperations,
@@ -122,6 +123,9 @@ export const SelectSeats = () => {
         >
           Reset
         </Button>
+
+        {!uid ? <Link href="/login">'Login to continue'</Link> : null}
+
         {selectedSeats.length ? (
           <Button
             onClick={async () => {
@@ -147,6 +151,7 @@ export const SelectSeats = () => {
 
               dispatch(resetSeats())
             }}
+            disabled={!uid}
           >
             Create booking
           </Button>

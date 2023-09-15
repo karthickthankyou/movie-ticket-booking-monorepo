@@ -35,13 +35,14 @@ model Admin {
 }
 
 model Cinema {
-    id        Int       @id @default(autoincrement())
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
     name      String
     screens   Screen[]
-    managers  Manager[]
     address   Address?
+
+    managers Manager[]
 }
 
 model Address {
@@ -62,8 +63,8 @@ model Screen {
     number          Int
     cinemaId        Int
     cinema          Cinema          @relation(fields: [cinemaId], references: [id])
-    showtimes       Showtime[]
     seats           Seat[]
+    showtimes       Showtime[]
     projectionType  ProjectionType  @default(STANDARD)
     soundSystemType SoundSystemType @default(DOLBY_ATMOS)
 

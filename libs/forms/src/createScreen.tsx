@@ -12,7 +12,6 @@ export const formSchemaCreateScreen = z.object({
   soundSystemType: z.nativeEnum(SoundSystemType),
   rows: z.number(),
   columns: z.number(),
-  number: z.number(),
   price: z.number(),
 })
 

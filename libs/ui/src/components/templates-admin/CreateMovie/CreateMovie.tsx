@@ -21,7 +21,6 @@ export interface ICreateMovieProps {}
 export const CreateMovie = ({}: ICreateMovieProps) => {
   const {
     register,
-    setValue,
     handleSubmit,
     reset,
     control,

@@ -170,7 +170,7 @@ const AddScreens = () => {
     <div>
       {fields.map((item, screenIndex) => (
         <Accordion
-          title={screens?.[screenIndex]?.number || '[Empty]'}
+          title={screenIndex || '[Empty]'}
           key={item.id}
           className={item.id}
           defaultOpen
@@ -198,19 +198,6 @@ const AddScreens = () => {
             }`}
           >
             <div className="grid grid-cols-2 gap-2">
-              <HtmlLabel
-                title="Screen number"
-                optional
-                error={errors.screens?.[screenIndex]?.number?.message}
-              >
-                <HtmlInput
-                  type="number"
-                  placeholder="Enter the description"
-                  {...register(`screens.${screenIndex}.number`, {
-                    valueAsNumber: true,
-                  })}
-                />
-              </HtmlLabel>
               <HtmlLabel
                 title="Projection type"
                 error={errors.screens?.[screenIndex]?.type?.toString()}
@@ -298,7 +285,6 @@ const AddScreens = () => {
           onClick={() =>
             append({
               columns: 0,
-              number: 0,
               rows: 0,
               price: 0,
               projectionType: ProjectionType.Standard,
